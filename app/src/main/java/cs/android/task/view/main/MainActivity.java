@@ -24,15 +24,28 @@ public class MainActivity extends AppCompatActivity {
         nav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                View ls = findViewById(R.id.layout_select);
+                View projectsView = findViewById(R.id.layout_project);
+                View profileView = findViewById(R.id.layout_profile);
                 switch (item.getItemId()) {
                     case R.id.project:
+                        profileView.setVisibility(View.GONE);
+                        projectsView.setVisibility(View.VISIBLE);
+                        return true;
                     case R.id.more:
+                        projectsView.setVisibility(View.GONE);
+                        profileView.setVisibility(View.VISIBLE);
+                        return true;
                     case R.id.friend:
-                        ls.setVisibility(View.VISIBLE);
+                        profileView.setVisibility(View.GONE);
+                        projectsView.setVisibility(View.GONE);
                         return true;
                     case R.id.my:
-                        ls.setVisibility(View.GONE);
+                        profileView.setVisibility(View.GONE);
+                        projectsView.setVisibility(View.GONE);
+                        return true;
+                    case R.id.schedule:
+                        profileView.setVisibility(View.GONE);
+                        projectsView.setVisibility(View.GONE);
                         return true;
                     default:
                         return false;

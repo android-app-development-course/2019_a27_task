@@ -13,6 +13,10 @@
         android:icon="@mipmap/friend"
         android:title="@string/friend"/>
     <item
+        android:id="@+id/schedule"
+        android:icon="@mipmap/schedule"
+        android:title="@string/schedule"/>
+    <item
         android:id="@+id/more"
         android:icon="@mipmap/more"
         android:title="@string/more"/>
