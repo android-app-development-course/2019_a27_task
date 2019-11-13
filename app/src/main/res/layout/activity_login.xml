@@ -4,12 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-<<<<<<< HEAD
     tools:context=".view.login.LoginActivity"
     android:orientation="vertical">
-=======
-    tools:context="cs.android.task.LoginActivity">
->>>>>>> origin/sam
 
     <View
         android:id="@+id/view"
