@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Task</string>
+    <string name="project">项目</string>
+    <string name="my">我的</string>
+    <string name="friend">好友</string>
+    <string name="more">更多</string>
+    <string name="schedule">日程</string>
 </resources>
