@@ -2,6 +2,7 @@ package cs.android.task;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
@@ -24,11 +25,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        signin = findViewById(R.id.signin);
+        signin.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()){
+            case R.id.signin:
+                Intent profile = new Intent(this, ProfileActivity.class);
+                startActivity(profile);
+                break;
+                default:
+                    break;
+        }
     }
 }
