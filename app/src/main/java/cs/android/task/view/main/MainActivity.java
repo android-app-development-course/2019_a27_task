@@ -1,7 +1,9 @@
-package cs.android.task;
+package cs.android.task.view.main;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import cs.android.task.R;
+
 
 import android.content.Intent;
 import android.os.Bundle;
