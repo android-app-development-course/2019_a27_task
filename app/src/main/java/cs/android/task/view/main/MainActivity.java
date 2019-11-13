@@ -1,6 +1,8 @@
-package cs.android.task;
+package cs.android.task.view.main;
 
 import androidx.appcompat.app.AppCompatActivity;
+import cs.android.task.R;
+
 import android.os.Bundle;
 
 public class MainActivity extends AppCompatActivity {

@@ -1,12 +1,12 @@
-package cs.android.task;
+package cs.android.task.view.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import cs.android.task.R;
 
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
