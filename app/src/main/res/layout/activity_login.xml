@@ -1,105 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+<<<<<<< HEAD
     tools:context=".view.login.LoginActivity"
     android:orientation="vertical">
+=======
+    tools:context="cs.android.task.LoginActivity">
+>>>>>>> origin/sam
 
-    <LinearLayout
-        android:layout_weight="1"
-        android:layout_width="match_parent"
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:orientation="vertical">
+        android:layout_marginBottom="550dp"
+        android:background="#03A9F4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:text="TASK"
-            android:gravity="center|bottom"
-            android:textSize="30dp"
-            android:layout_marginTop="30dp"
-            android:textColor="#000000"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_marginTop="20dp"
-            android:text="让团队协作焕然一新"
-            android:gravity="center|top"
-            android:textSize="20dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_weight="2"
-        android:layout_width="match_parent"
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:gravity="top"
-        android:orientation="vertical">
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="140dp"
+        android:layout_marginBottom="16dp"
 
-        <EditText
+        android:src="@mipmap/task"
+        app:layout_constraintBottom_toTopOf="@+id/materialCardView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/materialCardView"
+        android:layout_width="342dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="250dp"
+        android:minHeight="200dp"
+        app:cardBackgroundColor="#ffffff"
+        app:cardCornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.755"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:layout_constraintVertical_bias="0.984">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:hint="你的手机号码"
-            android:textSize="20dp"
-            android:inputType="phone"
-            android:layout_marginHorizontal="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="20dp"
             android:gravity="center"
-            android:id="@+id/phone"/>
+            android:orientation="vertical">
 
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginHorizontal="40dp"
-            android:text="即刻开始"
-            android:textSize="20dp"
-            android:textColor="#ffffff"
-            android:background="#969393"
-            android:id="@+id/login"
-            />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal"
-        android:gravity="bottom"
-        android:layout_marginBottom="20dp">
-
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:text="帐号密码登录"
-            android:textColor="#2196F3"
-            android:gravity="end"
-            android:id="@+id/normalLogin"/>
-        <TextView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:text="|"
-            android:textColor="#969494"
-            android:gravity="center"
-            />
-        <TextView
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="20dp"
-            android:text="更多登录方式"
-            android:textColor="#2196F3"
-            android:gravity="start"
-            android:id="@+id/moreWay"/>
-
-    </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="33dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/work_sans_bold"
+                android:gravity="center"
+                android:text="SIGN IN"
+                android:textColor="#00BCD4"
+                android:textSize="25sp" />
 
 
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="USERNAME"
+                app:boxBackgroundColor="#ffffff"
+                app:endIconMode="clear_text"
+
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/work_sans" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="PASSWORD"
+                app:boxBackgroundColor="#ffffff"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/work_sans"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/material_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:backgroundTint="#E91E63"
+                android:gravity="center"
+                android:text="SIGN IN"
+                app:cornerRadius="20sp" />
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
 
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="New user? " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:text="Sign Up"
+                    android:textColor="#2196F3" />
+            </LinearLayout>
+        </LinearLayout>
 
 
+    </com.google.android.material.card.MaterialCardView>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

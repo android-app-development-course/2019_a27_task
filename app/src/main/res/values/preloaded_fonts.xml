@@ -3,6 +3,9 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/work_sans</item>
         <item>@font/work_sans_bold</item>
+<<<<<<< HEAD
         <item>@font/work_sans_medium</item>
+=======
+>>>>>>> origin/sam
     </array>
 </resources>
