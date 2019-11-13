@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import cs.android.task.R;
+import cs.android.task.fragment.profile.ProfileFragment;
 import cs.android.task.fragment.projects.ProjectFragment;
 import cs.android.task.fragment.schedule.ScheduleFragment;
 
@@ -35,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements ScheduleFragment.
                     case R.id.friend:
                         return true;
                     case R.id.my:
+                        loadFragment(new ProfileFragment());
                         return true;
                     case R.id.schedule:
                         loadFragment(new ScheduleFragment());
