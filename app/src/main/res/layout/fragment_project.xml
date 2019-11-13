@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.projects.ProjectFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.projects.ProjectActivity">
+        >
 
-    <View
+        <View
             android:id="@+id/panel"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
@@ -17,25 +24,25 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
+        <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="0dp"
             android:layout_height="190dp"
-            android:layout_marginTop="120dp"
             android:layout_marginStart="24dp"
+            android:layout_marginTop="120dp"
             android:layout_marginEnd="24dp"
-            app:cardElevation="10dp"
             app:cardCornerRadius="3dp"
+            app:cardElevation="10dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-            <TextView
+                <TextView
                     android:id="@+id/main_project_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -47,14 +54,14 @@
                     android:text="MAIN PROJECT"
                     android:textColor="@color/TextColor"
                     android:textSize="25sp" />
-            <!--This is a divier-->
-            <View
+                <!--This is a divier-->
+                <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_marginTop="6dp"
                     android:background="@android:color/darker_gray" />
 
-            <LinearLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -62,7 +69,7 @@
                     android:layout_marginEnd="16dp"
                     android:orientation="vertical">
 
-                <TextView
+                    <TextView
                         android:id="@+id/main_created_date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -75,7 +82,7 @@
                         android:textSize="15sp" />
 
 
-                <TextView
+                    <TextView
                         android:id="@+id/main_leader_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -88,14 +95,14 @@
                         android:textColor="@color/TextColor"
                         android:textSize="15sp" />
 
-                <LinearLayout
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:orientation="horizontal">
 
-                    <com.google.android.material.button.MaterialButton
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/enter_btn"
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="wrap_content"
@@ -103,10 +110,10 @@
                             android:enabled="true"
                             android:text="ENTER"
                             android:textColor="#673AB7"
-                            app:rippleColor="#FF6B54A1"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            app:rippleColor="#FF6B54A1" />
 
-                    <com.google.android.material.button.MaterialButton
+                        <com.google.android.material.button.MaterialButton
                             android:id="@+id/done_btn"
                             style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="wrap_content"
@@ -115,26 +122,28 @@
                             android:enabled="true"
                             android:text="DONE"
                             android:textColor="#673AB7"
-                            app:rippleColor="#FF6B54A1"
-                            android:textSize="16sp" />
+                            android:textSize="16sp"
+                            app:rippleColor="#FF6B54A1" />
+                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
 
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <!--其他卡片可以在这里添加-->
-    <androidx.recyclerview.widget.RecyclerView
+        <!--其他卡片可以在这里添加-->
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/projects_list"
             android:layout_width="0dp"
-            android:layout_height="471dp"
-            android:layout_marginEnd="16dp"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView"
-            >
+            app:layout_constraintTop_toBottomOf="@+id/cardView">
 
-    </androidx.recyclerview.widget.RecyclerView>
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
