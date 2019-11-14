@@ -50,7 +50,7 @@ public class ScheduleFragment extends Fragment {
      * @return A new instance of fragment ScheduleFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public  ScheduleFragment newInstance() {
+    public  static ScheduleFragment newInstance() {
         ScheduleFragment fragment = new ScheduleFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
