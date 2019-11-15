@@ -1,4 +1,4 @@
-package cs.android.task.fragment.projects.details;
+package cs.android.task.fragment.projects.details.leader;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import cs.android.task.R;
 
 public class LeaderDetailCard extends Fragment {
+
 
 public LeaderDetailCard() {
 
