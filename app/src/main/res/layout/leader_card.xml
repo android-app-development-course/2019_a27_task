@@ -30,7 +30,7 @@
                     android:layout_gravity="top"
                     android:contentDescription="@string/app_name"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/leader_bg"
+                    android:src="@mipmap/leader_bg"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHeight_percent="0.5"
@@ -45,7 +45,7 @@
                     android:layout_height="50dp"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:src="@drawable/leader_bg"
+                    android:src="@mipmap/leader_bg"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/leader_bg" />
 
@@ -113,7 +113,6 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginBottom="25dp"
-                    android:autoText="true"
                     android:drawableStart="@drawable/description_24dp"
                     android:drawablePadding="16dp"
                     android:fontFamily="@font/work_sans"
@@ -130,6 +129,5 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
