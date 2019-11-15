@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 29
@@ -17,6 +19,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+    sourceSets { main { res.srcDirs = ['src/main/res', 'src/main/res/layout/details'] } }
 }
 
 dependencies {
@@ -29,5 +36,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.google.android.material:material:1.2.0-alpha01'
     implementation 'com.sothree.slidinguppanel:library:3.4.0'
-    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.tbuonomo.andrui:viewpagerdotsindicator:4.1.2'
+    implementation "androidx.core:core-ktx:+"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'de.hdodenhof:circleimageview:3.0.1'
+}
+repositories {
+    mavenCentral()
 }
