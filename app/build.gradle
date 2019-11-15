@@ -40,6 +40,8 @@ dependencies {
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+    //noinspection GradleCompatible
+    implementation 'com.android.support:appcompat-v7:27.0.2'
 }
 repositories {
     mavenCentral()
