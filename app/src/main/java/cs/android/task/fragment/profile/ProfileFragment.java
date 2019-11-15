@@ -1,11 +1,14 @@
 package cs.android.task.fragment.profile;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +26,6 @@ import cs.android.task.R;
 public class ProfileFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
     // TODO: Rename and change types of parameters
 
     public ProfileFragment() {
@@ -54,6 +56,10 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_schedule,container, false);
+
+
+
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
 
