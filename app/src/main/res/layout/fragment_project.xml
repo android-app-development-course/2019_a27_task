@@ -4,12 +4,14 @@
         xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.projects.ProjectFragment">
+        android:clickable="true"
+        android:focusable="true"
+        tools:context=".fragment.projects.ProjectFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-        android:layout_height="match_parent"
+            android:layout_height="match_parent"
         >
 
         <View
@@ -24,15 +26,16 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.26" />
 
-        <androidx.cardview.widget.CardView
+        <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
                 android:layout_marginTop="120dp"
                 android:layout_marginEnd="24dp"
-                app:cardCornerRadius="3dp"
-                app:cardElevation="10dp"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="15dp"
+                app:cardMaxElevation="15dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -87,7 +90,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:drawableStart="@drawable/leader"
+                            android:drawableStart="@drawable/leader_avatar"
                             android:drawablePadding="8dp"
                             android:fontFamily="@font/work_sans_medium"
                             android:gravity="center_vertical"
@@ -128,7 +131,7 @@
                 </LinearLayout>
 
             </LinearLayout>
-        </androidx.cardview.widget.CardView>
+        </com.google.android.material.card.MaterialCardView>
 
         <!--其他卡片可以在这里添加-->
         <androidx.recyclerview.widget.RecyclerView
@@ -136,7 +139,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
