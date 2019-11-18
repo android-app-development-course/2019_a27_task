@@ -12,9 +12,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import cs.android.task.R;
+import cs.android.task.fragment.profile.ProfileFragment;
 import cs.android.task.fragment.projects.ProjectFragment;
 import cs.android.task.fragment.schedule.ScheduleFragment;
 import cs.android.task.view.Util;
+
 
 public class MainActivity extends AppCompatActivity
     implements ScheduleFragment.OnFragmentInteractionListener {
@@ -45,12 +47,14 @@ public class MainActivity extends AppCompatActivity
               case R.id.friend:
                 return true;
               case R.id.my:
+               loadFragment(new ProfileFragment());
                 return true;
               case R.id.schedule:
                 loadFragment(ScheduleFragment.newInstance());
                 return true;
               default:
                 return false;
+
             }
           }
         });

@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.profile.ProfileActivity">
+
     <View
         android:id="@+id/view"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginBottom="600dp"
-        android:background="#2196f3"
+        android:background="#03A9F4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
