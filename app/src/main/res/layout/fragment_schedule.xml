@@ -22,7 +22,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:src="@drawable/leader_bg"
+                    android:src="@mipmap/leader_bg"
                     android:scaleType="centerCrop"/>
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
