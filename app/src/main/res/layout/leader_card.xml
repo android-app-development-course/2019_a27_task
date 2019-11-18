@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            app:cardBackgroundColor="#F5F5F7"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="20dp"
+            app:cardUseCompatPadding="true"
+            app:contentPaddingBottom="24dp"
+            app:layout_constraintDimensionRatio="1:1.3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            <ImageView
+                    android:id="@+id/leader_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="top"
+                    android:contentDescription="@string/app_name"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/leader_bg"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHeight_percent="0.5"
+                    app:layout_constraintHorizontal_bias="1"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/leader_detail_avatar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@mipmap/leader_bg"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/leader_bg" />
+
+            <TextView
+                    android:id="@+id/leader_detail_name"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:elegantTextHeight="false"
+                    android:fontFamily="@font/work_sans_medium"
+                    android:gravity="center_vertical"
+                    android:paddingStart="16dp"
+                    android:text="Leader Name"
+                    android:textAlignment="gravity"
+                    android:textAllCaps="false"
+                    android:textSize="25sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/leader_detail_avatar"
+                    app:layout_constraintTop_toBottomOf="@+id/leader_bg" />
+
+            <TextView
+                    android:id="@+id/leader_phone_num"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:drawableStart="@drawable/phone_num"
+                    android:drawablePadding="16dp"
+                    android:fontFamily="@font/work_sans"
+                    android:gravity="center_vertical"
+                    android:text="1234567890"
+                    android:textColor="@color/TextColor"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/leader_detail_name" />
+
+
+            <TextView
+                    android:id="@+id/leader_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:drawableStart="@drawable/mail"
+                    android:drawablePadding="16dp"
+                    android:fontFamily="@font/work_sans"
+                    android:gravity="center_vertical"
+                    android:text="thisisemail@gmail.com"
+                    android:textColor="@color/TextColor"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toTopOf="@+id/leader_description"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/leader_phone_num" />
+
+            <TextView
+                    android:id="@+id/leader_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="25dp"
+                    android:drawableStart="@drawable/description_24dp"
+                    android:drawablePadding="16dp"
+                    android:fontFamily="@font/work_sans"
+                    android:gravity="center_vertical"
+                    android:text="these are some descriptions"
+                    android:textColor="@color/TextColor"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/leader_email" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

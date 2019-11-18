@@ -1,6 +1,7 @@
 package cs.android.task.fragment.schedule;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,7 +53,7 @@ public class ScheduleFragment extends Fragment {
      * @return A new instance of fragment ScheduleFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public  ScheduleFragment newInstance() {
+    public  static ScheduleFragment newInstance() {
         ScheduleFragment fragment = new ScheduleFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -77,7 +80,10 @@ public class ScheduleFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         ScheduleAdapter adapter = new ScheduleAdapter(ScheduleList);
         recyclerView.setAdapter(adapter);
-        //return super.onCreateView(inflater, container, savedInstanceState);
+        CollapsingToolbarLayout collapsingToolbarLayout = view.findViewById(R.id.collapsing_toolbar_layout);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#ffffff"));
+        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#ffffff"));
+
         return view;
     }
 
