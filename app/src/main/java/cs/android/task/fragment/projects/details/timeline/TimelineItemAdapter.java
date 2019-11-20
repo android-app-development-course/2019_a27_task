@@ -38,12 +38,14 @@ private SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日", Locale.
 class TimelineViewHolder extends RecyclerView.ViewHolder {
     public TextView date;
     public TextView content;
+    public TextView committer;
     public TimelineView timeline;
 
     public TimelineViewHolder (@NonNull View itemView, int viewType) {
         super(itemView);
         date = itemView.findViewById(R.id.log_date);
         content = itemView.findViewById(R.id.log_content);
+        committer = itemView.findViewById(R.id.log_committer);
         timeline = itemView.findViewById(R.id.timeline);
         timeline.initLine(viewType);
     }
@@ -68,6 +70,7 @@ public void onBindViewHolder (@NonNull TimelineViewHolder holder,int position) {
     LogItem item = logItems.get(position);
     holder.date.setText(dateFormat.format(item.getDate()));
     holder.content.setText(item.getContent());
+    holder.committer.setText(item.getCommiter().getName());
 }
 
 @Override

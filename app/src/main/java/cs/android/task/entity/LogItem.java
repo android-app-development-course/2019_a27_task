@@ -8,6 +8,16 @@ public class LogItem {
 private String content;
 private Date date;
 private String summary;
+private Member commiter;
+
+public Member getCommiter () {
+    return commiter;
+}
+
+public void setCommiter (Member commiter) {
+    this.commiter = commiter;
+}
+
 
 public String getSummary () {
     return summary;

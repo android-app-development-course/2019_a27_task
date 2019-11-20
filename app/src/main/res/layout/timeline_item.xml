@@ -36,16 +36,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-            <TextView
-                    android:id="@+id/log_date"
+            <LinearLayout
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    >
+            <TextView
+                    android:id="@+id/log_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:textSize="12sp"
-                    android:layout_marginTop="8dp"
+                    android:fontFamily="@font/work_sans_medium"
+                    android:layout_gravity="center_vertical"
+                    />
+                <TextView
+                        android:text="Created by"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:layout_marginStart="8dp"
+                        android:fontFamily="@font/work_sans_medium"
+                        android:layout_gravity="center_vertical"
+                        />
+            <TextView
+                    android:id="@+id/log_committer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
                     android:layout_marginStart="8dp"
                     android:fontFamily="@font/work_sans_medium"
                     android:layout_gravity="center_vertical"
                     />
+        </LinearLayout>
             <TextView
                     android:id="@+id/log_content"
                     android:layout_width="match_parent"
@@ -53,7 +78,7 @@
                     android:fontFamily="@font/work_sans_medium"
                     android:textSize="15sp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginBottom="5dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_marginTop="5dp"
                     android:layout_gravity="center_vertical"
                     android:textColor="@color/TextColor"

@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cs.android.task.R;
 import cs.android.task.entity.LogItem;
+import cs.android.task.entity.Member;
 
 public class TimeLineFragment extends Fragment {
 
@@ -56,11 +57,16 @@ public View onCreateView(LayoutInflater inflater,ViewGroup container,
 }
 
 private void initTestLog(int size) {
+    Member member = new Member();
+    member.setName("LMS");
+    member.setEmail("iamlms@qq.com");
+    member.setPhoneNum("1234567890");
     for (int i = 0; i < size; i++) {
         LogItem logItem = new LogItem();
         logItem.setDate(new Date());
         logItem.setContent("this is content" + String.valueOf(i));
         logItem.setSummary("this is summary" + String.valueOf(i));
+        logItem.setCommiter(member);
         logItems.add(logItem);
     }
 }
