@@ -31,7 +31,7 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
     private List<Project> projects;
-    private static SimpleDateFormat dateFormater = new SimpleDateFormat("MM月dd日",Locale.CHINA);
+    private SimpleDateFormat dateFormater = new SimpleDateFormat("MM月dd日",Locale.CHINA);
 
     public ProjectAdapter(@NonNull List<Project> projects) {
         this.projects = projects;

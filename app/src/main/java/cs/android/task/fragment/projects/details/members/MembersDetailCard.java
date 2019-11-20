@@ -1,5 +1,7 @@
 package cs.android.task.fragment.projects.details.members;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
@@ -7,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,13 +28,16 @@ public class MembersDetailCard extends Fragment {
   /** The List view. */
   RecyclerView listView;
 
+  /** The Collapsing toolbar layout. */
+  CollapsingToolbarLayout collapsingToolbarLayout;
+
   /** Instantiates a new Members detail card. */
   public MembersDetailCard() {}
 
   /**
-   * New instance members detail card.
+   * New instance members_item detail card.
    *
-   * @return the members detail card
+   * @return the members_item detail card
    */
   public static MembersDetailCard newInstance() {
     Bundle args = new Bundle();
@@ -50,11 +54,12 @@ public void onCreate (@Nullable Bundle savedInstanceState) {
 @Nullable
 @Override
 public View onCreateView (@NonNull LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.members, container, false);
+    View view = inflater.inflate(R.layout.members_item, container, false);
     /*
     TODO
     setup view args here
      */
+
     listView = view.findViewById(R.id.member_list);
     listView.setHasFixedSize(true);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -69,17 +74,14 @@ public View onCreateView (@NonNull LayoutInflater inflater,@Nullable ViewGroup c
     set up member list here
  */
 private void setList() {
-    Member member_1 = new Member();
-    member_1.setEmail("email_address@gmail.com");
-    member_1.setName("member one");
-    member_1.setPhoneNum("1234567890");
-
-    Member member_2 = new Member();
-    member_2.setEmail("email_address2@gmail.com");
-    member_2.setName("member two");
-    member_2.setPhoneNum("1234567890");
-
-    members.add(member_1);
-    members.add(member_2);
+    ArrayList<Member> test_members = new ArrayList<>();
+    for (int i = 0; i < 10; i++) {
+        Member m = new Member();
+        m.setPhoneNum("123456789");
+        m.setName("member " + i);
+        m.setEmail("thisisemail@gmail.com");
+        test_members.add(m);
+    }
+    members.addAll(test_members);
 }
 }

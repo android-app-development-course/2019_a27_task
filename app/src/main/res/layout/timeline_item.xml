@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
+        >
+    <com.github.vipulasri.timelineview.TimelineView
+            android:id="@+id/timeline"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:marker="@drawable/timeline_item_active"
+            app:markerSize="20dp"
+            app:lineWidth="3dp"
+            app:startLineColor="#42A5F5"
+            app:endLineColor="#42A5F5"
+            app:lineOrientation="vertical"
+            app:lineStyle="normal"/>
+
+    <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="6dp"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="3dp"
+            >
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            <TextView
+                    android:id="@+id/log_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/work_sans_medium"
+                    android:layout_gravity="center_vertical"
+                    />
+            <TextView
+                    android:id="@+id/log_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/work_sans_medium"
+                    android:textSize="15sp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="@color/TextColor"
+                    />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</LinearLayout>

@@ -12,6 +12,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import cs.android.task.R;
 import cs.android.task.fragment.projects.details.leader.LeaderDetailCard;
 import cs.android.task.fragment.projects.details.members.MembersDetailCard;
+import cs.android.task.fragment.projects.details.timeline.TimeLineFragment;
+import cs.android.task.fragment.projects.details.timeline.TimelineItemAdapter;
 
 public class DetailsFragment extends Fragment {
 
@@ -37,6 +39,7 @@ public View onCreateView(LayoutInflater inflater,ViewGroup container,
      */
     adapter.addFragment(LeaderDetailCard.newInstance());
     adapter.addFragment(MembersDetailCard.newInstance());
+    adapter.addFragment(TimeLineFragment.newInstance());
 
     final ZoomOutPagerTransFormer transFormer = new ZoomOutPagerTransFormer();
     viewPager.setPageTransformer(transFormer);
