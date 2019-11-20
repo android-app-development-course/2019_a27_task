@@ -64,6 +64,10 @@ public View onCreateView (@NonNull LayoutInflater inflater,@Nullable ViewGroup c
     listView.setHasFixedSize(true);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
     listView.setLayoutManager(layoutManager);
+    /*
+     TODO
+     members list here should be set as a project's members list.
+     */
     members = new ArrayList<>();
     setList();
     listView.setAdapter(new MemberDetailAdapter(members));
