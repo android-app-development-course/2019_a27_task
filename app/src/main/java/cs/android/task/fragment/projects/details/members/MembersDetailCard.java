@@ -35,9 +35,9 @@ public class MembersDetailCard extends Fragment {
   public MembersDetailCard() {}
 
   /**
-   * New instance members_item detail card.
+   * New instance members_card detail card.
    *
-   * @return the members_item detail card
+   * @return the members_card detail card
    */
   public static MembersDetailCard newInstance() {
     Bundle args = new Bundle();
@@ -54,7 +54,7 @@ public void onCreate (@Nullable Bundle savedInstanceState) {
 @Nullable
 @Override
 public View onCreateView (@NonNull LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.members_item, container, false);
+    View view = inflater.inflate(R.layout.members_card, container, false);
     /*
     TODO
     setup view args here
