@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity
                 return true;
               case R.id.more:
                 return true;
-              case R.id.friend:
+              case R.id.notification:
                 return true;
               case R.id.my:
                loadFragment(new ProfileFragment());

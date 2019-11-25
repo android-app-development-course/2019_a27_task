@@ -83,6 +83,8 @@ public class ScheduleFragment extends Fragment {
         CollapsingToolbarLayout collapsingToolbarLayout = view.findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#ffffff"));
         collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#ffffff"));
+        collapsingToolbarLayout.setContentScrimColor(Color.parseColor("#abc999"));
+        collapsingToolbarLayout.setScrimAnimationDuration(300);
 
         return view;
     }
