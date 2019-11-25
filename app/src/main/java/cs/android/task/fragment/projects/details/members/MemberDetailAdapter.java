@@ -1,8 +1,6 @@
 package cs.android.task.fragment.projects.details.members;
 
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.LayoutTransition;
 import android.animation.ObjectAnimator;
@@ -27,6 +25,10 @@ import cs.android.task.R;
 import cs.android.task.entity.Member;
 
 public class MemberDetailAdapter extends RecyclerView.Adapter<MemberDetailAdapter.MemberViewHolder> {
+
+private List<Member> members;
+private SparseBooleanArray expandState = new SparseBooleanArray();
+private Context context;
 
 public class MemberViewHolder extends RecyclerView.ViewHolder {
     private TextView name, phoneNum, email;
@@ -60,9 +62,6 @@ public class MemberViewHolder extends RecyclerView.ViewHolder {
     }
 }
 
-private List<Member> members;
-private SparseBooleanArray expandState = new SparseBooleanArray();
-private Context context;
 
 
 MemberDetailAdapter(@NonNull List<Member> members) {
@@ -75,7 +74,7 @@ MemberDetailAdapter(@NonNull List<Member> members) {
 @Override
 public MemberViewHolder onCreateViewHolder (@NonNull ViewGroup parent,int viewType) {
     this.context = parent.getContext();
-    View view = LayoutInflater.from(this.context).inflate(R.layout.member_card, parent, false);
+    View view = LayoutInflater.from(this.context).inflate(R.layout.member_item, parent, false);
     return new MemberViewHolder(view);
 }
 

@@ -2,16 +2,22 @@ package cs.android.task.fragment.projects.details;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 import cs.android.task.R;
+import cs.android.task.fragment.projects.details.files.FilesDetails;
 import cs.android.task.fragment.projects.details.leader.LeaderDetailCard;
 import cs.android.task.fragment.projects.details.members.MembersDetailCard;
+import cs.android.task.fragment.projects.details.timeline.TimeLineFragment;
+import cs.android.task.fragment.projects.details.timeline.TimelineItemAdapter;
 
 public class DetailsFragment extends Fragment {
 
@@ -37,6 +43,8 @@ public View onCreateView(LayoutInflater inflater,ViewGroup container,
      */
     adapter.addFragment(LeaderDetailCard.newInstance());
     adapter.addFragment(MembersDetailCard.newInstance());
+    adapter.addFragment(FilesDetails.newInstance());
+    adapter.addFragment(TimeLineFragment.newInstance());
 
     final ZoomOutPagerTransFormer transFormer = new ZoomOutPagerTransFormer();
     viewPager.setPageTransformer(transFormer);
@@ -44,6 +52,11 @@ public View onCreateView(LayoutInflater inflater,ViewGroup container,
     indicator.setViewPager2(viewPager);
 
     return view;
+}
+
+@Override
+public void onCreateOptionsMenu (@NonNull Menu menu,@NonNull MenuInflater inflater) {
+    inflater.inflate(R.menu.file_menu, menu);
 }
 
 @Override
