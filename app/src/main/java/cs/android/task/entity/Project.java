@@ -1,11 +1,17 @@
 package cs.android.task.entity;
 
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+
+import androidx.annotation.NonNull;
 
 public class Project {
-    private String name;
-    private Date createDate;
-    private String leaderName;
+private String name;
+private Date createDate;
+private String leaderName;
+private List<Member> members = new LinkedList<>();
 
 public String getName () {
     return name;
@@ -29,5 +35,17 @@ public String getLeaderName () {
 
 public void setLeaderName (String leaderName) {
     this.leaderName = leaderName;
+}
+
+public Optional<Member> getMember(@NonNull String phoneNum) {
+    return members.stream()
+            .filter(m -> m.getPhoneNum().equals(phoneNum))
+            .findFirst();
+}
+
+public void addMember(Member member) {
+    boolean exist = getMember(member.getPhoneNum()).isPresent();
+    if (!exist)
+        members.add(member);
 }
 }
