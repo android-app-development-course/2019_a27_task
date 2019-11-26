@@ -65,12 +65,12 @@ public class FriendFragment extends Fragment {
         recyclerView = (RecyclerView) view.findViewById(R.id.friend_list);
 
 //        设置RecycleView的布局方式，这里是线性布局，默认垂直
-        StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(layoutManager);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
 //        实例化自定义适配器
         initFriends();
-        FriendAdapter friendAdapter = new FriendAdapter(FriendList);
+        FriendAdapter friendAdapter = new FriendAdapter(FriendList,getContext());
 
 //        把适配器添加到RecycleView中
         recyclerView.setAdapter(friendAdapter);
@@ -81,9 +81,12 @@ public class FriendFragment extends Fragment {
     public void initFriends(){
         Drawable drawable = getResources().getDrawable(R.mipmap.leader_bg);//获取drawable
         BitmapDrawable bd = (BitmapDrawable) drawable;
-        Friend firend1 = new Friend("David", "A Sexy Boy", bd.getBitmap());
-        Friend firend2 = new Friend("Sam", "A Good Student", bd.getBitmap());
-        Friend firend3 = new Friend("Cbj", "A Bad Boy", bd.getBitmap());
+        Friend friend1 = new Friend("David", "A Sexy Boy just coindance", bd.getBitmap());
+        Friend friend2 = new Friend("Sam", "A Good Student not kil u", bd.getBitmap());
+        Friend friend3 = new Friend("Cbj", "A Bad Boy yep yas la beat", bd.getBitmap());
+        FriendList.add(friend1);
+        FriendList.add(friend2);
+        FriendList.add(friend3);
     }
 
 

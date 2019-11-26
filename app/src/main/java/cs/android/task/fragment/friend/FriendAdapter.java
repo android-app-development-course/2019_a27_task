@@ -8,14 +8,20 @@ package cs.android.task.fragment.friend;
 
 
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.cocosw.bottomsheet.BottomSheet;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
@@ -27,6 +33,8 @@ import cs.android.task.entity.Friend;
 public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder> {
 
     private List<Friend> mFriendList;
+    private Context context;
+    private BottomSheetDialog bsd1;
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
@@ -42,8 +50,9 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
 
     }
 
-    public FriendAdapter(List<Friend> friendList) {
+    public FriendAdapter(List<Friend> friendList, Context context) {
         mFriendList = friendList;
+        this.context = context;
     }
 
     @NonNull
@@ -58,11 +67,21 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull FriendAdapter.ViewHolder holder, int position) {
-
         Friend friend = mFriendList.get(position);
         holder.name.setText(friend.getName());
         holder.introduction.setText(friend.getIntroduction());
         holder.image.setImageBitmap(friend.getImage());
+
+
+
+        holder.itemView.setOnClickListener(v -> {
+            final BottomSheetDialog dialog = new BottomSheetDialog(context);
+            View view = LayoutInflater.from(context).inflate(R.layout.friend_bottom_sheet_list, null);
+            dialog.setContentView(view);
+            dialog.show();
+
+        });
+
     }
 
     @Override
