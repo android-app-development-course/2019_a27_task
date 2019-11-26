@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+        >
+    <group>
+        <item
+                android:checkable="true"
+                android:id="@+id/order_by_type"
+                android:title="@string/order_by_type"/>
+        <item
+                android:checkable="true"
+                android:id="@+id/order_by_date"
+                android:title="@string/order_by_date"/>
+        <item
+                android:checkable="true"
+                android:id="@+id/order_by_name"
+                android:title="@string/order_by_name"/>
+        <item
+                android:checkable="true"
+                android:id="@+id/only_my_file"
+                android:title="@string/only_my_file" />
+    </group>
+</menu>
