@@ -7,21 +7,20 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/friend_share"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="#1976d1"
         android:text="Share" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/friend_invite"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Invite"/>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/friend_delete"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:backgroundTint="#ff0000"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Delete"/>

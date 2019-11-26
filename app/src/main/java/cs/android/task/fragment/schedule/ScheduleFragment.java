@@ -22,10 +22,7 @@ import cs.android.task.R;
 import cs.android.task.entity.Schedule;
 
 /**
- * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
- * {@link ScheduleFragment.OnFragmentInteractionListener} interface to handle interaction events.
- * Use the {@link ScheduleFragment#newInstance} factory method to create an instance of this
- * fragment.
+ * fragment
  * @author dav1d
  */
 public class ScheduleFragment extends Fragment {
