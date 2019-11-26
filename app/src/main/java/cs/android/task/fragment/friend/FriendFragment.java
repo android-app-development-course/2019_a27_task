@@ -79,14 +79,22 @@ public class FriendFragment extends Fragment {
     }
 
     public void initFriends(){
-        Drawable drawable = getResources().getDrawable(R.mipmap.leader_bg);//获取drawable
-        BitmapDrawable bd = (BitmapDrawable) drawable;
-        Friend friend1 = new Friend("David", "A Sexy Boy just coindance", bd.getBitmap());
-        Friend friend2 = new Friend("Sam", "A Good Student not kil u", bd.getBitmap());
-        Friend friend3 = new Friend("Cbj", "A Bad Boy yep yas la beat", bd.getBitmap());
+
+        BitmapDrawable bd1 = (BitmapDrawable) getResources().getDrawable(R.mipmap.yuner);
+        BitmapDrawable bd2 = (BitmapDrawable) getResources().getDrawable(R.mipmap.girl);
+        BitmapDrawable bd3 = (BitmapDrawable) getResources().getDrawable(R.mipmap.limei);
+        BitmapDrawable bd4 = (BitmapDrawable) getResources().getDrawable(R.mipmap.iu);
+        BitmapDrawable bd5 = (BitmapDrawable) getResources().getDrawable(R.mipmap.xiuzhi);
+        Friend friend1 = new Friend("David", "A Sexy Boy just coindance", bd1.getBitmap());
+        Friend friend2 = new Friend("Sam", "A Good Student not kil u", bd2.getBitmap());
+        Friend friend3 = new Friend("Cbj", "A Bad Boy yep yas la beat", bd3.getBitmap());
+        Friend friend4 = new Friend("Punk", "do what i love do", bd4.getBitmap());
+        Friend friend5 = new Friend("Jack", "meet who i could meet", bd5.getBitmap());
         FriendList.add(friend1);
         FriendList.add(friend2);
         FriendList.add(friend3);
+        FriendList.add(friend4);
+        FriendList.add(friend5);
     }
 
 

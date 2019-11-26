@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
                 loadFragment(new MoreFragment());
                 return true;
 
-
               case R.id.friend:
                 loadFragment(FriendFragment.newInstance());
                 return true;
