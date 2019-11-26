@@ -16,7 +16,7 @@ import cs.android.task.entity.Schedule;
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
     private List<Schedule> mScheduleList;
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView date;
         TextView location;
