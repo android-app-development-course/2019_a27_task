@@ -12,14 +12,13 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import cs.android.task.R;
+import cs.android.task.fragment.more.MoreFragment;
 import cs.android.task.fragment.profile.ProfileFragment;
 import cs.android.task.fragment.projects.ProjectFragment;
 import cs.android.task.fragment.schedule.ScheduleFragment;
 import cs.android.task.view.Util;
 
-
-public class MainActivity extends AppCompatActivity
-    implements ScheduleFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,23 +37,23 @@ public class MainActivity extends AppCompatActivity
           public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
             switch (item.getItemId()) {
-              // use newInstance(), so that you can pass args.
+                // use newInstance(), so that you can pass args.
               case R.id.project:
                 loadFragment(ProjectFragment.newInstance());
                 return true;
               case R.id.more:
+                loadFragment(new MoreFragment());
                 return true;
               case R.id.notification:
                 return true;
               case R.id.my:
-               loadFragment(new ProfileFragment());
+                loadFragment(new ProfileFragment());
                 return true;
               case R.id.schedule:
                 loadFragment(ScheduleFragment.newInstance());
                 return true;
               default:
                 return false;
-
             }
           }
         });
@@ -67,7 +66,4 @@ public class MainActivity extends AppCompatActivity
     transaction.addToBackStack(null);
     transaction.commit();
   }
-
-  @Override
-  public void onFragmentInteraction(Uri uri) {}
 }
