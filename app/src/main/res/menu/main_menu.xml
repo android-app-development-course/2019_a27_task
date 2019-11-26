@@ -9,9 +9,9 @@
         android:icon="@mipmap/my"
         android:title="@string/my"/>
     <item
-        android:id="@+id/friend"
-        android:icon="@mipmap/friend"
-        android:title="@string/friend"/>
+        android:id="@+id/notification"
+        android:icon="@mipmap/bell"
+        android:title="@string/notification"/>
     <item
         android:id="@+id/schedule"
         android:icon="@mipmap/schedule"
