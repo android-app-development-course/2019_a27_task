@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import cs.android.task.R;
 import cs.android.task.fragment.more.MoreFragment;
+import cs.android.task.fragment.friend.FriendFragment;
 import cs.android.task.fragment.profile.ProfileFragment;
 import cs.android.task.fragment.projects.ProjectFragment;
 import cs.android.task.fragment.schedule.ScheduleFragment;
@@ -44,7 +45,13 @@ public class MainActivity extends AppCompatActivity {
               case R.id.more:
                 loadFragment(new MoreFragment());
                 return true;
+
               case R.id.notification:
+                return true;
+
+              case R.id.friend:
+                loadFragment(FriendFragment.newInstance());
+
                 return true;
               case R.id.my:
                 loadFragment(new ProfileFragment());
