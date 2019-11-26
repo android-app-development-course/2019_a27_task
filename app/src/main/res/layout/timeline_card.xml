@@ -31,7 +31,7 @@
                     android:id="@+id/bottom_app_bar"
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:backgroundTint="#7E57C2"
+                    android:backgroundTint="#64B5F6"
                     >
 
                 <com.google.android.material.appbar.CollapsingToolbarLayout
