@@ -54,8 +54,8 @@
                     android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
@@ -75,7 +75,7 @@
                             android:gravity="center_vertical"
                             android:text="nIce"
                             android:textColor="@color/TextColor"
-                            android:textSize="28sp" />
+                            android:textSize="22sp" />
 
 
                         <TextView
@@ -85,7 +85,7 @@
                             android:gravity="center_vertical"
                             android:text="github : 2019_a27_task"
                             android:textColor="@android:color/darker_gray"
-                            android:textSize="20sp" />
+                            android:textSize="16sp" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -105,8 +105,8 @@
                     android:orientation="horizontal">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
@@ -120,7 +120,7 @@
                         android:gravity="center"
                         android:text="Settings"
                         android:textColor="@color/TextColor"
-                        android:textSize="35dp" />
+                        android:textSize="26dp" />
 
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
