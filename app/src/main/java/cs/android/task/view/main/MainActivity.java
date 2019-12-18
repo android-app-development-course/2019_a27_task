@@ -1,8 +1,11 @@
 package cs.android.task.view.main;
 
-import android.net.Uri;
+import android.animation.TimeInterpolator;
 import android.os.Bundle;
+import android.transition.Explode;
+import android.transition.Fade;
 import android.view.MenuItem;
+import android.view.Window;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+    // 开启动画
+    getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+    getWindow().setEnterTransition((new Fade()).setDuration(300));
+
     setContentView(R.layout.activity_main);
     loadFragment(new ProjectFragment());
     Util.immerseStatusBar(this);
