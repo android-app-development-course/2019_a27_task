@@ -15,7 +15,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import cs.android.task.R;
+import cs.android.task.myFile.MyFile;
 import cs.android.task.view.main.MainActivity;
 
 import cs.android.task.view.signup.SignupActivity;
@@ -34,11 +43,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private String pwd_str;
     private static String host = "10.242.2.42";
     private static int port = 50050;
+    private String myToken;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Vertify();
+
         setContentView(R.layout.activity_login);
         signin = findViewById(R.id.signin);
         signin.setOnClickListener(this);
@@ -46,6 +59,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         signup.setOnClickListener(this);
         phone = findViewById(R.id.signin_phone);
         password = findViewById(R.id.signin_password);
+
+
+
 
     }
 
@@ -57,13 +73,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 phone_str = phone.getText().toString();
                 pwd_str = phone.getText().toString();
                 Intent profile = new Intent(this, MainActivity.class);
-                String token = Login(phone_str, pwd_str);
-                profile.putExtra("phone_num", phone_str);
-                profile.putExtra("token", token);
-                startActivity(profile,
-                        ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
 
-                Toast.makeText(this,"Sign in Fail",Toast.LENGTH_LONG).show();
+
+                Callable<String> login = new Callable<String>() {
+                    @Override
+                    public String call() throws Exception {
+                        String token = Login(phone_str, pwd_str);
+                        profile.putExtra("token", token);
+
+                        return "success";
+                    }
+                };
+
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                Future<String> future = executorService.submit(login);
+
+                try {
+                    //设置超时时间
+                    future.get(5, TimeUnit.SECONDS);
+                    Toast.makeText(this,"Sign in Success",Toast.LENGTH_LONG).show();
+                    startActivity(profile,
+                            ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+                } catch (TimeoutException e) {
+                    Toast.makeText(this,"Sign in Fail",Toast.LENGTH_LONG).show();
+                } catch(Exception e){
+                    Toast.makeText(this,"Sign in Fail",Toast.LENGTH_LONG).show();
+                }finally {
+                    executorService.shutdown();
+                }
 
                 break;
             case R.id.goToSignup:
@@ -96,4 +133,34 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void signIn() {}
 
+
+    public void writeFile(String token){
+        new MyFile().writeData(token);
+    }
+
+    public String readFile(){
+        File file = new File("/sdcard/task/token.txt");
+        String token = new MyFile().getFileContent(file);
+        return token;
+    }
+
+    public void Vertify(){
+        myToken = readFile();
+        if(myToken.length() != 0 || !"".equals(myToken)){
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                    .usePlaintext().build();
+            LoginGrpc.LoginBlockingStub blockingStub = LoginGrpc.newBlockingStub(channel); //通道
+
+            //把myToken 放进token,
+            LoginOuterClass.Token token = LoginOuterClass.Token.newBuilder().setToken(myToken).build();
+
+            //返回验证结果
+            LoginOuterClass.Result result =  blockingStub.checkToken(token);
+
+            if(result.getSuccess()){
+                Intent profile = new Intent(this, MainActivity.class);
+                startActivity(profile);
+            }
+        }
+    }
 }
