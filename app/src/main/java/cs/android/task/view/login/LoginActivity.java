@@ -7,13 +7,19 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import cs.android.task.R;
 import cs.android.task.view.main.MainActivity;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import task.LoginGrpc;
+import task.LoginOuterClass;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
   private EditText username;
@@ -22,6 +28,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
   private TextView signup;
   private String uname;
   private String pwd;
+
+  private static String host = "10.242.2.42";
+  private static int port = 50050;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +73,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
    * @return token - string
    */
   public String Login(String phoneNum, String passwd) {
-      return null;
+    ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+            .usePlaintext().build();
+    LoginGrpc.LoginBlockingStub blockingStub = LoginGrpc.newBlockingStub(channel);
+    LoginOuterClass.LoginInfo loginInfo = LoginOuterClass.LoginInfo.newBuilder()
+            .setPhoneNum(phoneNum)
+            .setPassword(passwd)
+            .build();
+    LoginOuterClass.Token token = blockingStub.login(loginInfo);
+    Log.d("login", token.getToken());
+    if (!token.getToken().isEmpty()) {
+      Toast.makeText(getBaseContext(), "fail to login", Toast.LENGTH_SHORT).show();
+    }
+    channel.shutdown();
+    return token.getToken();
   }
 
   public void signIn() {}
