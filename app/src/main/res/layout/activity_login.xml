@@ -74,14 +74,14 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="PHONE"
+                android:hint="USERNAME"
                 app:boxBackgroundColor="#ffffff"
                 app:endIconMode="clear_text"
 
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signin_phone"
+                    android:id="@+id/username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/work_sans" />
@@ -100,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/work_sans"
                     android:inputType="textPassword"
-                    android:id="@+id/signin_password"/>
+                    android:id="@+id/password"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -132,7 +132,7 @@
                     android:layout_height="20dp"
                     android:text="Sign Up"
                     android:textColor="#2196F3"
-                    android:id="@+id/goToSignup"/>
+                    android:id="@+id/signup"/>
             </LinearLayout>
         </LinearLayout>
 
