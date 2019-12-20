@@ -1,17 +1,15 @@
 package cs.android.task.fragment.friend;
 
-import android.content.Context;
-import android.graphics.Bitmap;
+
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +22,7 @@ import java.util.List;
 
 import cs.android.task.R;
 import cs.android.task.entity.Friend;
-import cs.android.task.entity.Schedule;
+
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
@@ -35,8 +33,11 @@ public class FriendFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-    RecyclerView recyclerView;
+
+    private RecyclerView recyclerView;
     private List<Friend> FriendList = new ArrayList<>();
+
+
 
     public FriendFragment(){
 
@@ -102,6 +103,17 @@ public class FriendFragment extends Fragment {
     collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#ffffff"));
     collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#ffffff"));
     collapsingToolbarLayout.setContentScrimColor(Color.parseColor("#e16b6b"));
+
+
+   view.findViewById(R.id.add_Friend_Button).setOnClickListener(v->{
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        transaction.add(R.id.fragment_layout, AddFriendFragment.newInstance());
+        transaction.addToBackStack(null);
+        transaction.commit();
+    });
+
 
     return view;
   }

@@ -11,15 +11,19 @@
 
     <com.github.vipulasri.timelineview.TimelineView
             android:id="@+id/timeline"
-            android:layout_width="31dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:endLineColor="#42A5F5"
-            app:lineOrientation="vertical"
-            app:lineStyle="normal"
-            app:lineWidth="3dp"
             app:marker="@drawable/timeline_item_active"
             app:markerSize="20dp"
-            app:startLineColor="#42A5F5" />
+            app:lineWidth="3dp"
+            app:startLineColor="#42A5F5"
+            app:endLineColor="#42A5F5"
+            app:lineOrientation="vertical"
+            app:lineStyle="normal"/>
+
+
+
+
 
     <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"

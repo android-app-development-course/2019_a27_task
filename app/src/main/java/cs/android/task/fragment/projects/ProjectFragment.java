@@ -1,5 +1,8 @@
 package cs.android.task.fragment.projects;
 
+
+import android.animation.Animator;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +14,25 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.lang.reflect.Array;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import cs.android.task.R;
 import cs.android.task.entity.Project;
+
+
 import cs.android.task.fragment.projects.creationDialog.CreateDialog;
+
 import cs.android.task.fragment.projects.details.DetailsFragment;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
+<<<<<<< HEAD
+ * {@link ProjectFragment.OnFragmentInteractionListener} interface to handle interaction events. Use
+=======
+>>>>>>> rpc
  * the {@link ProjectFragment#newInstance} factory method to create an instance of this fragment.
  */
 public class ProjectFragment extends Fragment {
@@ -33,7 +43,7 @@ public class ProjectFragment extends Fragment {
   private List<Project> projectList;
   private RecyclerView recyclerView;
   private ProjectAdapter adapter;
-
+  private View view;
   public ProjectFragment() {
     // Required empty public constructor
   }
@@ -60,7 +70,7 @@ public class ProjectFragment extends Fragment {
   @Override
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_project, container, false);
+    view = inflater.inflate(R.layout.fragment_project, container, false);
     projectList = new ArrayList<>();
     recyclerView = view.findViewById(R.id.projects_list);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -86,19 +96,28 @@ public class ProjectFragment extends Fragment {
               transaction.addToBackStack(null);
               transaction.commit();
             });
+
+  }
+
+  private void initProjectList() {
+    Project project_1 = new Project();
+    project_1.setCreateDate(new Date());
+    project_1.setLeaderName("Leader Name");
+    project_1.setName("Project one");
+
+    Project project_2 = new Project();
+    project_2.setCreateDate(new Date());
+    project_2.setLeaderName("Leader Name");
+    project_2.setName("Project two");
+
+    projectList.add(project_1);
+    projectList.add(project_2);
+
     view.findViewById(R.id.add)
             .setOnClickListener(this::setAdd);
   }
 
-  private void initProjectList() {
-    for (int i = 0; i < 10; i++) {
-      Project project = new Project();
-      project.setCreateDate(new Date());
-      project.setLeaderName("Leader Name");
-      project.setName("Project " + i);
-      projectList.add(project);
-    }
-  }
+
 
   public void setAdd(View view) {
     Bundle bundle = new Bundle();
@@ -120,5 +139,6 @@ public class ProjectFragment extends Fragment {
     transaction.add(R.id.fragment_layout, dialog);
     transaction.addToBackStack(null);
     transaction.commit();
+
   }
 }

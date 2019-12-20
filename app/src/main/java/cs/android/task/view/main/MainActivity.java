@@ -1,11 +1,17 @@
 package cs.android.task.view.main;
 
+
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import android.animation.TimeInterpolator;
 import android.os.Bundle;
 import android.transition.Explode;
 import android.transition.Fade;
 import android.view.MenuItem;
 import android.view.Window;
+
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +21,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import cs.android.task.R;
+
+
+
 import cs.android.task.fragment.more.MoreFragment;
+
 import cs.android.task.fragment.friend.FriendFragment;
 import cs.android.task.fragment.profile.ProfileFragment;
 import cs.android.task.fragment.projects.ProjectFragment;
@@ -27,9 +37,12 @@ public class MainActivity extends AppCompatActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
+
+
     // 开启动画
     getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
     getWindow().setEnterTransition((new Fade()).setDuration(300));
+
 
     setContentView(R.layout.activity_main);
     loadFragment(new ProjectFragment());
@@ -49,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
               case R.id.project:
                 loadFragment(ProjectFragment.newInstance());
                 return true;
-              case R.id.more:
-                loadFragment(new MoreFragment());
-                return true;
+
 
               case R.id.friend:
                 loadFragment(FriendFragment.newInstance());
