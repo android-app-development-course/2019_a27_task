@@ -18,6 +18,7 @@
             android:id="@+id/view"
             android:layout_width="wrap_content"
             android:layout_height="250dp"
+
             android:background="@mipmap/view"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -131,7 +132,6 @@
                     tools:layout_editor_absoluteY="480dp" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"

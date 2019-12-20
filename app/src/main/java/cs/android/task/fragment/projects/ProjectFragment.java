@@ -1,6 +1,8 @@
 package cs.android.task.fragment.projects;
 
+
 import android.animation.Animator;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +14,25 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import cs.android.task.R;
 import cs.android.task.entity.Project;
+
+
+import cs.android.task.fragment.projects.creationDialog.CreateDialog;
+
 import cs.android.task.fragment.projects.details.DetailsFragment;
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
+<<<<<<< HEAD
  * {@link ProjectFragment.OnFragmentInteractionListener} interface to handle interaction events. Use
+=======
+>>>>>>> rpc
  * the {@link ProjectFragment#newInstance} factory method to create an instance of this fragment.
  */
 public class ProjectFragment extends Fragment {
@@ -33,7 +43,7 @@ public class ProjectFragment extends Fragment {
   private List<Project> projectList;
   private RecyclerView recyclerView;
   private ProjectAdapter adapter;
-
+  private View view;
   public ProjectFragment() {
     // Required empty public constructor
   }
@@ -60,7 +70,7 @@ public class ProjectFragment extends Fragment {
   @Override
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-    View view = inflater.inflate(R.layout.fragment_project, container, false);
+    view = inflater.inflate(R.layout.fragment_project, container, false);
     projectList = new ArrayList<>();
     recyclerView = view.findViewById(R.id.projects_list);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -86,6 +96,7 @@ public class ProjectFragment extends Fragment {
               transaction.addToBackStack(null);
               transaction.commit();
             });
+
   }
 
   private void initProjectList() {
@@ -101,5 +112,33 @@ public class ProjectFragment extends Fragment {
 
     projectList.add(project_1);
     projectList.add(project_2);
+
+    view.findViewById(R.id.add)
+            .setOnClickListener(this::setAdd);
+  }
+
+
+
+  public void setAdd(View view) {
+    Bundle bundle = new Bundle();
+    ArrayList<String> names = new ArrayList<>();
+    for (int i = 0; i < 10; i++) {
+      names.add("member " + i);
+    }
+    ArrayList<String> phoneNum = new ArrayList<>();
+    for (int i = 0; i < 10; i++) {
+      phoneNum.add(i + "");
+    }
+    bundle.putStringArrayList("names", names);
+    bundle.putStringArrayList("phone_nums", phoneNum);
+
+    CreateDialog dialog = CreateDialog.newInstance(bundle);
+    FragmentManager fm = getFragmentManager();
+    FragmentTransaction transaction = fm.beginTransaction();
+    transaction.setCustomAnimations(R.anim.grow_in, R.anim.grow_out);
+    transaction.add(R.id.fragment_layout, dialog);
+    transaction.addToBackStack(null);
+    transaction.commit();
+
   }
 }

@@ -102,6 +102,7 @@
                     android:inputType="textPassword"
                     android:id="@+id/signin_password"/>
 
+
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
@@ -133,6 +134,7 @@
                     android:text="Sign Up"
                     android:textColor="#2196F3"
                     android:id="@+id/goToSignup"/>
+
             </LinearLayout>
         </LinearLayout>
 

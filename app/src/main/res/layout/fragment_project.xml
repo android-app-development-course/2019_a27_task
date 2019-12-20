@@ -133,20 +133,43 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!--其他卡片可以在这里添加-->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/projects_list"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cardView">
 
-        </androidx.recyclerview.widget.RecyclerView>
+
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="?attr/actionBarSize"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/cardView">
+
+            <!--其他卡片可以在这里添加-->
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/projects_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/add"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginEnd="16dp"
+                    app:srcCompat="@drawable/add"
+                    app:backgroundTint="#42A5F5"
+                    app:fabSize="normal"
+                    app:layout_anchor="@id/projects_list"
+                    app:layout_anchorGravity="end|right|bottom"
+                    app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"
+                    />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

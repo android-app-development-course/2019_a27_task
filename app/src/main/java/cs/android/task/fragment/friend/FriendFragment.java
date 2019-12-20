@@ -1,5 +1,6 @@
 package cs.android.task.fragment.friend;
 
+
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -21,7 +22,7 @@ import java.util.List;
 
 import cs.android.task.R;
 import cs.android.task.entity.Friend;
-import cs.android.task.fragment.projects.details.DetailsFragment;
+
 
 /**
  * A simple {@link Fragment} subclass. Activities that contain this fragment must implement the
@@ -32,8 +33,12 @@ public class FriendFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
+
     private RecyclerView recyclerView;
     private List<Friend> FriendList = new ArrayList<>();
+
+
+
     public FriendFragment(){
 
     }
@@ -99,6 +104,7 @@ public class FriendFragment extends Fragment {
     collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#ffffff"));
     collapsingToolbarLayout.setContentScrimColor(Color.parseColor("#e16b6b"));
 
+
    view.findViewById(R.id.add_Friend_Button).setOnClickListener(v->{
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -107,6 +113,7 @@ public class FriendFragment extends Fragment {
         transaction.addToBackStack(null);
         transaction.commit();
     });
+
 
     return view;
   }

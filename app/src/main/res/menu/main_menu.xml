@@ -5,6 +5,8 @@
         android:icon="@mipmap/project"
         android:title="@string/project"/>
 
+
+
     <item
         android:id="@+id/friend"
         android:icon="@mipmap/friends"
@@ -14,7 +16,9 @@
         android:icon="@mipmap/schedule"
         android:title="@string/schedule"/>
     <item
+
         android:id="@+id/my"
         android:icon="@mipmap/my"
         android:title="@string/my"/>
+
 </menu>
