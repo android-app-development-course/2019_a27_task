@@ -53,6 +53,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
       case R.id.signin:
         Intent profile = new Intent(this, MainActivity.class);
         String token = Login(username.getText().toString(), password.getText().toString());
+
         profile.putExtra("phone_num", username.getText());
         profile.putExtra("token", token);
         startActivity(profile,
