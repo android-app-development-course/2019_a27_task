@@ -40,13 +40,4 @@
         <item name="bs_listStyle">@style/BottomSheet.List</item>
     </style>
 
-    <style name="MyCustomTheme" parent="@android:style/Theme.Panel">
-        <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>
-    </style>
-
-    <style name="MyAnimation.Window" parent="@android:style/Animation.Activity">
-        <item name="android:windowEnterAnimation">@anim/grow_in</item>
-        <item name="android:windowExitAnimation">@anim/grow_out</item>
-    </style>
-
 </resources>
