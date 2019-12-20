@@ -8,16 +8,16 @@
     android:orientation="vertical">
 
     <View
-            android:id="@+id/view"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="550dp"
-            android:background="#2196f3"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.26" />
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="550dp"
+        android:background="#2196f3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.26" />
 
     <ImageView
         android:id="@+id/imageView3"
@@ -42,7 +42,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="150dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="250dp"
+        android:layout_marginBottom="100dp"
         android:minHeight="200dp"
         app:cardBackgroundColor="#ffffff"
         app:cardCornerRadius="10dp"
@@ -66,7 +66,7 @@
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/work_sans_bold"
                 android:gravity="center"
-                android:text="SIGN IN"
+                android:text="SIGN UP"
                 android:textColor="#2196f3"
                 android:textSize="25sp" />
 
@@ -81,7 +81,7 @@
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/signin_phone"
+                    android:id="@+id/signupPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/work_sans" />
@@ -100,18 +100,54 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/work_sans"
                     android:inputType="textPassword"
-                    android:id="@+id/signin_password"/>
+                    android:id="@+id/signupPassword"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="AGAINPASSWORD"
+                app:boxBackgroundColor="#ffffff"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/work_sans"
+                    android:inputType="textPassword"
+                    android:id="@+id/signupAgainPassword"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="EMAIL"
+                app:boxBackgroundColor="#ffffff"
+                app:endIconMode="clear_text">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/work_sans"
+                    android:inputType="textEmailAddress"
+                    android:id="@+id/signupEmail"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/signin"
+                android:id="@+id/signupButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:backgroundTint="#E91E63"
                 android:gravity="center"
-                android:text="SIGN IN"
+                android:text="SIGN UP"
                 app:cornerRadius="20sp" />
 
             <LinearLayout
@@ -122,17 +158,6 @@
                 android:orientation="horizontal">
 
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:text="New user? " />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:text="Sign Up"
-                    android:textColor="#2196F3"
-                    android:id="@+id/goToSignup"/>
             </LinearLayout>
         </LinearLayout>
 
