@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -50,17 +51,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         Vertify();
-
-        setContentView(R.layout.activity_login);
-        signin = findViewById(R.id.signin);
-        signin.setOnClickListener(this);
-        signup = findViewById(R.id.goToSignup);
-        signup.setOnClickListener(this);
-        phone = findViewById(R.id.signin_phone);
-        password = findViewById(R.id.signin_password);
-
-
+        new Handler().postDelayed((Runnable) () -> {
+            setContentView(R.layout.activity_login);
+            signin = findViewById(R.id.signin);
+            signin.setOnClickListener(this);
+            signup = findViewById(R.id.goToSignup);
+            signup.setOnClickListener(this);
+            phone = findViewById(R.id.signin_phone);
+            password = findViewById(R.id.signin_password);
+        },100);
 
 
     }
@@ -75,14 +76,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Intent profile = new Intent(this, MainActivity.class);
 
 
-                Callable<String> login = new Callable<String>() {
-                    @Override
-                    public String call() throws Exception {
-                        String token = Login(phone_str, pwd_str);
-                        profile.putExtra("token", token);
-
-                        return "success";
-                    }
+                Callable<String> login = () -> {
+                    String token = Login(phone_str, pwd_str);
+                    profile.putExtra("token", token);
+                    return "success";
                 };
 
                 ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -95,9 +92,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     startActivity(profile,
                             ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                 } catch (TimeoutException e) {
-                    Toast.makeText(this,"Sign in Fail",Toast.LENGTH_LONG).show();
+                    Toast.makeText(this,"TimeoutException",Toast.LENGTH_LONG).show();
                 } catch(Exception e){
-                    Toast.makeText(this,"Sign in Fail",Toast.LENGTH_LONG).show();
+                    Log.d("bug----------------->", e + " ");
+                    Toast.makeText(this,"ServicerException",Toast.LENGTH_LONG).show();
                 }finally {
                     executorService.shutdown();
                 }
@@ -121,10 +119,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .setPassword(passwd)
                 .build();
         LoginOuterClass.Token token = blockingStub.login(loginInfo);
-        Log.d("login", token.getToken());
-        if (!token.getToken().isEmpty()) {
-            Toast.makeText(getBaseContext(), "fail to login", Toast.LENGTH_SHORT).show();
-        }
+
+
+
+        writeFile(token.getToken());
+
         channel.shutdown();
         return token.getToken();
     }
@@ -146,7 +145,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void Vertify(){
         myToken = readFile();
-        if(myToken.length() != 0 || !"".equals(myToken)){
+
+        Toast.makeText(getBaseContext(), myToken , Toast.LENGTH_SHORT).show();
+
+
+        if(myToken.length() != 0 && !" ".equals(myToken)){
             ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                     .usePlaintext().build();
             LoginGrpc.LoginBlockingStub blockingStub = LoginGrpc.newBlockingStub(channel); //通道
@@ -157,10 +160,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //返回验证结果
             LoginOuterClass.Result result =  blockingStub.checkToken(token);
 
+            Log.e("TOKEN---------------->", "Vertify: " + myToken );
+            Log.e("结果---------------->", "Vertify: " + result.getSuccess() );
+
             if(result.getSuccess()){
                 Intent profile = new Intent(this, MainActivity.class);
                 startActivity(profile);
             }
+
+            channel.shutdown();
         }
     }
 }

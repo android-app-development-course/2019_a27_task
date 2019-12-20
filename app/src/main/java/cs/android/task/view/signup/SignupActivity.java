@@ -12,6 +12,10 @@ import android.widget.Toast;
 import cs.android.task.R;
 import cs.android.task.view.login.LoginActivity;
 import cs.android.task.view.main.MainActivity;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import task.LoginGrpc;
+import task.LoginOuterClass;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
     private Button signup;
@@ -19,6 +23,8 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText pwd;
     private EditText againPwd;
     private EditText email;
+    private static String host = "10.242.2.42";
+    private static int port = 50050;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,18 +69,26 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         String emailStr = email.getText().toString();
 
 
+
         if(!(" ".equals(phoneStr)) && phoneStr.length() != 0
                 && !(" ".equals(pwdStr)) && pwdStr.length() != 0
                 && !(" ".equals(againPwdStr)) && againPwdStr.length() != 0
                 && !(" ".equals(emailStr)) && emailStr.length() != 0
                 && pwdStr.equals(againPwdStr)){
 
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                    .usePlaintext().build();
+            LoginGrpc.LoginBlockingStub blockingStub = LoginGrpc.newBlockingStub(channel);
+            LoginOuterClass.LoginInfo loginInfo = LoginOuterClass.LoginInfo.newBuilder()
+                    .setPhoneNum(phoneStr)
+                    .setPassword(pwdStr)
+                    .build();
+            LoginOuterClass.Result result = blockingStub.register(loginInfo);
+            if(result.getSuccess())
+                return true;
 
-            //注册接口 存入数据库
-
-            return true;
         }
 
-        else return false;
+         return false;
     }
 }

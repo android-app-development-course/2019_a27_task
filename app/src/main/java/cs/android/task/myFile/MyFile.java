@@ -33,7 +33,7 @@ public class MyFile {
 
         String strFilePath = filePath + fileName;
         // 每次写入时，都换行写
-        String strContent = token + "\r\n";
+
         try {
             File file = new File(strFilePath);
             if (!file.exists()) {
@@ -42,8 +42,9 @@ public class MyFile {
                 file.createNewFile();
             }
             RandomAccessFile raf = new RandomAccessFile(file, "rwd");
+            raf.setLength(0);
             raf.seek(file.length());
-            raf.write(strContent.getBytes());
+            raf.write(token.getBytes());
             raf.close();
         } catch (Exception e) {
             Log.e("TestFile", "Error on write File:" + e);
@@ -101,9 +102,10 @@ public class MyFile {
                         instream.close();//关闭输入流
                     }
                 } catch (java.io.FileNotFoundException e) {
-                    Log.d("TestFile", "The File doesn't not exist.");
+
+                    Log.d("TestFile------------------->", "The File doesn't not exist.");
                 } catch (IOException e) {
-                    Log.d("TestFile", e.getMessage());
+                    Log.d("TestFile---------------->", e.getMessage());
                 }
             }
         }
