@@ -1,8 +1,10 @@
 package cs.android.task.view.main;
 
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import android.animation.TimeInterpolator;
@@ -24,7 +26,7 @@ import cs.android.task.R;
 
 
 
-import cs.android.task.fragment.more.MoreFragment;
+
 
 import cs.android.task.fragment.friend.FriendFragment;
 import cs.android.task.fragment.profile.ProfileFragment;
@@ -33,6 +35,16 @@ import cs.android.task.fragment.schedule.ScheduleFragment;
 import cs.android.task.view.Util;
 
 public class MainActivity extends AppCompatActivity {
+  private String myToken;
+
+
+  public String getMyToken(){
+    return myToken;
+  }
+
+  public void setMyToken(String myToken){
+    this.myToken = myToken;
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +55,14 @@ public class MainActivity extends AppCompatActivity {
     getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
     getWindow().setEnterTransition((new Fade()).setDuration(300));
 
-
     setContentView(R.layout.activity_main);
+
+
+    Intent intent = getIntent();
+    Bundle bundle = intent.getExtras();
+    String token = bundle.getString("token");
+    setMyToken(token);
+
     loadFragment(new ProjectFragment());
     Util.immerseStatusBar(this);
     setupNavBar();
@@ -62,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
               case R.id.project:
                 loadFragment(ProjectFragment.newInstance());
                 return true;
-
 
               case R.id.friend:
                 loadFragment(FriendFragment.newInstance());

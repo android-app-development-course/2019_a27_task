@@ -97,7 +97,7 @@ public class MyFile {
                         String line = "";
                         //分行读取
                         while ((line = buffreader.readLine()) != null) {
-                            content += line + "\n";
+                            content += line  ;
                         }
                         instream.close();//关闭输入流
                     }

@@ -42,9 +42,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView signup;
     private String phone_str;
     private String pwd_str;
-    private static String host = "10.242.2.42";
+    private static String host = "10.242.93.99";
     private static int port = 50050;
     private String myToken;
+
 
 
     @Override
@@ -78,7 +79,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 Callable<String> login = () -> {
                     String token = Login(phone_str, pwd_str);
-                    profile.putExtra("token", token);
+                    Bundle bundle = new Bundle();
+                    bundle.putCharSequence("token", token);
+                    profile.putExtras(bundle);
+
+                    Log.e("ee------->", token );
                     return "success";
                 };
 
@@ -88,13 +93,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     //设置超时时间
                     future.get(5, TimeUnit.SECONDS);
+
                     Toast.makeText(this,"Sign in Success",Toast.LENGTH_LONG).show();
-                    startActivity(profile,
-                            ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+                    startActivity(profile);
                 } catch (TimeoutException e) {
                     Toast.makeText(this,"TimeoutException",Toast.LENGTH_LONG).show();
                 } catch(Exception e){
-                    Log.d("bug----------------->", e + " ");
+                    //Log.d("bug----------------->", e + " ");
                     Toast.makeText(this,"ServicerException",Toast.LENGTH_LONG).show();
                 }finally {
                     executorService.shutdown();
@@ -121,7 +126,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         LoginOuterClass.Token token = blockingStub.login(loginInfo);
 
 
-
+        Log.e("token-----", "Login: " + token.getToken() );
         writeFile(token.getToken());
 
         channel.shutdown();
@@ -160,11 +165,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             //返回验证结果
             LoginOuterClass.Result result =  blockingStub.checkToken(token);
 
+
             Log.e("TOKEN---------------->", "Vertify: " + myToken );
+            Log.e("TOKEN---------------->", "Vertify: " + myToken.length());
             Log.e("结果---------------->", "Vertify: " + result.getSuccess() );
 
             if(result.getSuccess()){
                 Intent profile = new Intent(this, MainActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putCharSequence("token", myToken);
+                profile.putExtras(bundle);
                 startActivity(profile);
             }
 
