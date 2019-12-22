@@ -74,36 +74,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.signin:
                 phone_str = phone.getText().toString();
                 pwd_str = phone.getText().toString();
-                Intent profile = new Intent(this, MainActivity.class);
+
+                if(phone_str.length() != 0 && !" ".equals(phone_str) && phone_str.length() != 0 && !" ".equals(phone_str)){
+                    Callable<String> login = () -> Login(phone_str, pwd_str);
+
+                    ExecutorService executorService = Executors.newSingleThreadExecutor();
+                    Future<String> future = executorService.submit(login);
+
+                    try {
+                        //设置超时时间
+                        myToken = future.get(5, TimeUnit.SECONDS);
+                        if(!" ".equals(myToken) && myToken.length() != 0){
+                            Intent profile = new Intent(this, MainActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putCharSequence("token", myToken);
+                            profile.putExtras(bundle);
+                            Toast.makeText(this,"Sign in Success",Toast.LENGTH_LONG).show();
+                            startActivity(profile);
+                        }
+                        else{
+                            Toast.makeText(this,"Password Error",Toast.LENGTH_LONG).show();
+                        }
+                    } catch (TimeoutException e) {
+                        Toast.makeText(this,"TimeoutException",Toast.LENGTH_LONG).show();
+                    } catch(Exception e){
+                        //Log.d("bug----------------->", e + " ");
+                        Toast.makeText(this,"ServicerException",Toast.LENGTH_LONG).show();
+                    }finally {
+                        executorService.shutdown();
 
 
-                Callable<String> login = () -> {
-                    String token = Login(phone_str, pwd_str);
-                    Bundle bundle = new Bundle();
-                    bundle.putCharSequence("token", token);
-                    profile.putExtras(bundle);
-
-                    Log.e("ee------->", token );
-                    return "success";
-                };
-
-                ExecutorService executorService = Executors.newSingleThreadExecutor();
-                Future<String> future = executorService.submit(login);
-
-                try {
-                    //设置超时时间
-                    future.get(5, TimeUnit.SECONDS);
-
-                    Toast.makeText(this,"Sign in Success",Toast.LENGTH_LONG).show();
-                    startActivity(profile);
-                } catch (TimeoutException e) {
-                    Toast.makeText(this,"TimeoutException",Toast.LENGTH_LONG).show();
-                } catch(Exception e){
-                    //Log.d("bug----------------->", e + " ");
-                    Toast.makeText(this,"ServicerException",Toast.LENGTH_LONG).show();
-                }finally {
-                    executorService.shutdown();
+                    }
                 }
+                else{
+                    Toast.makeText(this,"Input entire messages",Toast.LENGTH_LONG).show();
+                }
+
+
 
                 break;
             case R.id.goToSignup:

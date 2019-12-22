@@ -32,6 +32,11 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private EditText pwd;
     private EditText againPwd;
     private EditText email;
+    private String phoneStr;
+    private String pwdStr;
+    private String againPwdStr;
+    private String emailStr;
+
     private static String host = "10.242.93.99";
     private static int port = 50050;
 
@@ -55,33 +60,45 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.signupButton:
+                phoneStr = phone.getText().toString();
+                pwdStr = pwd.getText().toString();
+                againPwdStr = againPwd.getText().toString();
+                emailStr = email.getText().toString();
 
+                if(!(" ".equals(phoneStr)) && phoneStr.length() != 0
+                        && !(" ".equals(pwdStr)) && pwdStr.length() != 0
+                        && !(" ".equals(againPwdStr)) && againPwdStr.length() != 0
+                        && !(" ".equals(emailStr)) && emailStr.length() != 0
+                        && pwdStr.equals(againPwdStr)) {
 
-                Callable<Boolean> signup = this::SignUp;
+                    Callable<Boolean> signup = this::SignUp;
 
-                ExecutorService executorService = Executors.newSingleThreadExecutor();
-                Future<Boolean> future = executorService.submit(signup);
+                    ExecutorService executorService = Executors.newSingleThreadExecutor();
+                    Future<Boolean> future = executorService.submit(signup);
 
-                boolean result_regist = false;
-                try {
-                    //设置超时时间
-                    result_regist = future.get(5, TimeUnit.SECONDS);
+                    boolean result_regist = false;
+                    try {
+                        //设置超时时间
+                        result_regist = future.get(5, TimeUnit.SECONDS);
 
-                } catch (TimeoutException e) {
-                    Toast.makeText(this,"TimeoutException",Toast.LENGTH_LONG).show();
-                } catch(Exception e){
-                    Log.d("bug----------------->", e + " ");
-                    Toast.makeText(this,"ServicerException",Toast.LENGTH_LONG).show();
-                }finally {
-                    executorService.shutdown();
-                    if(result_regist == true){
-                        Toast.makeText(this,"Sign up Success",Toast.LENGTH_LONG).show();
-                        Intent profile = new Intent(this, LoginActivity.class);
-                        startActivity(profile);
+                    } catch (TimeoutException e) {
+                        Toast.makeText(this, "TimeoutException", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Log.d("bug----------------->", e + " ");
+                        Toast.makeText(this, "ServicerException", Toast.LENGTH_LONG).show();
+                    } finally {
+                        executorService.shutdown();
+                        if (result_regist == true) {
+                            Toast.makeText(this, "Sign up Success", Toast.LENGTH_LONG).show();
+                            Intent profile = new Intent(this, LoginActivity.class);
+                            startActivity(profile);
+                        } else {
+                            Toast.makeText(this, "This phone has already been registered", Toast.LENGTH_LONG).show();
+                        }
                     }
-                    else{
-                        Toast.makeText(this,"This phone has already been registered",Toast.LENGTH_LONG).show();
-                    }
+                }
+                else{
+                    Toast.makeText(this,"Input entire messages",Toast.LENGTH_LONG).show();
                 }
 
                 break;
@@ -90,32 +107,25 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     public boolean SignUp(){
-        String phoneStr = phone.getText().toString();
-        String pwdStr = pwd.getText().toString();
-        String againPwdStr = againPwd.getText().toString();
-        String emailStr = email.getText().toString();
 
-        if(!(" ".equals(phoneStr)) && phoneStr.length() != 0
-                && !(" ".equals(pwdStr)) && pwdStr.length() != 0
-                && !(" ".equals(againPwdStr)) && againPwdStr.length() != 0
-                && !(" ".equals(emailStr)) && emailStr.length() != 0
-                && pwdStr.equals(againPwdStr)) {
-
-            ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
-                    .usePlaintext().build();
-            LoginGrpc.LoginBlockingStub blockingStub = LoginGrpc.newBlockingStub(channel);
-            LoginOuterClass.LoginInfo loginInfo = LoginOuterClass.LoginInfo.newBuilder()
-                    .setPhoneNum(phoneStr)
-                    .setPassword(pwdStr)
-                    .build();
-            LoginOuterClass.Result result = blockingStub.register(loginInfo);
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                .usePlaintext().build();
+        LoginGrpc.LoginBlockingStub blockingStub = LoginGrpc.newBlockingStub(channel);
+        LoginOuterClass.LoginInfo loginInfo = LoginOuterClass.LoginInfo.newBuilder()
+                .setPhoneNum(phoneStr)
+                .setPassword(pwdStr)
+                .build();
+        LoginOuterClass.Result result = blockingStub.register(loginInfo);
 
 
 
-            channel.shutdown();
-            return result.getSuccess();
-        }
-        return false;
+        channel.shutdown();
+        return result.getSuccess();
+
+
+
+
+
     }
 
 }

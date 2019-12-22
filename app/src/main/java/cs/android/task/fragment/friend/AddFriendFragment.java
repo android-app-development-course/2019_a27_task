@@ -9,6 +9,7 @@ import android.os.Bundle;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cs.android.task.R;
+import cs.android.task.entity.Friend;
+import cs.android.task.view.main.MainActivity;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -94,6 +97,12 @@ public class AddFriendFragment extends Fragment {
         if (null != view) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
+
+        FriendFragment friendFragment = ((MainActivity)getActivity()).getFriendFragment();
+        List<Friend> list = friendFragment.getFriendList();
+        Log.e("list--------->", "addFriend: "+ list.size() );
+        friendFragment.addFriendToList(new Friend("Tony","Tony Ma, yap"));
+        friendFragment.onResume();
 
         Toast.makeText(getContext(),"Add Friend Success",Toast.LENGTH_LONG).show();
         this.getFragmentManager().popBackStack();

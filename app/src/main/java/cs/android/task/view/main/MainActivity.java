@@ -25,9 +25,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import cs.android.task.R;
 
 
-
-
-
+import cs.android.task.entity.Friend;
 import cs.android.task.fragment.friend.FriendFragment;
 import cs.android.task.fragment.profile.ProfileFragment;
 import cs.android.task.fragment.projects.ProjectFragment;
@@ -36,12 +34,16 @@ import cs.android.task.view.Util;
 
 public class MainActivity extends AppCompatActivity {
   private String myToken;
+  private FriendFragment friendFragment;
 
 
   public String getMyToken(){
     return myToken;
   }
 
+  public FriendFragment getFriendFragment(){
+    return friendFragment;
+  }
   public void setMyToken(String myToken){
     this.myToken = myToken;
   }
@@ -82,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
               case R.id.friend:
-                loadFragment(FriendFragment.newInstance());
+                friendFragment = FriendFragment.newInstance();
+                loadFragment(friendFragment);
                 return true;
               case R.id.my:
                 loadFragment(new ProfileFragment());

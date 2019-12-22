@@ -10,6 +10,7 @@ package cs.android.task.fragment.friend;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
 
     private List<Friend> mFriendList;
     private Context context;
-    private BottomSheetDialog bsd1;
+
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
@@ -49,9 +50,11 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
 
     }
 
+
     public FriendAdapter(List<Friend> friendList, Context context) {
         mFriendList = friendList;
         this.context = context;
+
     }
 
     @NonNull
@@ -76,11 +79,32 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
         holder.itemView.setOnClickListener(v -> {
             final BottomSheetDialog dialog = new BottomSheetDialog(context);
             View view = LayoutInflater.from(context).inflate(R.layout.friend_bottom_sheet_list, null);
+            view.findViewById(R.id.friend_delete).setOnClickListener(vv->{
+
+                delete(holder.getAdapterPosition());
+
+
+                dialog.hide();
+
+            });
             dialog.setContentView(view);
             dialog.show();
 
         });
 
+
+
+    }
+
+    public void delete(int postion){
+        mFriendList.remove(postion);
+        notifyItemRemoved(postion);
+
+        Toast.makeText(context,"Delete success",Toast.LENGTH_LONG).show();
+
+        /*
+        数据库也要删除
+         */
     }
 
     @Override

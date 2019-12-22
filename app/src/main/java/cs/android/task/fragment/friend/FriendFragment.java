@@ -11,9 +11,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
@@ -22,6 +24,8 @@ import java.util.List;
 
 import cs.android.task.R;
 import cs.android.task.entity.Friend;
+
+
 
 
 /**
@@ -36,8 +40,18 @@ public class FriendFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private List<Friend> FriendList = new ArrayList<>();
+    private FriendAdapter friendAdapter;
+    private View view;
+
+    public void addFriendToList(Friend friend){
+        FriendList.add(friend);
+    }
 
 
+
+    public List<Friend> getFriendList(){
+        return  FriendList;
+    }
 
     public FriendFragment(){
 
@@ -52,7 +66,7 @@ public class FriendFragment extends Fragment {
     }
 
     public void initFriends(){
-
+        Log.e("刷新？----》", "initFriends: 1"  );
         BitmapDrawable bd1 = (BitmapDrawable) getResources().getDrawable(R.mipmap.yuner);
         BitmapDrawable bd2 = (BitmapDrawable) getResources().getDrawable(R.mipmap.girl);
         BitmapDrawable bd3 = (BitmapDrawable) getResources().getDrawable(R.mipmap.limei);
@@ -84,17 +98,21 @@ public class FriendFragment extends Fragment {
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    View view = inflater.inflate(R.layout.fragment_friend, container, false);
+    view = inflater.inflate(R.layout.fragment_friend, container, false);
     //        把自定义的RecycleView变量和activity_main.xml中的id绑定
+
     recyclerView = (RecyclerView) view.findViewById(R.id.friend_list);
 
     //        设置RecycleView的布局方式，这里是线性布局，默认垂直
 
     recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+
+
     //        实例化自定义适配器
     initFriends();
-    FriendAdapter friendAdapter = new FriendAdapter(FriendList, getContext());
+    friendAdapter = new FriendAdapter(FriendList, getContext());
+
 
     //        把适配器添加到RecycleView中
     recyclerView.setAdapter(friendAdapter);
@@ -107,16 +125,40 @@ public class FriendFragment extends Fragment {
 
    view.findViewById(R.id.add_Friend_Button).setOnClickListener(v->{
         FragmentManager fm = getFragmentManager();
+
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-        transaction.add(R.id.fragment_layout, AddFriendFragment.newInstance());
+        AddFriendFragment addFriendFragment = new AddFriendFragment();
+        transaction.add(R.id.fragment_layout, addFriendFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+
     });
 
 
     return view;
   }
+
+  @Override
+  public void  onResume() {
+      Log.e("e---------.>", "onResume: " );
+      Log.e("e---------.>", "onResume: " + FriendList.size() );
+      friendAdapter.notifyDataSetChanged();
+      super.onResume();
+  }
+
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        // TODO Auto-generated method stub
+        super.onHiddenChanged(hidden);
+        if (view != null && !hidden) {
+            Log.e("e----->", "onHiddenChanged: " );
+        }
+    }
+
+
+
 
 
 }
