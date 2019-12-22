@@ -44,12 +44,16 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             /*
             删除卡片按钮
              */
+            ProjectAdapter.this.projects.remove(this.getAdapterPosition());
+            ProjectAdapter.this.notifyItemRemoved(this.getAdapterPosition());
         }
 
         private void doneBtn(View view) {
             /*
             完成按钮
              */
+            ProjectAdapter.this.projects.remove(this.getAdapterPosition());
+            ProjectAdapter.this.notifyItemRemoved(this.getAdapterPosition());
         }
 
         private void entBtn(View view) {
