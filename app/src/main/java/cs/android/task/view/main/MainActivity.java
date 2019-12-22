@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
     setContentView(R.layout.activity_main);
 
 
-    Intent intent = getIntent();
-    Bundle bundle = intent.getExtras();
-    String token = bundle.getString("token");
-    setMyToken(token);
+//    Intent intent = getIntent();
+//    Bundle bundle = intent.getExtras();
+//    String token = bundle.getString("token");
+//    setMyToken(token);
 
     loadFragment(new ProjectFragment());
     Util.immerseStatusBar(this);

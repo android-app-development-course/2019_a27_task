@@ -75,6 +75,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 phone_str = phone.getText().toString();
                 pwd_str = phone.getText().toString();
                 Intent profile = new Intent(this, MainActivity.class);
+                startActivity(profile);
 
 
                 Callable<String> login = () -> {
