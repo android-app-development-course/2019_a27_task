@@ -16,5 +16,5 @@ message Profile {
 
 service ProfileService {
     rpc SetProfile(Profile) returns (Result) {}
-    rpc GetProfile(Token) returns (Result) {}
+    rpc GetProfile(Token) returns (Profile) {}
 }

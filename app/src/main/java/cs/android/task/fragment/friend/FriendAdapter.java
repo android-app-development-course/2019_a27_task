@@ -82,8 +82,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
             view.findViewById(R.id.friend_delete).setOnClickListener(vv->{
 
                 delete(holder.getAdapterPosition());
-
-
                 dialog.hide();
 
             });

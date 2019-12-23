@@ -34,12 +34,16 @@ import cs.android.task.fragment.schedule.ScheduleFragment;
 import cs.android.task.view.Util;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import task.Login;
 import task.ProfileOuterClass;
 import task.ProfileServiceGrpc;
 
 public class MainActivity extends AppCompatActivity {
   private String myToken;
   private FriendFragment friendFragment;
+  private ScheduleFragment scheduleFragment;
+  private ProjectFragment projectFragment;
+  private ProfileOuterClass.Profile myProfile;
   private static String host;
   private int port = 50050;
 
@@ -50,8 +54,16 @@ public class MainActivity extends AppCompatActivity {
   public FriendFragment getFriendFragment(){
     return friendFragment;
   }
+  public ScheduleFragment getScheduleFragment(){
+    return scheduleFragment;
+  }
+  public ProjectFragment getProjectFragment(){  return projectFragment; }
   public void setMyToken(String myToken){
     this.myToken = myToken;
+  }
+
+  public ProfileOuterClass.Profile getMyProfile(){
+    return myProfile;
   }
 
   @Override
@@ -70,28 +82,19 @@ public class MainActivity extends AppCompatActivity {
 
     Intent intent = getIntent();
     Bundle bundle = intent.getExtras();
-    String token = bundle.getString("token");
     String phone = bundle.getString("phone");
-
-    Log.e("token----->", "onCreate: " + token );
-    Log.e("phonem----->", "onCreate: " + phone );
-    setMyToken(token);
+    setMyToken(bundle.getString("token"));
 
 
-    //添加信息
+    //获取profile
     ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
             .usePlaintext().build();
     ProfileServiceGrpc.ProfileServiceBlockingStub profileBlockingStub = ProfileServiceGrpc.newBlockingStub(channel);
-    ProfileOuterClass.Profile Info = ProfileOuterClass.Profile.newBuilder()
-            .setToken(myToken)
-            .setPhoneNum(phone)
-//            .setEmail()
-            .build();
+    myProfile = profileBlockingStub.getProfile(Login.Token.newBuilder().setToken(myToken).build());
 
-    profileBlockingStub.setProfile(Info);
+    Log.e("profile------------->", "onCreate: " + myProfile.getEmail() + myProfile.getName() + myProfile.getPhoneNum());
 
     channel.shutdown();
-
     loadFragment(new ProjectFragment());
     Util.immerseStatusBar(this);
     setupNavBar();
@@ -107,7 +110,8 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 // use newInstance(), so that you can pass args.
               case R.id.project:
-                loadFragment(ProjectFragment.newInstance());
+                projectFragment = ProjectFragment.newInstance();
+                loadFragment(projectFragment);
                 return true;
 
               case R.id.friend:
@@ -118,7 +122,8 @@ public class MainActivity extends AppCompatActivity {
                 loadFragment(new ProfileFragment());
                 return true;
               case R.id.schedule:
-                loadFragment(ScheduleFragment.newInstance());
+                scheduleFragment = ScheduleFragment.newInstance();
+                loadFragment(scheduleFragment);
                 return true;
               default:
                 return false;

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -30,6 +31,8 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import task.Login;
 import task.LoginServiceGrpc;
+import task.ProfileOuterClass;
+import task.ProfileServiceGrpc;
 
 
 /**
@@ -48,8 +51,12 @@ public class ProfileFragment extends Fragment {
 
     private static String host;
     private static int port = 50050;
+    private ProfileOuterClass.Profile myProfile;
     private View view;
     private String myToken;
+    private TextView name;
+    private TextView phone;
+    private TextView email;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -78,23 +85,32 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-
         MyApplication myApplication = new MyApplication();
         host = myApplication.getHost();
 
         myToken = ((MainActivity)getActivity()).getMyToken();
+        myProfile = ((MainActivity)getActivity()).getMyProfile();
+
+
+        name = view.findViewById(R.id.profile_name);
+        name.setText(myProfile.getName());
+
+        phone = view.findViewById(R.id.profile_phone);
+        phone.setText(myProfile.getPhoneNum());
+
+
+        email = view.findViewById(R.id.profile_email);
+        email.setText(myProfile.getEmail());
+
 
         view.findViewById(R.id.profile_logout_button).setOnClickListener(v->{
             Callable<Boolean> signup = this::LogOut;
-
             ExecutorService executorService = Executors.newSingleThreadExecutor();
             Future<Boolean> future = executorService.submit(signup);
-
             boolean result_logout = false;
             try {
                 //设置超时时间
                 result_logout = future.get(5, TimeUnit.SECONDS);
-
             } catch (TimeoutException e) {
                 Toast.makeText(getContext(),"TimeoutException",Toast.LENGTH_LONG).show();
             } catch(Exception e){
@@ -107,9 +123,7 @@ public class ProfileFragment extends Fragment {
                     Intent profile = new Intent(getContext(), LoginActivity.class);
                     startActivity(profile);
                 }
-
             }
-
         });
 
         return view;

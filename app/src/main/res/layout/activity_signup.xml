@@ -109,7 +109,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:hint="AGAINPASSWORD"
+                android:hint="NAME"
                 app:boxBackgroundColor="#ffffff"
                 app:endIconMode="clear_text">
 
@@ -117,8 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/work_sans"
-                    android:inputType="textPassword"
-                    android:id="@+id/signupAgainPassword"/>
+                    android:id="@+id/signupName"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 

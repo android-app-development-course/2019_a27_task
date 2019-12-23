@@ -34,6 +34,8 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import task.Login;
 import task.LoginServiceGrpc;
+import task.ProfileOuterClass;
+import task.ProfileServiceGrpc;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -111,7 +113,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 else{
                     Toast.makeText(this,"Input entire messages",Toast.LENGTH_LONG).show();
-                }
+               }
 
                 break;
             case R.id.goToSignup:
@@ -191,6 +193,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     bundle.putCharSequence("token", myToken);
                     bundle.putCharSequence("phone", myPhone);
                     profile.putExtras(bundle);
+
+
                     startActivity(profile);
                 }
             } catch (TimeoutException e) {

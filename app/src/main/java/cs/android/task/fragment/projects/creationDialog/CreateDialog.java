@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.pchmn.materialchips.ChipsInput;
 import com.pchmn.materialchips.model.Chip;
@@ -18,13 +19,23 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+
+import cs.android.task.MyApplication;
 import cs.android.task.R;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import task.Login;
+import task.LoginServiceGrpc;
+import task.ProjectOuterClass;
+import task.ProjectServiceGrpc;
 
 public class CreateDialog extends Fragment {
 
 private List<Chip> chipsList = new ArrayList<>();
 private ChipsInput chipsInput;
 private Bundle bundle;
+private static String host ;
+private static int port = 50050;
 
 public static CreateDialog newInstance(@NonNull Bundle bundle) {
     CreateDialog dialog = new CreateDialog();
@@ -46,6 +57,9 @@ public View onCreateView(
     View view = inflater.inflate(R.layout.project_create_dialog, container, false);
     chipsInput = (ChipsInput) view.findViewById(R.id.select_members);
 
+    MyApplication myApplication = new MyApplication();
+    host = myApplication.getHost();
+
     ArrayList<String> names = bundle.getStringArrayList("names");
     ArrayList<String> phoneNums = bundle.getStringArrayList("phone_nums");
 
@@ -55,8 +69,7 @@ public View onCreateView(
     chipsInput.setFilterableList(chipsList);
 
     ((MaterialButton)view.findViewById(R.id.ok)).setOnClickListener(v->{
-        bundle.putBoolean("ok", true);
-        this.getFragmentManager().popBackStack();
+        CreateProject();
     });
     ((MaterialButton)view.findViewById(R.id.cancel)).setOnClickListener(v->{
         bundle.putBoolean("ok",false);
@@ -66,6 +79,31 @@ public View onCreateView(
     return view;
 }
 
+
+public void CreateProject(){
+
+    ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+            .usePlaintext().build();
+    ProjectServiceGrpc.ProjectServiceBlockingStub blockingStub = ProjectServiceGrpc.newBlockingStub(channel);
+    ProjectOuterClass.Project projectInfo = ProjectOuterClass.Project.newBuilder()
+            .setName("lms")
+            .setLeaderPhoneNum("d")
+            .build();
+
+    Login.Result result = blockingStub.createProject(projectInfo);
+    
+    if(result.getSuccess()){
+        Toast.makeText(getContext(),"Create project success",Toast.LENGTH_LONG).show();
+        bundle.putBoolean("ok", true);
+        this.getFragmentManager().popBackStack();
+        channel.shutdown();
+    }
+    else{
+        Toast.makeText(getContext(),"Create project fail",Toast.LENGTH_LONG).show();
+    }
+
+
+}
 
 }
 

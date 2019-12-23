@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Gradle: com.beloo.widget:ChipsLayoutManager:0.3.7@aar">
     <ANNOTATIONS>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c23908c76f82e5745ba0ca12332d2ba6/jetified-ChipsLayoutManager-0.3.7/annotations.zip!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cef886796dae429703248f6f44d8adf1/jetified-ChipsLayoutManager-0.3.7/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c23908c76f82e5745ba0ca12332d2ba6/jetified-ChipsLayoutManager-0.3.7/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/c23908c76f82e5745ba0ca12332d2ba6/jetified-ChipsLayoutManager-0.3.7/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cef886796dae429703248f6f44d8adf1/jetified-ChipsLayoutManager-0.3.7/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cef886796dae429703248f6f44d8adf1/jetified-ChipsLayoutManager-0.3.7/res" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

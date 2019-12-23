@@ -34,15 +34,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private Button signup;
     private EditText phone;
     private EditText pwd;
-    private EditText againPwd;
+    private EditText name;
     private EditText email;
     private String phoneStr;
     private String pwdStr;
-    private String againPwdStr;
+    private String nameStr;
     private String emailStr;
 
     private static String host ;
     private static int port = 50050;
+    private ManagedChannel channel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +55,14 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         signup.setOnClickListener(this);
         phone = findViewById(R.id.signupPhone);
         pwd = findViewById(R.id.signupPassword);
-        againPwd = findViewById(R.id.signupAgainPassword);
+        name = findViewById(R.id.signupName);
         email = findViewById(R.id.signupEmail);
         pwd.setOnClickListener(this);
-        againPwd.setOnClickListener(this);
+        name.setOnClickListener(this);
         phone.setOnClickListener(this);
         email.setOnClickListener(this);
+        channel = ManagedChannelBuilder.forAddress(host, port)
+                .usePlaintext().build();
     }
 
     @Override
@@ -68,18 +71,16 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.signupButton:
                 phoneStr = phone.getText().toString();
                 pwdStr = pwd.getText().toString();
-                againPwdStr = againPwd.getText().toString();
+                nameStr = name.getText().toString();
                 emailStr = email.getText().toString();
 
                 if(!(" ".equals(phoneStr)) && phoneStr.length() != 0
                         && !(" ".equals(pwdStr)) && pwdStr.length() != 0
-                        && !(" ".equals(againPwdStr)) && againPwdStr.length() != 0
-                        && !(" ".equals(emailStr)) && emailStr.length() != 0
-                        && pwdStr.equals(againPwdStr)) {
+                        && !(" ".equals(nameStr)) && nameStr.length() != 0
+                        && !(" ".equals(emailStr)) && emailStr.length() != 0) {
 
 
                     Callable<Boolean> signup = this::SignUp;
-
                     ExecutorService executorService = Executors.newSingleThreadExecutor();
                     Future<Boolean> future = executorService.submit(signup);
 
@@ -88,12 +89,32 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         //设置超时时间
                         result_regist = future.get(5, TimeUnit.SECONDS);
 
+
+                        LoginServiceGrpc.LoginServiceBlockingStub blockingStub = LoginServiceGrpc.newBlockingStub(channel);
+                        Login.LoginInfo loginInfo = Login.LoginInfo.newBuilder()
+                                .setPhoneNum(phoneStr)
+                                .setPassword(pwdStr)
+                                .build();
+
+                        Login.Token token = blockingStub.login(loginInfo);
+
+                        ProfileServiceGrpc.ProfileServiceBlockingStub profileBlockingStub = ProfileServiceGrpc.newBlockingStub(channel);
+                        ProfileOuterClass.Profile Info = ProfileOuterClass.Profile.newBuilder()
+                                .setPhoneNum(phoneStr)
+                                .setEmail(emailStr)
+                                .setName(nameStr)
+                                .setToken(token.getToken())
+                                .build();
+
+                        profileBlockingStub.setProfile(Info);
+
                     } catch (TimeoutException e) {
                         Toast.makeText(this, "TimeoutException", Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         Log.d("bug----------------->", e + " ");
                         Toast.makeText(this, "ServicerException", Toast.LENGTH_LONG).show();
                     } finally {
+                        channel.shutdown();
                         executorService.shutdown();
                         if (result_regist == true) {
                             Toast.makeText(this, "Sign up Success", Toast.LENGTH_LONG).show();
@@ -115,10 +136,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
     public boolean SignUp(){
 
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
-                .usePlaintext().build();
-
-
         LoginServiceGrpc.LoginServiceBlockingStub blockingStub = LoginServiceGrpc.newBlockingStub(channel);
         Login.LoginInfo loginInfo = Login.LoginInfo.newBuilder()
                 .setPhoneNum(phoneStr)
@@ -127,7 +144,6 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
         Login.Result result = blockingStub.register(loginInfo);
 
 
-        channel.shutdown();
         return result.getSuccess();
 
     }
