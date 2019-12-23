@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
                 else{
                     Toast.makeText(this,"Input entire messages",Toast.LENGTH_LONG).show();
-                }
+               }
 
                 break;
             case R.id.goToSignup:

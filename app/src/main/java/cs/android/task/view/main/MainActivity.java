@@ -78,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
     setMyToken(token);
 
 
+
     //添加信息
     ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
             .usePlaintext().build();
