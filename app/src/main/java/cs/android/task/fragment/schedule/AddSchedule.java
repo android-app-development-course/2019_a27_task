@@ -8,11 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
 
+import java.util.Date;
+
 import cs.android.task.R;
+import cs.android.task.entity.Schedule;
+import cs.android.task.view.main.MainActivity;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -22,6 +27,9 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
  */
 public class AddSchedule extends Fragment {
     private View view;
+    private EditText name;
+    private EditText location;
+    private EditText detail;
 
 
     public AddSchedule() {
@@ -44,6 +52,9 @@ public class AddSchedule extends Fragment {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_schedule_add, container, false);
 
+        name = view.findViewById(R.id.add_schedule_name);
+        location = view.findViewById(R.id.add_location_name);
+        detail = view.findViewById(R.id.add_detail);
         ((MaterialButton) view.findViewById(R.id.add_ok)).setOnClickListener(v -> {
             addSchedule();
         });
@@ -57,12 +68,14 @@ public class AddSchedule extends Fragment {
 
     public void addSchedule() {
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
-
         if (null != view) {
             assert imm != null;
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-
+        ScheduleFragment scheduleFragment = ((MainActivity) getActivity()).getScheduleFragment();
+        Schedule schedule = new Schedule(name.getText().toString(), new Date(), location.getText().toString(), detail.getText().toString());
+        scheduleFragment.getScheduleList().add(schedule);
+        scheduleFragment.getAdapter().notifyItemInserted(scheduleFragment.getAdapter().getItemCount());
         Toast.makeText(getContext(), "Add Schedule Success", Toast.LENGTH_LONG).show();
         assert this.getFragmentManager() != null;
         /*

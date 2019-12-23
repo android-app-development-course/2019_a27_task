@@ -1,8 +1,6 @@
 package cs.android.task.fragment.schedule;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +20,6 @@ import java.util.List;
 
 import cs.android.task.R;
 import cs.android.task.entity.Schedule;
-import cs.android.task.fragment.friend.AddFriendFragment;
 
 /**
  * fragment
@@ -30,23 +27,23 @@ import cs.android.task.fragment.friend.AddFriendFragment;
  * @author dav1d
  */
 public class ScheduleFragment extends Fragment {
-    private List<Schedule> ScheduleList = new ArrayList<>();
+    private List<Schedule> scheduleList = new ArrayList<>();
+    private ScheduleAdapter adapter;
 
     public ScheduleFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of this fragment using the provided
-     * parameters.
-     *
-     * @return A new instance of fragment ScheduleFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+    public List<Schedule> getScheduleList(){
+        return scheduleList;
+    }
+
+    public ScheduleAdapter getAdapter(){
+        return adapter;
+    }
+
     public static ScheduleFragment newInstance() {
         ScheduleFragment fragment = new ScheduleFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -65,7 +62,7 @@ public class ScheduleFragment extends Fragment {
         StaggeredGridLayoutManager layoutManager =
                 new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        ScheduleAdapter adapter = new ScheduleAdapter(ScheduleList);
+        adapter = new ScheduleAdapter(scheduleList);
         recyclerView.setAdapter(adapter);
         CollapsingToolbarLayout collapsingToolbarLayout =
                 view.findViewById(R.id.collapsing_toolbar_layout);
@@ -97,8 +94,8 @@ public class ScheduleFragment extends Fragment {
                         new Date(2019, 11, 11),
                         "Building of CS",
                         "This is a very very important class of this term");
-        ScheduleList.add(schedule_1);
-        ScheduleList.add(schedule_2);
+        scheduleList.add(schedule_1);
+        scheduleList.add(schedule_2);
     }
 
 
