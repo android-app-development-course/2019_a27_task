@@ -85,6 +85,7 @@ public class MainActivity extends AppCompatActivity {
     ProfileOuterClass.Profile Info = ProfileOuterClass.Profile.newBuilder()
             .setToken(myToken)
             .setPhoneNum(phone)
+//            .setEmail()
             .build();
 
     profileBlockingStub.setProfile(Info);
