@@ -20,10 +20,12 @@ public class MyFile {
 
 
 
-    public void writeData(String token) {
+    public void writeData(int index, String token) {
         String filePath = "/sdcard/task/";
-        String fileName = "token.txt";
-        writeTxtToFile(token, filePath, fileName);
+        String[] fileName = {"token.txt","phone.txt"};
+
+
+        writeTxtToFile(token, filePath, fileName[index - 1]);
     }
 
     // 将字符串写入到文本文件中

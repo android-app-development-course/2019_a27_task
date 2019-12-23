@@ -18,13 +18,17 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import cs.android.task.MyApplication;
 import cs.android.task.R;
 import cs.android.task.view.login.LoginActivity;
 import cs.android.task.view.main.MainActivity;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import task.LoginGrpc;
-import task.LoginOuterClass;
+
+import task.LoginServiceGrpc;
+import task.Login;
+import task.ProfileOuterClass;
+import task.ProfileServiceGrpc;
 
 public class SignupActivity extends AppCompatActivity implements View.OnClickListener{
     private Button signup;
@@ -37,13 +41,15 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
     private String againPwdStr;
     private String emailStr;
 
-    private static String host = "10.242.93.99";
+    private static String host ;
     private static int port = 50050;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+        MyApplication myApplication = new MyApplication();
+        host = myApplication.getHost();
         signup = findViewById(R.id.signupButton);
         signup.setOnClickListener(this);
         phone = findViewById(R.id.signupPhone);
@@ -70,6 +76,7 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
                         && !(" ".equals(againPwdStr)) && againPwdStr.length() != 0
                         && !(" ".equals(emailStr)) && emailStr.length() != 0
                         && pwdStr.equals(againPwdStr)) {
+
 
                     Callable<Boolean> signup = this::SignUp;
 
@@ -110,21 +117,18 @@ public class SignupActivity extends AppCompatActivity implements View.OnClickLis
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext().build();
-        LoginGrpc.LoginBlockingStub blockingStub = LoginGrpc.newBlockingStub(channel);
-        LoginOuterClass.LoginInfo loginInfo = LoginOuterClass.LoginInfo.newBuilder()
+
+
+        LoginServiceGrpc.LoginServiceBlockingStub blockingStub = LoginServiceGrpc.newBlockingStub(channel);
+        Login.LoginInfo loginInfo = Login.LoginInfo.newBuilder()
                 .setPhoneNum(phoneStr)
                 .setPassword(pwdStr)
                 .build();
-        LoginOuterClass.Result result = blockingStub.register(loginInfo);
-
+        Login.Result result = blockingStub.register(loginInfo);
 
 
         channel.shutdown();
         return result.getSuccess();
-
-
-
-
 
     }
 

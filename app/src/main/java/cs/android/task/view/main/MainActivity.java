@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import cs.android.task.MyApplication;
 import cs.android.task.R;
 
 
@@ -31,11 +32,16 @@ import cs.android.task.fragment.profile.ProfileFragment;
 import cs.android.task.fragment.projects.ProjectFragment;
 import cs.android.task.fragment.schedule.ScheduleFragment;
 import cs.android.task.view.Util;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import task.ProfileOuterClass;
+import task.ProfileServiceGrpc;
 
 public class MainActivity extends AppCompatActivity {
   private String myToken;
   private FriendFragment friendFragment;
-
+  private static String host;
+  private int port = 50050;
 
   public String getMyToken(){
     return myToken;
@@ -58,12 +64,32 @@ public class MainActivity extends AppCompatActivity {
     getWindow().setEnterTransition((new Fade()).setDuration(300));
 
     setContentView(R.layout.activity_main);
+    MyApplication myApplication = new MyApplication();
+    host = myApplication.getHost();
 
 
     Intent intent = getIntent();
     Bundle bundle = intent.getExtras();
     String token = bundle.getString("token");
+    String phone = bundle.getString("phone");
+
+    Log.e("token----->", "onCreate: " + token );
+    Log.e("phonem----->", "onCreate: " + phone );
     setMyToken(token);
+
+
+    //添加信息
+    ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+            .usePlaintext().build();
+    ProfileServiceGrpc.ProfileServiceBlockingStub profileBlockingStub = ProfileServiceGrpc.newBlockingStub(channel);
+    ProfileOuterClass.Profile Info = ProfileOuterClass.Profile.newBuilder()
+            .setToken(myToken)
+            .setPhoneNum(phone)
+            .build();
+
+    profileBlockingStub.setProfile(Info);
+
+    channel.shutdown();
 
     loadFragment(new ProjectFragment());
     Util.immerseStatusBar(this);

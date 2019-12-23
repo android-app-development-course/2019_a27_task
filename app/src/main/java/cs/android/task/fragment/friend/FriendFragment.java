@@ -129,6 +129,7 @@ public class FriendFragment extends Fragment {
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         AddFriendFragment addFriendFragment = new AddFriendFragment();
+
         transaction.add(R.id.fragment_layout, addFriendFragment);
         transaction.addToBackStack(null);
         transaction.commit();

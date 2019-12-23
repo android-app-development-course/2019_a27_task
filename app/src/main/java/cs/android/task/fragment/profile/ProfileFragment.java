@@ -21,13 +21,16 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import cs.android.task.MyApplication;
 import cs.android.task.R;
+import cs.android.task.myFile.MyFile;
 import cs.android.task.view.login.LoginActivity;
 import cs.android.task.view.main.MainActivity;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import task.LoginGrpc;
-import task.LoginOuterClass;
+import task.Login;
+import task.LoginServiceGrpc;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +46,7 @@ public class ProfileFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
 
-    private static String host = "10.242.93.99";
+    private static String host;
     private static int port = 50050;
     private View view;
     private String myToken;
@@ -75,6 +78,9 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        MyApplication myApplication = new MyApplication();
+        host = myApplication.getHost();
 
         myToken = ((MainActivity)getActivity()).getMyToken();
 
@@ -114,12 +120,19 @@ public class ProfileFragment extends Fragment {
 
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext().build();
-        LoginGrpc.LoginBlockingStub blockingStub = LoginGrpc.newBlockingStub(channel);
-        LoginOuterClass.Token token = LoginOuterClass.Token.newBuilder().setToken(myToken).build();
-        LoginOuterClass.Result result = blockingStub.logout(token);
+        LoginServiceGrpc.LoginServiceBlockingStub blockingStub = LoginServiceGrpc.newBlockingStub(channel);
+        Login.Token token = Login.Token.newBuilder().setToken(myToken).build();
+        Login.Result result = blockingStub.logout(token);
 
+        writeFile(1,"");
+        writeFile(2,"");
         channel.shutdown();
         return result.getSuccess();
+    }
+
+
+    public void writeFile(int index, String str){
+        new MyFile().writeData(index,str);
     }
 
 }

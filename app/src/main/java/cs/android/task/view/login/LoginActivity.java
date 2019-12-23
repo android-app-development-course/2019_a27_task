@@ -24,6 +24,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import cs.android.task.MyApplication;
 import cs.android.task.R;
 import cs.android.task.myFile.MyFile;
 import cs.android.task.view.main.MainActivity;
@@ -31,8 +32,8 @@ import cs.android.task.view.main.MainActivity;
 import cs.android.task.view.signup.SignupActivity;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
-import task.LoginGrpc;
-import task.LoginOuterClass;
+import task.Login;
+import task.LoginServiceGrpc;
 
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -42,16 +43,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextView signup;
     private String phone_str;
     private String pwd_str;
-    private static String host = "10.242.93.99";
+    private static String host ;
     private static int port = 50050;
     private String myToken;
+    private String myPhone;
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        MyApplication myApplication = new MyApplication();
+        host = myApplication.getHost();
 
         Vertify();
         new Handler().postDelayed((Runnable) () -> {
@@ -73,7 +76,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.signin:
                 phone_str = phone.getText().toString();
-                pwd_str = phone.getText().toString();
+                pwd_str = password.getText().toString();
 
                 if(phone_str.length() != 0 && !" ".equals(phone_str) && phone_str.length() != 0 && !" ".equals(phone_str)){
                     Callable<String> login = () -> Login(phone_str, pwd_str);
@@ -84,10 +87,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     try {
                         //设置超时时间
                         myToken = future.get(5, TimeUnit.SECONDS);
+
                         if(!" ".equals(myToken) && myToken.length() != 0){
                             Intent profile = new Intent(this, MainActivity.class);
                             Bundle bundle = new Bundle();
                             bundle.putCharSequence("token", myToken);
+                            bundle.putCharSequence("phone", phone_str);
                             profile.putExtras(bundle);
                             Toast.makeText(this,"Sign in Success",Toast.LENGTH_LONG).show();
                             startActivity(profile);
@@ -98,19 +103,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     } catch (TimeoutException e) {
                         Toast.makeText(this,"TimeoutException",Toast.LENGTH_LONG).show();
                     } catch(Exception e){
-                        //Log.d("bug----------------->", e + " ");
-                        Toast.makeText(this,"ServicerException",Toast.LENGTH_LONG).show();
+                        Log.e("bug----------------->", e + " ");
+                        Toast.makeText(this,"This phone hasn't been registered",Toast.LENGTH_LONG).show();
                     }finally {
                         executorService.shutdown();
-
-
                     }
                 }
                 else{
                     Toast.makeText(this,"Input entire messages",Toast.LENGTH_LONG).show();
                 }
-
-
 
                 break;
             case R.id.goToSignup:
@@ -125,16 +126,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public String Login(String phoneNum, String passwd) {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext().build();
-        LoginGrpc.LoginBlockingStub blockingStub = LoginGrpc.newBlockingStub(channel);
-        LoginOuterClass.LoginInfo loginInfo = LoginOuterClass.LoginInfo.newBuilder()
+        LoginServiceGrpc.LoginServiceBlockingStub blockingStub = LoginServiceGrpc.newBlockingStub(channel);
+        Login.LoginInfo loginInfo = Login.LoginInfo.newBuilder()
                 .setPhoneNum(phoneNum)
                 .setPassword(passwd)
                 .build();
-        LoginOuterClass.Token token = blockingStub.login(loginInfo);
+        Login.Token token = blockingStub.login(loginInfo);
 
 
         Log.e("token-----", "Login: " + token.getToken() );
-        writeFile(token.getToken());
+
+        writeFile(1,token.getToken());
+        writeFile(2,phoneNum);
 
         channel.shutdown();
         return token.getToken();
@@ -142,50 +145,63 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
 
-    public void signIn() {}
 
 
-    public void writeFile(String token){
-        new MyFile().writeData(token);
+    public void writeFile(int index, String token){
+        new MyFile().writeData(index, token);
     }
 
-    public String readFile(){
-        File file = new File("/sdcard/task/token.txt");
-        String token = new MyFile().getFileContent(file);
-        return token;
+    public String readFile(int index){
+        String[] fileArray = {"token.txt", "phone.txt"};
+        String filename = "/sdcard/task/" + fileArray[index - 1];
+        File file = new File(filename);
+        String str = new MyFile().getFileContent(file);
+        return str;
     }
 
     public void Vertify(){
-        myToken = readFile();
+        myToken = readFile(1);
+        myPhone = readFile(2);
 
+        Log.e("token -------->", "Vertify: " + myToken );
+        Log.e("token -------->", "Vertify: " + myPhone );
         Toast.makeText(getBaseContext(), myToken , Toast.LENGTH_SHORT).show();
-
 
         if(myToken.length() != 0 && !" ".equals(myToken)){
             ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                     .usePlaintext().build();
-            LoginGrpc.LoginBlockingStub blockingStub = LoginGrpc.newBlockingStub(channel); //通道
+            LoginServiceGrpc.LoginServiceBlockingStub blockingStub = LoginServiceGrpc.newBlockingStub(channel); //通道
 
             //把myToken 放进token,
-            LoginOuterClass.Token token = LoginOuterClass.Token.newBuilder().setToken(myToken).build();
+            Login.Token token = Login.Token.newBuilder().setToken(myToken).build();
 
             //返回验证结果
-            LoginOuterClass.Result result =  blockingStub.checkToken(token);
+            Callable<Login.Result> check = () -> blockingStub.checkToken(token);
 
+            ExecutorService executorService = Executors.newSingleThreadExecutor();
+            Future<Login.Result> future = executorService.submit(check);
 
-            Log.e("TOKEN---------------->", "Vertify: " + myToken );
-            Log.e("TOKEN---------------->", "Vertify: " + myToken.length());
-            Log.e("结果---------------->", "Vertify: " + result.getSuccess() );
+            try {
+                //设置超时时间
+                Login.Result result = future.get(5, TimeUnit.SECONDS);
 
-            if(result.getSuccess()){
-                Intent profile = new Intent(this, MainActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putCharSequence("token", myToken);
-                profile.putExtras(bundle);
-                startActivity(profile);
+                if(result.getSuccess()){
+                    Intent profile = new Intent(this, MainActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putCharSequence("token", myToken);
+                    bundle.putCharSequence("phone", myPhone);
+                    profile.putExtras(bundle);
+                    startActivity(profile);
+                }
+            } catch (TimeoutException e) {
+                Toast.makeText(this,"TimeoutException",Toast.LENGTH_LONG).show();
+            } catch(Exception e){
+                Toast.makeText(this,"ServicerException",Toast.LENGTH_LONG).show();
+            }finally {
+                executorService.shutdown();
+                channel.shutdown();
             }
 
-            channel.shutdown();
         }
     }
 }
