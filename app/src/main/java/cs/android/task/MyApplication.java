@@ -10,7 +10,8 @@ import android.app.Application;
  */
 
 public class MyApplication extends Application {
-    private String host = "192.168.43.203";
+    private String host = "10.242.93.99";
+
 
     public String getHost(){
         return host;

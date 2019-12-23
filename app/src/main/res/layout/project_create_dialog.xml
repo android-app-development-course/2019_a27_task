@@ -41,13 +41,6 @@ xmlns:app="http://schemas.android.com/apk/res-auto">
                         android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.pchmn.materialchips.ChipsInput
-                android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/select_members"
-                    app:hint="select your team members"
-                    android:layout_margin="32dp"
-                    />
             <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

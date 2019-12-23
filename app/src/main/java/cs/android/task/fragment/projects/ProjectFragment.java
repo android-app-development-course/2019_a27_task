@@ -59,7 +59,7 @@ public class ProjectFragment extends Fragment {
         recyclerView = view.findViewById(R.id.projects_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ProjectAdapter(projectList);
+        adapter = new ProjectAdapter(projectList, this);
         recyclerView.setAdapter(adapter);
         initProjectList();
         setupEvent(view);
@@ -70,26 +70,26 @@ public class ProjectFragment extends Fragment {
 
     public void setupEvent(View view) {
         // setup ENTER btn - show details
-        view.findViewById(R.id.enter_btn)
-                .setOnClickListener(
-                        v -> {
-                            FragmentManager fm = getFragmentManager();
-                            FragmentTransaction transaction = fm.beginTransaction();
-                            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                            transaction.add(R.id.fragment_layout, DetailsFragment.newInstance());
-                            transaction.addToBackStack(null);
-                            transaction.commit();
-                        });
-        view.findViewById(R.id.done_btn).setOnClickListener(v -> {
-            /*
-            done 操作
-             */
-        });
-        view.findViewById(R.id.del_btn).setOnClickListener(v -> {
-            /*
-            del 操作
-             */
-        });
+//        view.findViewById(R.id.enter_btn)
+//                .setOnClickListener(
+//                        v -> {
+//                            FragmentManager fm = getFragmentManager();
+//                            FragmentTransaction transaction = fm.beginTransaction();
+//                            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+//                            transaction.add(R.id.fragment_layout, DetailsFragment.newInstance());
+//                            transaction.addToBackStack(null);
+//                            transaction.commit();
+//                        });
+//        view.findViewById(R.id.done_btn).setOnClickListener(v -> {
+//            /*
+//            done 操作
+//             */
+//        });
+//        view.findViewById(R.id.del_btn).setOnClickListener(v -> {
+//            /*
+//            del 操作
+//             */
+//        });
     }
 
     private void initProjectList() {
@@ -113,24 +113,22 @@ public class ProjectFragment extends Fragment {
 
     public void setAdd(View view) {
         Bundle bundle = new Bundle();
-        ArrayList<String> names = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            names.add("member " + i);
-        }
-        ArrayList<String> phoneNum = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            phoneNum.add(i + "");
-        }
-        bundle.putStringArrayList("names", names);
-        bundle.putStringArrayList("phone_nums", phoneNum);
 
         CreateDialog dialog = CreateDialog.newInstance(bundle);
         FragmentManager fm = getFragmentManager();
+        assert fm != null;
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         transaction.add(R.id.fragment_layout, dialog);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
 
+    public List<Project> getProjectList(){
+        return projectList;
+    }
+
+    public ProjectAdapter getAdapter(){
+        return adapter;
     }
 }

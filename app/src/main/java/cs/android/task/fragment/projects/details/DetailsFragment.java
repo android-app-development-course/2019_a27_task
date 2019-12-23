@@ -43,7 +43,7 @@ public View onCreateView(LayoutInflater inflater,ViewGroup container,
      */
     adapter.addFragment(LeaderDetailCard.newInstance());
     adapter.addFragment(MembersDetailCard.newInstance());
-    adapter.addFragment(FilesDetails.newInstance());
+//    adapter.addFragment(FilesDetails.newInstance());
     adapter.addFragment(TimeLineFragment.newInstance());
 
     final ZoomOutPagerTransFormer transFormer = new ZoomOutPagerTransFormer();
