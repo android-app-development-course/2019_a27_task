@@ -90,25 +90,25 @@ public class MainActivity extends AppCompatActivity {
         getWindow().setEnterTransition((new Fade()).setDuration(300));
 
         setContentView(R.layout.activity_main);
-//        MyApplication myApplication = new MyApplication();
-//        host = myApplication.getHost();
-//
-//
-//        Intent intent = getIntent();
-//        Bundle bundle = intent.getExtras();
-//        String phone = bundle.getString("phone");
-//        setMyToken(bundle.getString("token"));
-//
-//
-//        //获取profile
-//        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
-//                .usePlaintext().build();
-//        ProfileServiceGrpc.ProfileServiceBlockingStub profileBlockingStub = ProfileServiceGrpc.newBlockingStub(channel);
-//        myProfile = profileBlockingStub.getProfile(Login.Token.newBuilder().setToken(myToken).build());
-//
-//        Log.e("profile------------->", "onCreate: " + myProfile.getEmail() + myProfile.getName() + myProfile.getPhoneNum());
-//
-//        channel.shutdown();
+        MyApplication myApplication = new MyApplication();
+        host = myApplication.getHost();
+
+
+        Intent intent = getIntent();
+        Bundle bundle = intent.getExtras();
+        String phone = bundle.getString("phone");
+        setMyToken(bundle.getString("token"));
+
+
+        //获取profile
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                .usePlaintext().build();
+        ProfileServiceGrpc.ProfileServiceBlockingStub profileBlockingStub = ProfileServiceGrpc.newBlockingStub(channel);
+        myProfile = profileBlockingStub.getProfile(Login.Token.newBuilder().setToken(myToken).build());
+
+        Log.e("profile------------->", "onCreate: " + myProfile.getEmail() + myProfile.getName() + myProfile.getPhoneNum());
+
+        channel.shutdown();
 
 
         projectFragment = ProjectFragment.newInstance();
