@@ -1,6 +1,7 @@
 package cs.android.task.fragment.projects;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,17 +83,6 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             ProjectAdapter.this.notifyItemRemoved(this.getAdapterPosition());
         }
 
-        private void entBtn(View view) {
-           /*
-           进入卡片按钮
-            */
-            FragmentManager fm = ProjectAdapter.this.projectFragment.getFragmentManager();
-            FragmentTransaction transaction = fm.beginTransaction();
-            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-            transaction.add(R.id.fragment_layout, DetailsFragment.newInstance());
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
     }
 
 
@@ -138,10 +128,29 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
                 Toast.makeText(projectFragment.getContext(),"Del project fail",Toast.LENGTH_LONG).show();
             }
 
-
             ProjectAdapter.this.projects.remove(holder.getAdapterPosition());
             ProjectAdapter.this.notifyItemRemoved(holder.getAdapterPosition());
 
+        });
+
+        entBtn.setOnClickListener(v->{
+            Project project = projects.get(position);
+
+            FragmentManager fm = projectFragment.getFragmentManager();
+            FragmentTransaction transaction = fm.beginTransaction();
+            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+
+            DetailsFragment detailsFragment = new DetailsFragment();
+            Bundle args = new Bundle();
+
+            args.putString("leaderName", project.getLeaderName());
+            args.putString("leaderPhone", project.getLeaderPhone());
+            args.putString("leaderEmail", project.getLeaderEmail());
+            detailsFragment.setArguments(args);
+
+            transaction.add(R.id.fragment_layout, detailsFragment);
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
     }

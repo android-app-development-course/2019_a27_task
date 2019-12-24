@@ -25,7 +25,7 @@ message Project {
     string name = 2; 
     int64 ID = 3;     // 客户端发送Project时不需要发生ID
     string leaderPhoneNum = 4; 
-    string createDate = 5; // 客户端发送时不需要发送createDate
+    int64 createDate = 5; // 客户端发送时不需要发送createDate
 }
 
 message Member {

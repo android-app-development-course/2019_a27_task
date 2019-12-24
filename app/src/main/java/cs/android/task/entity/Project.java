@@ -11,43 +11,61 @@ public class Project {
 private String name;
 private Date createDate;
 private String leaderName;
+private String leaderPhone;
+private String leaderEmail;
 private long id;
 
 private List<Member> members = new LinkedList<>();
 
-public long getId(){
+    public void setLeaderPhone(String leaderPhone) {
+        this.leaderPhone = leaderPhone;
+    }
+
+    public void setLeaderEmail(String leaderEmail) {
+        this.leaderEmail = leaderEmail;
+    }
+
+    public String getLeaderEmail() {
+        return leaderEmail;
+    }
+
+    public String getLeaderPhone() {
+        return leaderPhone;
+    }
+
+    public long getId(){
     return id;
 }
 
-public void setId(long id){
+    public void setId(long id){
     this.id = id;
 }
 
-public String getName () {
+    public String getName () {
     return name;
 }
 
-public void setName (String name) {
+    public void setName (String name) {
     this.name = name;
 }
 
-public Date getCreateDate () {
+    public Date getCreateDate () {
     return createDate;
 }
 
-public void setCreateDate (Date createDate) {
+    public void setCreateDate (Date createDate) {
     this.createDate = createDate;
 }
 
-public String getLeaderName () {
+    public String getLeaderName () {
     return leaderName;
 }
 
-public void setLeaderName (String leaderName) {
+    public void setLeaderName (String leaderName) {
     this.leaderName = leaderName;
 }
 
-public Optional<Member> getMember(@NonNull String phoneNum) {
+    public Optional<Member> getMember(@NonNull String phoneNum) {
     return members.stream()
             .filter(m -> m.getPhoneNum().equals(phoneNum))
             .findFirst();

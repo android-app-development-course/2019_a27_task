@@ -89,6 +89,9 @@ public class CreateDialog extends Fragment {
                 newPorject.setLeaderName(myProfile.getName());
                 newPorject.setName(projectNameStr);
                 newPorject.setId(Long.valueOf(result.getErrorMsg()));
+                newPorject.setLeaderPhone(myProfile.getPhoneNum());
+                newPorject.setLeaderName(myProfile.getPhoneNum());
+                newPorject.setLeaderEmail(myProfile.getEmail());
                 projectFragment.getProjectList().add(newPorject);
                 projectFragment.getAdapter().notifyItemInserted(projectFragment.getAdapter().getItemCount());
                 Toast.makeText(getContext(), "Create project success", Toast.LENGTH_LONG).show();
@@ -125,7 +128,7 @@ public class CreateDialog extends Fragment {
                     .setName(projectNameStr)
                     .setLeaderPhoneNum(myProfile.getPhoneNum())
                     .setToken(myProfile.getToken())
-                    .setCreateDate(new Date().toString())
+                    .setCreateDate(System.currentTimeMillis())
                     .build();
 
             result = blockingStub.createProject(projectInfo);
