@@ -62,8 +62,8 @@ public class MyNoteFragment extends Fragment {
         CollapsingToolbarLayout collapsingToolbarLayout =
                 view.findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#ffffff"));
-        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#ffffff"));
-        collapsingToolbarLayout.setContentScrimColor(Color.parseColor("#e16b6b"));
+        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#000000"));
+        collapsingToolbarLayout.setContentScrimColor(Color.parseColor("#2196f3"));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         RecyclerView recyclerView = view.findViewById(R.id.note_list);
         recyclerView.setLayoutManager(layoutManager);
