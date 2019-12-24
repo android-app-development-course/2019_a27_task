@@ -3,8 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="8dp"
     android:orientation="horizontal">
 
 
@@ -23,7 +21,9 @@
         <TextView
             android:id="@+id/note_content"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginVertical="5dp"
             android:layout_gravity="center_vertical"
             android:fontFamily="@font/work_sans_medium"
             android:gravity="center_vertical"

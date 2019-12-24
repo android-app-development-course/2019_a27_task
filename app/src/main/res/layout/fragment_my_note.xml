@@ -22,7 +22,7 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="250dp"
-                    android:src="@mipmap/friend"
+                    android:src="@mipmap/notification_background"
                     android:scaleType="centerCrop"/>
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
