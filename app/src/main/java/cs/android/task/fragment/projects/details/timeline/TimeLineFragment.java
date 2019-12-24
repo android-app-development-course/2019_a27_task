@@ -6,8 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -18,28 +19,37 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import cs.android.task.MyApplication;
 import cs.android.task.R;
 import cs.android.task.entity.LogItem;
 import cs.android.task.entity.Member;
-import cs.android.task.fragment.projects.details.members.InviteMember;
+import cs.android.task.view.main.MainActivity;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
+import task.LogOuterClass;
+import task.LogServiceGrpc;
+import task.ProfileOuterClass;
+import task.ProjectOuterClass;
+import task.ProjectServiceGrpc;
 
 public class TimeLineFragment extends Fragment {
 
     private RecyclerView timelineRecycleView;
-    private List<LogItem> logItems = new ArrayList<>();
+    private List<LogItem> logList = new ArrayList<>();
     private FloatingActionButton addTask;
     private TimelineItemAdapter adapter;
+    private Iterator<LogOuterClass.Log> myLog;
+    private static String host;
+    private static int port = 50050;
+    private ProfileOuterClass.Profile myProfile;
+    private ProjectOuterClass.Project myProject;
 
     public TimeLineFragment() {
     }
 
-    public void addLog(LogItem logItem) {
-        logItems.add(logItem);
-        timelineRecycleView.getAdapter().notifyDataSetChanged();
-    }
 
     public static TimeLineFragment newInstance() {
         return new TimeLineFragment();
@@ -55,12 +65,18 @@ public class TimeLineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.timeline_card, container, false);
+        MyApplication myApplication = new MyApplication();
+        host = myApplication.getHost();
+
+        myProfile = ((MainActivity) getActivity()).getMyProfile();
+        myProject = ((MainActivity) getActivity()).getMyProject();
+
         timelineRecycleView = view.findViewById(R.id.timeline_recyclerview);
-        adapter = new TimelineItemAdapter(logItems);
+        adapter = new TimelineItemAdapter(logList);
         timelineRecycleView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         timelineRecycleView.setAdapter(adapter);
-        initTestLog(10);
+        initTestLog();
         timelineRecycleView.getAdapter().notifyDataSetChanged();
         addTask = view.findViewById(R.id.addTask);
         addTask.setOnClickListener(this::addLog);
@@ -78,26 +94,45 @@ public class TimeLineFragment extends Fragment {
 
     }
 
-    private void initTestLog(int size) {
-        Member member = new Member();
-        member.setName("LMS");
-        member.setEmail("iamlms@qq.com");
-        member.setPhoneNum("1234567890");
-        for (int i = 0; i < size; i++) {
-            LogItem logItem = new LogItem();
-            logItem.setDate(new Date());
-            logItem.setContent("this is content" + String.valueOf(i));
-            logItem.setCommiter(member);
-            logItems.add(logItem);
+    private void initTestLog() {
+
+        logList.clear();
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                .usePlaintext().build();
+        LogServiceGrpc.LogServiceBlockingStub stub = LogServiceGrpc.newBlockingStub(channel);
+
+        ProjectOuterClass.ProjectQuery projectQuery = ProjectOuterClass.ProjectQuery.newBuilder()
+                .setToken(myProfile.getToken())
+                .setID(myProject.getID())
+                .build();
+
+
+        try {
+            myLog = stub.pullLogs(projectQuery);
+        } catch (StatusRuntimeException e) {
+            Log.e("bug???", "freshNote: " + "bug");
+        } finally {
+
+            while (myLog.hasNext()) {
+                LogOuterClass.Log log = myLog.next();
+                LogItem newLog = new LogItem();
+                newLog.setContent(log.getContent());
+                newLog.setDate(new Date(log.getDate()));
+                newLog.setCommiter(log.getName());
+
+                logList.add(newLog);
+
+            }
+            channel.shutdown();
         }
     }
 
-    public TimelineItemAdapter getAdapter(){
+    public TimelineItemAdapter getAdapter() {
         return adapter;
     }
 
-    public List<LogItem> getLogItems(){
-        return logItems;
+    public List<LogItem> getLogList() {
+        return logList;
     }
 
 }

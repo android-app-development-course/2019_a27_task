@@ -3,6 +3,7 @@ syntax="proto3";
 package task;
 
 import "login.proto";
+import "profile.proto";
 option go_package="service";
 // ProjectService provides 
 //          create / delete project,
@@ -15,8 +16,9 @@ service ProjectService {
     rpc ModifyProject (Project) returns (Result);
 
     rpc GetUserProject (Token) returns (stream Project);
+    rpc GetLeaderProfile (ProjectQuery) returns (Profile);
 
-    rpc InviteMember (stream Member) returns (Result);
+    rpc InviteMember (Member) returns (Result);
     rpc GetMembers (ProjectQuery) returns (stream Member);
     rpc KickOutMember (Member) returns (Result);
     
@@ -32,8 +34,9 @@ message Project {
 
 message Member {
     string token = 1; // leader's token
-    string phoneNum = 2;
-    int64 projectID = 3;
+    string phoneNum = 2; // member's phoneNum
+    string memberName = 3;
+    int64 projectID = 4;
 }
 
 message ProjectQuery {

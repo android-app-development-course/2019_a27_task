@@ -7,13 +7,22 @@ public class LogItem {
 
     private String content;
     private Date date;
-    private Member commiter;
+    private String commiter;
+    private boolean done;
 
-    public Member getCommiter() {
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
+    }
+
+    public String getCommiter() {
         return commiter;
     }
 
-    public void setCommiter(Member commiter) {
+    public void setCommiter(String commiter) {
         this.commiter = commiter;
     }
 
