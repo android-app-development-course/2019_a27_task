@@ -77,6 +77,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.signin:
+//                Intent profile = new Intent(this, MainActivity.class);
+//                startActivity(profile);
 
                 phone_str = phone.getText().toString();
                 pwd_str = password.getText().toString();

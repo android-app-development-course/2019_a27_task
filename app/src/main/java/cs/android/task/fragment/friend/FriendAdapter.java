@@ -50,7 +50,6 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     public FriendAdapter(List<Friend> friendList, Context context) {
         mFriendList = friendList;
         this.context = context;
-
     }
 
     @NonNull

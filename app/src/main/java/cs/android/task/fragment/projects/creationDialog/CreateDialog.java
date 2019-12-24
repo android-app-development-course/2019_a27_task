@@ -79,6 +79,7 @@ public class CreateDialog extends Fragment {
 
         myProfile = ((MainActivity)getActivity()).getMyProfile();
         Log.e("e---------->", "onCreateView: " + myProfile );
+
         projectName = view.findViewById(R.id.new_project_name);
 
         ((MaterialButton) view.findViewById(R.id.ok)).setOnClickListener(v -> {

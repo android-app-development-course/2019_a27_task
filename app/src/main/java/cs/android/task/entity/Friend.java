@@ -18,17 +18,9 @@ public class Friend {
     private String introduction;
     private Bitmap image;
 
-    public Friend(String name, String introduction, Bitmap image) {
-        this.name = name;
-        this.introduction = introduction;
-        this.image = image;
-    }
 
-    public Friend(String name, String introduction){
-        this.name = name;
-        this.introduction = introduction;
-        this.image = null;
-    }
+
+
 
     public String getName() {
         return name;

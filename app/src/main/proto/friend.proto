@@ -1,0 +1,15 @@
+syntax="proto3";
+
+option go_package="service";
+
+package task;
+
+import "login.proto";
+import "profile.proto";
+
+service FriendService {
+    rpc AddFriend(Profile) returns (Result) {}
+    rpc DeleteFriend(Profile) returns (Result) {}
+    rpc GetFriends(Token) returns (stream Profile) {}
+}
+

@@ -11,8 +11,7 @@ import android.app.Application;
 
 public class MyApplication extends Application {
 
-    private static String host = "10.255.19.106";
-
+    private static String host = "192.168.43.203";
 
     public  String getHost(){
         return host;

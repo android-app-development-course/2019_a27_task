@@ -79,8 +79,8 @@ public class MyNoteFragment extends Fragment {
         CollapsingToolbarLayout collapsingToolbarLayout =
                 view.findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#ffffff"));
-        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#ffffff"));
-        collapsingToolbarLayout.setContentScrimColor(Color.parseColor("#e16b6b"));
+        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#000000"));
+        collapsingToolbarLayout.setContentScrimColor(Color.parseColor("#2196f3"));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         RecyclerView recyclerView = view.findViewById(R.id.note_list);
         recyclerView.setLayoutManager(layoutManager);
@@ -106,6 +106,7 @@ public class MyNoteFragment extends Fragment {
         }catch (StatusRuntimeException e){
             Log.e("bug???", "freshNote: "+ "bug");
         }finally {
+
             Log.e("myMess------>", "freshNote: " + myMessage );
             while(myMessage.hasNext()){
                 Message.Msg msg = myMessage.next();
@@ -114,7 +115,9 @@ public class MyNoteFragment extends Fragment {
                 note.setCommiter(msg.getCommitBy());
                 note.setDate(new Date(msg.getDate()));
                 noteList.add(note);
+
             };
+
             channel.shutdown();
         }
 

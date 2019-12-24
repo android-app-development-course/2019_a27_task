@@ -20,12 +20,23 @@ import android.widget.Toast;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
+import cs.android.task.MyApplication;
 import cs.android.task.R;
 import cs.android.task.entity.Friend;
-
-
+import cs.android.task.entity.Note;
+import cs.android.task.view.main.MainActivity;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
+import task.FriendServiceGrpc;
+import task.Login;
+import task.Message;
+import task.MessageServiceGrpc;
+import task.ProfileOuterClass;
 
 
 /**
@@ -37,15 +48,16 @@ public class FriendFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
-
     private RecyclerView recyclerView;
     private List<Friend> FriendList = new ArrayList<>();
     private FriendAdapter friendAdapter;
     private View view;
+    private Iterator<ProfileOuterClass.Profile> myFriend;
+    private static String host;
+    private static int port = 50050;
+    private ProfileOuterClass.Profile myProfile;
 
-    public void addFriendToList(Friend friend){
-        FriendList.add(friend);
-    }
+
 
 
 
@@ -65,26 +77,31 @@ public class FriendFragment extends Fragment {
         return fragment;
     }
 
-    public void initFriends(){
-        Log.e("刷新？----》", "initFriends: 1"  );
-        BitmapDrawable bd1 = (BitmapDrawable) getResources().getDrawable(R.mipmap.yuner);
-        BitmapDrawable bd2 = (BitmapDrawable) getResources().getDrawable(R.mipmap.girl);
-        BitmapDrawable bd3 = (BitmapDrawable) getResources().getDrawable(R.mipmap.limei);
-        BitmapDrawable bd4 = (BitmapDrawable) getResources().getDrawable(R.mipmap.iu);
-        BitmapDrawable bd5 = (BitmapDrawable) getResources().getDrawable(R.mipmap.xiuzhi);
-        Friend friend1 = new Friend("David", "A Sexy Boy just coindance", bd1.getBitmap());
-        Friend friend2 = new Friend("Sam", "A Good Student not kil u", bd2.getBitmap());
-        Friend friend3 = new Friend("Cbj", "A Bad Boy yep yas la beat", bd3.getBitmap());
-        Friend friend4 = new Friend("Punk", "do what i love do", bd4.getBitmap());
-        Friend friend5 = new Friend("Jack", "meet who i could meet", bd5.getBitmap());
-        FriendList.add(friend1);
-        FriendList.add(friend2);
-        FriendList.add(friend3);
-        FriendList.add(friend4);
-        FriendList.add(friend5);
+    public void initFriends() {
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                .usePlaintext().build();
+        FriendServiceGrpc.FriendServiceBlockingStub stub = FriendServiceGrpc.newBlockingStub(channel);
+
+        Login.Token token = Login.Token.newBuilder().setToken(myProfile.getToken()).build();
+
+
+        try {
+            myFriend = stub.getFriends(token);
+        } catch (StatusRuntimeException e) {
+            Log.e("bug???", "freshNote: " + "bug");
+        } finally {
+
+            while (myFriend.hasNext()) {
+                ProfileOuterClass.Profile friend = myFriend.next();
+                Friend newFriend = new Friend();
+                newFriend.setName(friend.getName());
+                //newFriend.set
+
+            }
+
+        }
+
     }
-
-
 
 
 
@@ -98,15 +115,18 @@ public class FriendFragment extends Fragment {
   public View onCreateView(
       LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     // Inflate the layout for this fragment
-    view = inflater.inflate(R.layout.fragment_friend, container, false);
+      view = inflater.inflate(R.layout.fragment_friend, container, false);
     //        把自定义的RecycleView变量和activity_main.xml中的id绑定
 
-    recyclerView = (RecyclerView) view.findViewById(R.id.friend_list);
+      MyApplication myApplication = new MyApplication();
+      host = myApplication.getHost();
 
-    //        设置RecycleView的布局方式，这里是线性布局，默认垂直
+      myProfile = ((MainActivity)getActivity()).getMyProfile();
 
-    recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
+
+      recyclerView = (RecyclerView) view.findViewById(R.id.friend_list);
+      recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 
 
     //        实例化自定义适配器

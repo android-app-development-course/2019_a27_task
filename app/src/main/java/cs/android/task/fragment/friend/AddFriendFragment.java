@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.button.MaterialButton;
@@ -24,9 +25,17 @@ import com.pchmn.materialchips.ChipsInput;
 import java.util.ArrayList;
 import java.util.List;
 
+import cs.android.task.MyApplication;
 import cs.android.task.R;
 import cs.android.task.entity.Friend;
 import cs.android.task.view.main.MainActivity;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import task.FriendServiceGrpc;
+import task.Login;
+import task.ProfileOuterClass;
+import task.ProjectOuterClass;
+import task.ProjectServiceGrpc;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -44,8 +53,12 @@ public class AddFriendFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
 
-
     private View view;
+    private static String host;
+    private static int port = 50050;
+    private ProfileOuterClass.Profile myProfile;
+    private EditText phone;
+    private String phoneStr;
 
 
     public AddFriendFragment() {
@@ -65,10 +78,39 @@ public class AddFriendFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-         view = inflater.inflate(R.layout.fragment_add_friend, container, false);
+        view = inflater.inflate(R.layout.fragment_add_friend, container, false);
+        phone = view.findViewById(R.id.add_friend_phone);
+        MyApplication myApplication = new MyApplication();
+        host = myApplication.getHost();
+
+        myProfile = ((MainActivity)getActivity()).getMyProfile();
+        Log.e("e---------->", "onCreateView: " + myProfile );
+
+
 
         ((MaterialButton)view.findViewById(R.id.add_ok)).setOnClickListener(v->{
-            addFriend();
+            phoneStr = phone.getText().toString();
+            Log.e("e------------------>", "onCreateView: " + phoneStr );
+            if(phoneStr.length() != 0 && !" ".equals(phoneStr)){
+                if(addFriend()){
+                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+
+                    if (null != view) {
+                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    }
+
+
+
+                    Toast.makeText(getContext(),"Add Friend Success",Toast.LENGTH_LONG).show();
+                    this.getFragmentManager().popBackStack();
+                }
+
+
+            }
+            else{
+                Toast.makeText(getContext(), "Input entire messages", Toast.LENGTH_LONG).show();
+            }
+
         });
         ((MaterialButton)view.findViewById(R.id.add_cancel)).setOnClickListener(v->{
             cancel();
@@ -82,24 +124,31 @@ public class AddFriendFragment extends Fragment {
     /*
     添加好友，跳转回去好友界面
      */
-    public void addFriend(){
+    public boolean addFriend(){
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                .usePlaintext().build();
+
+        FriendServiceGrpc.FriendServiceBlockingStub blockingStub = FriendServiceGrpc.newBlockingStub(channel);
+        ProfileOuterClass.Profile friend = ProfileOuterClass.Profile.newBuilder()
+                .setToken(myProfile.getToken())
+                .setPhoneNum(phoneStr)
+                .build();
+
+        Login.Result result = blockingStub.addFriend(friend);
+
+       return result.getSuccess();
+
+
+    }
+
+    public void cancel(){
+
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
 
         if (null != view) {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
-
-        FriendFragment friendFragment = ((MainActivity)getActivity()).getFriendFragment();
-        List<Friend> list = friendFragment.getFriendList();
-        Log.e("list--------->", "addFriend: "+ list.size() );
-        friendFragment.addFriendToList(new Friend("Tony","Tony Ma, yap"));
-        friendFragment.onResume();
-
-        Toast.makeText(getContext(),"Add Friend Success",Toast.LENGTH_LONG).show();
-        this.getFragmentManager().popBackStack();
-    }
-
-    public void cancel(){
         this.getFragmentManager().popBackStack();
     }
 
