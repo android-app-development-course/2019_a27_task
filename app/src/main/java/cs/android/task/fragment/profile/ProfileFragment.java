@@ -53,7 +53,6 @@ public class ProfileFragment extends Fragment {
     private static int port = 50050;
     private ProfileOuterClass.Profile myProfile;
     private View view;
-    private String myToken;
     private TextView name;
     private TextView phone;
     private TextView email;
@@ -88,7 +87,6 @@ public class ProfileFragment extends Fragment {
         MyApplication myApplication = new MyApplication();
         host = myApplication.getHost();
 
-        myToken = ((MainActivity)getActivity()).getMyToken();
         myProfile = ((MainActivity)getActivity()).getMyProfile();
 
 
@@ -135,7 +133,7 @@ public class ProfileFragment extends Fragment {
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext().build();
         LoginServiceGrpc.LoginServiceBlockingStub blockingStub = LoginServiceGrpc.newBlockingStub(channel);
-        Login.Token token = Login.Token.newBuilder().setToken(myToken).build();
+        Login.Token token = Login.Token.newBuilder().setToken(myProfile.getToken()).build();
         Login.Result result = blockingStub.logout(token);
 
         writeFile(1,"");

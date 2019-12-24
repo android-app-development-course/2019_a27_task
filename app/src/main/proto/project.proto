@@ -12,16 +12,26 @@ service ProjectService {
     rpc GetProjectInfo (ProjectQuery) returns (Project);
     rpc DeleteProject (Project) returns (Result);
     rpc ModifyProject (Project) returns (Result);
+
+
+    rpc InviteMember (stream Member) returns (Result);
+    rpc GetMembers (ProjectQuery) returns (stream Member);
+    rpc KickOutMember (Member) returns (Result);
 }
 
 message Project {
     string token = 1; // token can carry error message when error occurs.
     string name = 2; 
-    int64 ID = 3;     // 客户端发送Project时不需要发生ID
+    int64 ID = 3;
     string leaderPhoneNum = 4; 
     string createDate = 5; // 客户端发送时不需要发送createDate
 }
 
+message Member {
+    string token = 1; // leader's token
+    string phoneNum = 2;
+    int64 projectID = 3;
+}
 
 message ProjectQuery {
     string token = 1;

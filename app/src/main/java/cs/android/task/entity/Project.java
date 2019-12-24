@@ -11,7 +11,17 @@ public class Project {
 private String name;
 private Date createDate;
 private String leaderName;
+private long id;
+
 private List<Member> members = new LinkedList<>();
+
+public long getId(){
+    return id;
+}
+
+public void setId(long id){
+    this.id = id;
+}
 
 public String getName () {
     return name;
@@ -45,7 +55,9 @@ public Optional<Member> getMember(@NonNull String phoneNum) {
 
 public void addMember(Member member) {
     boolean exist = getMember(member.getPhoneNum()).isPresent();
-    if (!exist)
+    if (!exist){
         members.add(member);
+    }
+
 }
 }

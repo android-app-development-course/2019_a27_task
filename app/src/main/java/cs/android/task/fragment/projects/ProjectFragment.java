@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import cs.android.task.MyApplication;
 import cs.android.task.R;
 import cs.android.task.entity.Project;
 
@@ -26,6 +28,13 @@ import cs.android.task.entity.Project;
 import cs.android.task.fragment.projects.creationDialog.CreateDialog;
 
 import cs.android.task.fragment.projects.details.DetailsFragment;
+import cs.android.task.view.main.MainActivity;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import task.Login;
+import task.ProfileOuterClass;
+import task.ProjectOuterClass;
+import task.ProjectServiceGrpc;
 
 public class ProjectFragment extends Fragment {
 
@@ -34,6 +43,9 @@ public class ProjectFragment extends Fragment {
     private RecyclerView recyclerView;
     private ProjectAdapter adapter;
     private View view;
+    private static String host ;
+    private static int port = 50050;
+    private ProfileOuterClass.Profile myProfile;
 
     public ProjectFragment() {
         // Required empty public constructor
@@ -65,6 +77,11 @@ public class ProjectFragment extends Fragment {
         setupEvent(view);
         adapter.notifyItemRangeInserted(0, 2);
         adapter.notifyDataSetChanged();
+
+        myProfile = ((MainActivity)getActivity()).getMyProfile();
+        MyApplication myApplication = new MyApplication();
+        host = myApplication.getHost();
+
         return view;
     }
 
@@ -86,6 +103,25 @@ public class ProjectFragment extends Fragment {
              */
         });
         view.findViewById(R.id.del_btn).setOnClickListener(v -> {
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                    .usePlaintext().build();
+            ProjectServiceGrpc.ProjectServiceBlockingStub blockingStub = ProjectServiceGrpc.newBlockingStub(channel);
+            ProjectOuterClass.ProjectQuery projectQuery = ProjectOuterClass.ProjectQuery.newBuilder()
+                    .setToken(myProfile.getToken())
+                    .build();
+
+            ProjectOuterClass.Project delProject = blockingStub.getProjectInfo(projectQuery);
+            Login.Result result = blockingStub.deleteProject(delProject);
+            channel.shutdown();
+            if(result.getSuccess()){
+                Toast.makeText(getContext(),"Del project success",Toast.LENGTH_LONG).show();
+            }
+            else{
+
+            }
+
+
+
             /*
             del 操作
              */

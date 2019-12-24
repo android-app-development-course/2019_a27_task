@@ -22,10 +22,12 @@ import androidx.fragment.app.Fragment;
 
 import cs.android.task.MyApplication;
 import cs.android.task.R;
+import cs.android.task.view.main.MainActivity;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import task.Login;
 import task.LoginServiceGrpc;
+import task.ProfileOuterClass;
 import task.ProjectOuterClass;
 import task.ProjectServiceGrpc;
 
@@ -36,8 +38,10 @@ private ChipsInput chipsInput;
 private Bundle bundle;
 private static String host ;
 private static int port = 50050;
+private ProfileOuterClass.Profile myProfile;
+private EditText projectName;
 
-public static CreateDialog newInstance(@NonNull Bundle bundle) {
+    public static CreateDialog newInstance(@NonNull Bundle bundle) {
     CreateDialog dialog = new CreateDialog();
     dialog.setArguments(bundle);
     dialog.bundle = bundle;
@@ -57,8 +61,10 @@ public View onCreateView(
     View view = inflater.inflate(R.layout.project_create_dialog, container, false);
     chipsInput = (ChipsInput) view.findViewById(R.id.select_members);
 
+    myProfile = ((MainActivity)getActivity()).getMyProfile();
     MyApplication myApplication = new MyApplication();
     host = myApplication.getHost();
+    projectName = view.findViewById(R.id.new_project_name);
 
     ArrayList<String> names = bundle.getStringArrayList("names");
     ArrayList<String> phoneNums = bundle.getStringArrayList("phone_nums");
@@ -81,27 +87,40 @@ public View onCreateView(
 
 
 public void CreateProject(){
+        String projectNameStr = projectName.getText().toString();
+        if(!" ".equals(projectNameStr) && projectNameStr.length() != 0){
 
-    ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
-            .usePlaintext().build();
-    ProjectServiceGrpc.ProjectServiceBlockingStub blockingStub = ProjectServiceGrpc.newBlockingStub(channel);
-    ProjectOuterClass.Project projectInfo = ProjectOuterClass.Project.newBuilder()
-            .setName("lms")
-            .setLeaderPhoneNum("d")
-            .build();
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                    .usePlaintext().build();
 
-    Login.Result result = blockingStub.createProject(projectInfo);
-    
-    if(result.getSuccess()){
-        Toast.makeText(getContext(),"Create project success",Toast.LENGTH_LONG).show();
-        bundle.putBoolean("ok", true);
-        this.getFragmentManager().popBackStack();
-        channel.shutdown();
-    }
-    else{
-        Toast.makeText(getContext(),"Create project fail",Toast.LENGTH_LONG).show();
-    }
+            ProjectServiceGrpc.ProjectServiceBlockingStub blockingStub = ProjectServiceGrpc.newBlockingStub(channel);
+            ProjectOuterClass.Project projectInfo = ProjectOuterClass.Project.newBuilder()
+                    .setName(projectNameStr)
+                    .setLeaderPhoneNum(myProfile.getPhoneNum())
+                    .setToken(myProfile.getToken())
+                    .build();
 
+
+
+            Login.Result result = blockingStub.createProject(projectInfo);
+            channel.shutdown();
+
+            if(result.getSuccess()){
+
+
+                Toast.makeText(getContext(),"Create project success",Toast.LENGTH_LONG).show();
+                bundle.putBoolean("ok", true);
+                this.getFragmentManager().popBackStack();
+
+            }
+            else{
+                Toast.makeText(getContext(),"Create project fail",Toast.LENGTH_LONG).show();
+            }
+
+        }
+        else{
+            Toast.makeText(getContext(),"Input entire messages",Toast.LENGTH_LONG).show();
+        }
 
 }
 
