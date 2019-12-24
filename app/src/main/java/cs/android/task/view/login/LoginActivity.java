@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         MyApplication myApplication = new MyApplication();
         host = myApplication.getHost();
 
-        Vertify();
+//        Vertify();
         new Handler().postDelayed((Runnable) () -> {
             setContentView(R.layout.activity_login);
             signin = findViewById(R.id.signin);
@@ -77,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.signin:
+
                 phone_str = phone.getText().toString();
                 pwd_str = password.getText().toString();
 

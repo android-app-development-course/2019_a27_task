@@ -1,30 +1,24 @@
 package cs.android.task.fragment.projects.details.timeline;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.VectorDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 
 import com.github.vipulasri.timelineview.TimelineView;
 
-import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.vectordrawable.graphics.drawable.VectorDrawableCompat;
 import cs.android.task.R;
 import cs.android.task.entity.LogItem;
 
@@ -40,6 +34,7 @@ class TimelineViewHolder extends RecyclerView.ViewHolder {
     public TextView content;
     public TextView committer;
     public TimelineView timeline;
+    public CheckBox isFinish;
 
     public TimelineViewHolder (@NonNull View itemView, int viewType) {
         super(itemView);
@@ -47,7 +42,25 @@ class TimelineViewHolder extends RecyclerView.ViewHolder {
         content = itemView.findViewById(R.id.log_content);
         committer = itemView.findViewById(R.id.log_committer);
         timeline = itemView.findViewById(R.id.timeline);
+        isFinish = itemView.findViewById(R.id.isFinish);
         timeline.initLine(viewType);
+        isFinish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    Log.e("tag->", "点击完成");
+                    /*
+                    已完成
+                     */
+                }else {
+                    Log.e("tag->", "点击未完成");
+                    /*
+                    未完成
+                     */
+                }
+
+            }
+        });
     }
 }
 

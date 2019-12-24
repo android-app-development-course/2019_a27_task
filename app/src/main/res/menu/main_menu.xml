@@ -16,6 +16,10 @@
         android:icon="@mipmap/schedule"
         android:title="@string/schedule"/>
     <item
+        android:id="@+id/myNote"
+        android:icon="@mipmap/notification"
+        android:title="消息"/>
+    <item
 
         android:id="@+id/my"
         android:icon="@mipmap/my"

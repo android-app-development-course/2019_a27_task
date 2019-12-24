@@ -30,6 +30,7 @@ public class MembersDetailCard extends Fragment {
 
   /** The List view. */
   RecyclerView listView;
+  MemberDetailAdapter adapter;
 
   /** The Collapsing toolbar layout. */
   CollapsingToolbarLayout collapsingToolbarLayout;
@@ -73,7 +74,8 @@ public View onCreateView (@NonNull LayoutInflater inflater,@Nullable ViewGroup c
      */
     members = new ArrayList<>();
     setList();
-    listView.setAdapter(new MemberDetailAdapter(members));
+    adapter = new MemberDetailAdapter(members);
+    listView.setAdapter(adapter);
     view.findViewById(R.id.inviteMember).setOnClickListener(v -> {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
@@ -98,5 +100,12 @@ private void setList() {
         test_members.add(m);
     }
     members.addAll(test_members);
+}
+public MemberDetailAdapter getAdapter(){
+    return adapter;
+}
+
+public List<Member> getMembers(){
+    return members;
 }
 }
