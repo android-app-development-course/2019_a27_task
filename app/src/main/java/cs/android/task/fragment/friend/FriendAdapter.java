@@ -66,7 +66,7 @@ public class FriendAdapter extends RecyclerView.Adapter<FriendAdapter.ViewHolder
     public void onBindViewHolder(@NonNull FriendAdapter.ViewHolder holder, int position) {
         Friend friend = mFriendList.get(position);
         holder.name.setText(friend.getName());
-        holder.introduction.setText(friend.getIntroduction());
+        holder.introduction.setText(friend.getPhoneNumber());
         holder.image.setImageBitmap(friend.getImage());
 
 
