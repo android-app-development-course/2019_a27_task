@@ -8,10 +8,11 @@ option go_package="service";
 //          create / delete project,
 //          add/ delete
 service ProjectService {
-    rpc CreateProject (Project) returns (Result);
     rpc GetProjectInfo (ProjectQuery) returns (Project);
+    // Result.ErrorMsg carry ProjectID
+    rpc CreateProject (Project) returns (Result); 
     rpc DeleteProject (Project) returns (Result);
-    rpc ModifyProject (Project) returns (Result);
+    rpc ModifyProject (Project) returns (Result); 
 
 
     rpc InviteMember (stream Member) returns (Result);
@@ -22,7 +23,7 @@ service ProjectService {
 message Project {
     string token = 1; // token can carry error message when error occurs.
     string name = 2; 
-    int64 ID = 3;
+    int64 ID = 3;     // 客户端发送Project时不需要发生ID
     string leaderPhoneNum = 4; 
     string createDate = 5; // 客户端发送时不需要发送createDate
 }

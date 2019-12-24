@@ -67,66 +67,27 @@ public class ProjectFragment extends Fragment {
     public View onCreateView(
             LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_project, container, false);
+        myProfile = ((MainActivity)getActivity()).getMyProfile();
+        MyApplication myApplication = new MyApplication();
+        host = myApplication.getHost();
         projectList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.projects_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new ProjectAdapter(projectList);
+        adapter = new ProjectAdapter(projectList, this, myProfile);
         recyclerView.setAdapter(adapter);
-        initProjectList();
-        setupEvent(view);
+        //initProjectList();
+        view.findViewById(R.id.add)
+                .setOnClickListener(this::setAdd);
         adapter.notifyItemRangeInserted(0, 2);
         adapter.notifyDataSetChanged();
 
-        myProfile = ((MainActivity)getActivity()).getMyProfile();
-        MyApplication myApplication = new MyApplication();
-        host = myApplication.getHost();
+
 
         return view;
     }
 
-    public void setupEvent(View view) {
-        // setup ENTER btn - show details
-        view.findViewById(R.id.enter_btn)
-                .setOnClickListener(
-                        v -> {
-                            FragmentManager fm = getFragmentManager();
-                            FragmentTransaction transaction = fm.beginTransaction();
-                            transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
-                            transaction.add(R.id.fragment_layout, DetailsFragment.newInstance());
-                            transaction.addToBackStack(null);
-                            transaction.commit();
-                        });
-        view.findViewById(R.id.done_btn).setOnClickListener(v -> {
-            /*
-            done 操作
-             */
-        });
-        view.findViewById(R.id.del_btn).setOnClickListener(v -> {
-            ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
-                    .usePlaintext().build();
-            ProjectServiceGrpc.ProjectServiceBlockingStub blockingStub = ProjectServiceGrpc.newBlockingStub(channel);
-            ProjectOuterClass.ProjectQuery projectQuery = ProjectOuterClass.ProjectQuery.newBuilder()
-                    .setToken(myProfile.getToken())
-                    .build();
 
-            ProjectOuterClass.Project delProject = blockingStub.getProjectInfo(projectQuery);
-            Login.Result result = blockingStub.deleteProject(delProject);
-            channel.shutdown();
-            if(result.getSuccess()){
-                Toast.makeText(getContext(),"Del project success",Toast.LENGTH_LONG).show();
-            }
-            else{
-
-            }
-
-
-
-            /*
-            del 操作
-             */
-        });
-    }
 
     private void initProjectList() {
         Project project_1 = new Project();
@@ -142,31 +103,28 @@ public class ProjectFragment extends Fragment {
         projectList.add(project_1);
         projectList.add(project_2);
 
-        view.findViewById(R.id.add)
-                .setOnClickListener(this::setAdd);
+
     }
 
 
     public void setAdd(View view) {
         Bundle bundle = new Bundle();
-        ArrayList<String> names = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            names.add("member " + i);
-        }
-        ArrayList<String> phoneNum = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            phoneNum.add(i + "");
-        }
-        bundle.putStringArrayList("names", names);
-        bundle.putStringArrayList("phone_nums", phoneNum);
 
         CreateDialog dialog = CreateDialog.newInstance(bundle);
         FragmentManager fm = getFragmentManager();
+        assert fm != null;
         FragmentTransaction transaction = fm.beginTransaction();
         transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
         transaction.add(R.id.fragment_layout, dialog);
         transaction.addToBackStack(null);
         transaction.commit();
+    }
 
+    public List<Project> getProjectList(){
+        return projectList;
+    }
+
+    public ProjectAdapter getAdapter(){
+        return adapter;
     }
 }
