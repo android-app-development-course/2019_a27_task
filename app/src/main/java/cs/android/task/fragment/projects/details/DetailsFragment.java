@@ -14,6 +14,8 @@ import com.tbuonomo.viewpagerdotsindicator.DotsIndicator;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
+
+import cs.android.task.MyApplication;
 import cs.android.task.R;
 import cs.android.task.entity.Project;
 import cs.android.task.fragment.projects.details.files.FilesDetails;
@@ -21,15 +23,21 @@ import cs.android.task.fragment.projects.details.leader.LeaderDetailCard;
 import cs.android.task.fragment.projects.details.members.MembersDetailCard;
 import cs.android.task.fragment.projects.details.timeline.TimeLineFragment;
 import cs.android.task.fragment.projects.details.timeline.TimelineItemAdapter;
+import cs.android.task.view.main.MainActivity;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import task.Login;
 import task.ProfileOuterClass;
+import task.ProjectOuterClass;
+import task.ProjectServiceGrpc;
 
 public class DetailsFragment extends Fragment {
 
-    private Project myProject;
+    private ProjectOuterClass.Project myProject ;
+    private static String host ;
+    private static int port = 50050;
+    private ProfileOuterClass.Profile myProfile;
 
-    public Project getMyProject() {
-        return myProject;
-    }
 
     public static DetailsFragment newInstance(/*arg*/) {
     /*
@@ -47,17 +55,29 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
                          Bundle savedInstanceState) {
     View view = inflater.inflate(R.layout.details, container, false);
 
+    myProfile = ((MainActivity)getActivity()).getMyProfile();
+    MyApplication myApplication = new MyApplication();
+    host = myApplication.getHost();
 
     if(getArguments() != null){
         String leaderName = getArguments().getString("leaderName");
         String leaderEmail = getArguments().getString("leaderEmail");
         String leaderPhone = getArguments().getString("leaderPhone");
+        String projectId = getArguments().getString("projectId");
+        String projectName = getArguments().getString("projectName");
 
-        myProject = new Project();
+        myProject = ProjectOuterClass.Project.newBuilder()
+                .setLeaderPhoneNum(leaderPhone)
+                .setID(Long.valueOf(projectId))
+                .setToken(myProfile.getToken())
+                .setName(projectName)
+                .build();
 
-        myProject.setLeaderEmail(leaderEmail);
-        myProject.setLeaderName(leaderName);
-        myProject.setLeaderPhone(leaderPhone);
+
+        Log.e("id----------first---->", "onCreateView: " + projectId );
+
+        Log.e("我的-----》", "onCreateView: " + myProject);
+       ((MainActivity)getActivity()).setMyProject(myProject);
 
     }
     DotsIndicator indicator = view.findViewById(R.id.dots_indicator);
@@ -67,7 +87,7 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
     add fragments here;
      */
 
-    adapter.addFragment(LeaderDetailCard.newInstance(myProject));
+    adapter.addFragment(LeaderDetailCard.newInstance());
     adapter.addFragment(MembersDetailCard.newInstance());
 //    adapter.addFragment(FilesDetails.newInstance());
     adapter.addFragment(TimeLineFragment.newInstance());

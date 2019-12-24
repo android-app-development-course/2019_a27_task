@@ -12,22 +12,24 @@ import androidx.fragment.app.Fragment;
 import cs.android.task.R;
 import cs.android.task.entity.Project;
 import cs.android.task.fragment.projects.details.DetailsFragment;
+import cs.android.task.view.main.MainActivity;
+import task.ProjectOuterClass;
 
 public class LeaderDetailCard extends Fragment {
     private View view;
     private TextView name;
     private TextView phone;
     private TextView email;
-    private static Project myProject;
+    private ProjectOuterClass.Project myProject;
     public LeaderDetailCard() {
 
     }
 
-    public static LeaderDetailCard newInstance(Project project) {
+    public static LeaderDetailCard newInstance() {
         Bundle args = new Bundle();
         LeaderDetailCard leader = new LeaderDetailCard();
         leader.setArguments(args);
-        myProject = project;
+
         return leader;
     }
 
@@ -41,14 +43,17 @@ public class LeaderDetailCard extends Fragment {
     public View onCreateView (@NonNull LayoutInflater inflater,@Nullable ViewGroup container,@Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.leader_card, container, false);
 
+        myProject = ((MainActivity)getActivity()).getMyProject();
+
         name = view.findViewById(R.id.leader_detail_name);
         phone = view.findViewById(R.id.leader_phone_num);
         email = view.findViewById(R.id.leader_email);
 
         if(myProject != null){
-            name.setText(myProject.getLeaderName());
-            phone.setText(myProject.getLeaderPhone());
-            email.setText(myProject.getLeaderEmail());
+
+            name.setText("未知的邮箱");
+            phone.setText(myProject.getLeaderPhoneNum());
+            email.setText("未知的邮箱");
         }
 
 

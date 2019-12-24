@@ -95,7 +95,11 @@ public class CreateDialog extends Fragment {
                 newPorject.setLeaderEmail(myProfile.getEmail());
                 projectFragment.getProjectList().add(newPorject);
                 projectFragment.getAdapter().notifyItemInserted(projectFragment.getAdapter().getItemCount());
+                //((MainActivity) getActivity()).getProjectFragment().initProjectList();
                 Toast.makeText(getContext(), "Create project success", Toast.LENGTH_LONG).show();
+
+
+
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
 
                 if (null != view) {

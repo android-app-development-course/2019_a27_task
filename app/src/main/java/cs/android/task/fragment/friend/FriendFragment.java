@@ -56,8 +56,7 @@ public class FriendFragment extends Fragment {
     private static String host;
     private static int port = 50050;
     private ProfileOuterClass.Profile myProfile;
-
-
+    private BitmapDrawable bd;
 
 
 
@@ -75,6 +74,7 @@ public class FriendFragment extends Fragment {
     }
 
     public void initFriends() {
+        friendList.clear();
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext().build();
         FriendServiceGrpc.FriendServiceBlockingStub stub = FriendServiceGrpc.newBlockingStub(channel);
@@ -92,11 +92,12 @@ public class FriendFragment extends Fragment {
                 ProfileOuterClass.Profile friend = myFriend.next();
                 Friend newFriend = new Friend();
                 newFriend.setName(friend.getName());
-                //newFriend.set
+                newFriend.setImage(bd.getBitmap());
+                newFriend.setPhoneNumber(friend.getPhoneNum());
                 friendList.add(newFriend);
 
             }
-
+            channel.shutdown();
         }
 
     }
@@ -115,7 +116,7 @@ public class FriendFragment extends Fragment {
     // Inflate the layout for this fragment
       view = inflater.inflate(R.layout.fragment_friend, container, false);
     //        把自定义的RecycleView变量和activity_main.xml中的id绑定
-
+      bd = (BitmapDrawable)getResources().getDrawable(R.mipmap.santaclaus);
       MyApplication myApplication = new MyApplication();
       host = myApplication.getHost();
 
@@ -129,7 +130,7 @@ public class FriendFragment extends Fragment {
 
     //        实例化自定义适配器
     initFriends();
-    friendAdapter = new FriendAdapter(friendList, getContext());
+    friendAdapter = new FriendAdapter(friendList, getContext(), myProfile);
 
 
     //        把适配器添加到RecycleView中

@@ -146,6 +146,8 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.ViewHold
             args.putString("leaderName", project.getLeaderName());
             args.putString("leaderPhone", project.getLeaderPhone());
             args.putString("leaderEmail", project.getLeaderEmail());
+            args.putString("projectId", String.valueOf(project.getId()));
+            args.putString("projectName", project.getName());
             detailsFragment.setArguments(args);
 
             transaction.add(R.id.fragment_layout, detailsFragment);

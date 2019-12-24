@@ -21,16 +21,27 @@ import org.fusesource.mqtt.client.Callback;
 import org.fusesource.mqtt.client.CallbackConnection;
 import org.fusesource.mqtt.client.QoS;
 
+import cs.android.task.MyApplication;
 import cs.android.task.R;
 import cs.android.task.entity.Member;
 import cs.android.task.fragment.projects.details.timeline.TimeLineFragment;
 import cs.android.task.view.main.MainActivity;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import task.ProfileOuterClass;
+import task.ProjectOuterClass;
+import task.ProjectServiceGrpc;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class InviteMember extends Fragment {
 
     private View view;
+    private static String host;
+    private static int port = 50050;
+    private ProfileOuterClass.Profile myProfile;
+    private ProjectOuterClass.Project myProject;
+
     public InviteMember() {
         // Required empty public constructor
     }
@@ -50,6 +61,13 @@ public class InviteMember extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_invite_member, container, false);
+
+        MyApplication myApplication = new MyApplication();
+        host = myApplication.getHost();
+
+        myProfile = ((MainActivity)getActivity()).getMyProfile();
+        myProject = ((MainActivity)getActivity()).getMyProject();
+
         ((MaterialButton) view.findViewById(R.id.invite_ok)).setOnClickListener(v -> {
             Invite();
         });
@@ -66,16 +84,24 @@ public class InviteMember extends Fragment {
         MembersDetailCard membersDetailCard =  (MembersDetailCard) fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 2);
         EditText phone = view.findViewById(R.id.invite_member_phone);
         String memberPhone = phone.getText().toString();
-        Member member = new Member();
+
         /*
         member 应该为邀请的手机号的信息
         根据手机号从数据库里
          */
-        member.setName("test");
-        member.setEmail("test");
-        member.setPhoneNum("test");
-        membersDetailCard.getMembers().add(member);
-        membersDetailCard.getAdapter().notifyItemInserted(membersDetailCard.getAdapter().getItemCount());
+
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                .usePlaintext().build();
+        ProjectServiceGrpc.ProjectServiceBlockingStub blockingStub = ProjectServiceGrpc.newBlockingStub(channel);
+        ProjectOuterClass.ProjectQuery projectQuery = ProjectOuterClass.ProjectQuery.newBuilder()
+                .setToken(myProfile.getToken())
+                .setID(myProject.getID())
+                .build();
+
+        /*
+        inviteMember  的参数
+         */
+
         ((MainActivity)getActivity()).sendMessage("Invite you");
         if (null != view) {
             assert imm != null;

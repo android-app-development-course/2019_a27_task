@@ -5,6 +5,7 @@ import android.animation.Animator;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,12 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import cs.android.task.MyApplication;
 import cs.android.task.R;
+import cs.android.task.entity.Friend;
 import cs.android.task.entity.Project;
 
 
@@ -34,6 +37,8 @@ import cs.android.task.fragment.projects.details.DetailsFragment;
 import cs.android.task.view.main.MainActivity;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
+import task.FriendServiceGrpc;
 import task.Login;
 import task.ProfileOuterClass;
 import task.ProjectOuterClass;
@@ -49,6 +54,7 @@ public class ProjectFragment extends Fragment {
     private static String host ;
     private static int port = 50050;
     private ProfileOuterClass.Profile myProfile;
+    private Iterator<ProjectOuterClass.Project> myProject;
 
     public ProjectFragment() {
         // Required empty public constructor
@@ -79,12 +85,14 @@ public class ProjectFragment extends Fragment {
         collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#ffffff"));
         collapsingToolbarLayout.setContentScrimColor(Color.parseColor("#e16b6b"));
         projectList = new ArrayList<>();
+        //initProjectList();
+
         recyclerView = view.findViewById(R.id.projects_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         adapter = new ProjectAdapter(projectList, this, myProfile);
         recyclerView.setAdapter(adapter);
-        //initProjectList();
+
         view.findViewById(R.id.add)
                 .setOnClickListener(this::setAdd);
         adapter.notifyItemRangeInserted(0, 2);
@@ -97,19 +105,34 @@ public class ProjectFragment extends Fragment {
 
 
 
-    private void initProjectList() {
-        Project project_1 = new Project();
-        project_1.setCreateDate(new Date());
-        project_1.setLeaderName("Leader Name");
-        project_1.setName("Project one");
+    public void initProjectList() {
+        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                .usePlaintext().build();
+        ProjectServiceGrpc.ProjectServiceBlockingStub stub = ProjectServiceGrpc.newBlockingStub(channel);
 
-        Project project_2 = new Project();
-        project_2.setCreateDate(new Date());
-        project_2.setLeaderName("Leader Name");
-        project_2.setName("Project two");
+        Login.Token token = Login.Token.newBuilder().setToken(myProfile.getToken()).build();
 
-        projectList.add(project_1);
-        projectList.add(project_2);
+
+        try {
+            myProject = stub.getUserProject(token);
+        } catch (StatusRuntimeException e) {
+            Log.e("bug???", "freshNote: " + "bug");
+        } finally {
+
+            while (myProject.hasNext()) {
+                ProjectOuterClass.Project project = myProject.next();
+                Project newProject = new Project();
+                newProject.setName(project.getName());
+                newProject.setLeaderPhone(project.getLeaderPhoneNum());
+                newProject.setCreateDate(new Date(project.getCreateDate()));
+//                newProject.setLeaderEmail();
+//                newProject.setLeaderName();
+//
+                projectList.add(newProject);
+
+            }
+            channel.shutdown();
+        }
 
 
     }

@@ -57,6 +57,7 @@ import io.grpc.ManagedChannelBuilder;
 import task.Login;
 import task.ProfileOuterClass;
 import task.ProfileServiceGrpc;
+import task.ProjectOuterClass;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -71,7 +72,15 @@ public class MainActivity extends AppCompatActivity {
     private MQTT mqtt;
     private CallbackConnection connection;
     private MyNoteFragment myNoteFragement;
+    private ProjectOuterClass.Project myProject;
 
+    public ProjectOuterClass.Project getMyProject(){
+        return myProject;
+    }
+
+    public void setMyProject(ProjectOuterClass.Project myProject){
+        this.myProject = myProject;
+    }
 
     public String getMyToken() {
         return myToken;

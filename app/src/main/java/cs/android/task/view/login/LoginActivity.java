@@ -197,7 +197,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     bundle.putCharSequence("phone", myPhone);
                     profile.putExtras(bundle);
 
-
                     startActivity(profile);
                 }
             } catch (TimeoutException e) {

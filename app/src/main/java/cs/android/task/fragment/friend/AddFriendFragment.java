@@ -99,10 +99,13 @@ public class AddFriendFragment extends Fragment {
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     }
 
-
-
+                    ((MainActivity) getActivity()).getFriendFragment().initFriends();
                     Toast.makeText(getContext(),"Add Friend Success",Toast.LENGTH_LONG).show();
                     this.getFragmentManager().popBackStack();
+
+                }
+                else{
+                    Toast.makeText(getContext(), "Add friend fail", Toast.LENGTH_LONG).show();
                 }
 
 

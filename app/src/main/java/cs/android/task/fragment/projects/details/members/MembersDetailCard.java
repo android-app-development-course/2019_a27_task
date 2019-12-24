@@ -5,11 +5,13 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -18,19 +20,35 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import cs.android.task.MyApplication;
 import cs.android.task.R;
+import cs.android.task.entity.Friend;
 import cs.android.task.entity.Member;
 import cs.android.task.fragment.schedule.AddSchedule;
+import cs.android.task.view.main.MainActivity;
+import io.grpc.ManagedChannel;
+import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
+import task.FriendServiceGrpc;
+import task.Login;
+import task.ProfileOuterClass;
+import task.ProjectOuterClass;
+import task.ProjectServiceGrpc;
 
 /** The type Members detail card. */
 public class MembersDetailCard extends Fragment {
 
   /** The Members. */
-  List<Member> members;
+  List<Member> memberList;
 
-  /** The List view. */
-  RecyclerView listView;
-  MemberDetailAdapter adapter;
+  private RecyclerView listView;
+  private MemberDetailAdapter adapter;
+    private Iterator<ProjectOuterClass.Member> myMember;
+    private static String host;
+    private static int port = 50050;
+    private ProfileOuterClass.Profile myProfile;
+    private ProjectOuterClass.Project myProject;
 
   /** The Collapsing toolbar layout. */
   CollapsingToolbarLayout collapsingToolbarLayout;
@@ -64,6 +82,12 @@ public View onCreateView (@NonNull LayoutInflater inflater,@Nullable ViewGroup c
     setup view args here
      */
 
+    MyApplication myApplication = new MyApplication();
+    host = myApplication.getHost();
+
+    myProfile = ((MainActivity)getActivity()).getMyProfile();
+    myProject = ((MainActivity)getActivity()).getMyProject();
+
     listView = view.findViewById(R.id.member_list);
     listView.setHasFixedSize(true);
     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
@@ -72,9 +96,9 @@ public View onCreateView (@NonNull LayoutInflater inflater,@Nullable ViewGroup c
      TODO
      members list here should be set as a project's members list.
      */
-    members = new ArrayList<>();
-    setList();
-    adapter = new MemberDetailAdapter(members);
+    memberList = new ArrayList<>();
+    initMemberList();
+    adapter = new MemberDetailAdapter(memberList);
     listView.setAdapter(adapter);
     view.findViewById(R.id.inviteMember).setOnClickListener(v -> {
         FragmentManager fm = getFragmentManager();
@@ -90,16 +114,36 @@ public View onCreateView (@NonNull LayoutInflater inflater,@Nullable ViewGroup c
 /*
     set up member list here
  */
-private void setList() {
-    ArrayList<Member> test_members = new ArrayList<>();
-    for (int i = 0; i < 10; i++) {
-        Member m = new Member();
-        m.setPhoneNum("123456789");
-        m.setName("member " + i);
-        m.setEmail("thisisemail@gmail.com");
-        test_members.add(m);
+private void initMemberList() {
+    memberList.clear();
+    ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+            .usePlaintext().build();
+    ProjectServiceGrpc.ProjectServiceBlockingStub stub = ProjectServiceGrpc.newBlockingStub(channel);
+
+    ProjectOuterClass.ProjectQuery projectQuery = ProjectOuterClass.ProjectQuery.newBuilder()
+            .setToken(myProfile.getToken())
+            .setID(myProject.getID())
+            .build();
+
+
+    try {
+        myMember = stub.getMembers(projectQuery);
+    } catch (StatusRuntimeException e) {
+        Log.e("bug???", "freshNote: " + "bug");
+    } finally {
+
+        while (myMember.hasNext()) {
+            ProjectOuterClass.Member member = myMember.next();
+            Member newMember = new Member();
+            newMember.setName("缺少名字属性");
+            newMember.setEmail("缺少邮箱属性");
+            newMember.setPhoneNum(member.getPhoneNum());
+
+            memberList.add(newMember);
+
+        }
+        channel.shutdown();
     }
-    members.addAll(test_members);
 }
 public MemberDetailAdapter getAdapter(){
     return adapter;
