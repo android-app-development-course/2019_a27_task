@@ -49,7 +49,7 @@ public class FriendFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 
     private RecyclerView recyclerView;
-    private List<Friend> FriendList = new ArrayList<>();
+    private List<Friend> friendList = new ArrayList<>();
     private FriendAdapter friendAdapter;
     private View view;
     private Iterator<ProfileOuterClass.Profile> myFriend;
@@ -61,9 +61,6 @@ public class FriendFragment extends Fragment {
 
 
 
-    public List<Friend> getFriendList(){
-        return  FriendList;
-    }
 
     public FriendFragment(){
 
@@ -96,6 +93,7 @@ public class FriendFragment extends Fragment {
                 Friend newFriend = new Friend();
                 newFriend.setName(friend.getName());
                 //newFriend.set
+                friendList.add(newFriend);
 
             }
 
@@ -131,7 +129,7 @@ public class FriendFragment extends Fragment {
 
     //        实例化自定义适配器
     initFriends();
-    friendAdapter = new FriendAdapter(FriendList, getContext());
+    friendAdapter = new FriendAdapter(friendList, getContext());
 
 
     //        把适配器添加到RecycleView中
@@ -163,7 +161,7 @@ public class FriendFragment extends Fragment {
   @Override
   public void  onResume() {
       Log.e("e---------.>", "onResume: " );
-      Log.e("e---------.>", "onResume: " + FriendList.size() );
+      Log.e("e---------.>", "onResume: " + friendList.size() );
       friendAdapter.notifyDataSetChanged();
       super.onResume();
   }
