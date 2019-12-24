@@ -7,27 +7,18 @@ package cs.android.task.entity;
  */
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 
-
-
-import cs.android.task.R;
 
 public class Friend {
     private String name;
-    private String introduction;
+    private String phoneNumber;
     private Bitmap image;
 
-    public Friend(String name, String introduction, Bitmap image) {
-        this.name = name;
-        this.introduction = introduction;
-        this.image = image;
-    }
 
-    public Friend(String name, String introduction){
+    public Friend(String name, String phoneNumber, Bitmap bitmap){
         this.name = name;
-        this.introduction = introduction;
-        this.image = null;
+        this.phoneNumber = phoneNumber;
+        this.image = bitmap;
     }
 
     public String getName() {
@@ -38,12 +29,12 @@ public class Friend {
         this.name = name;
     }
 
-    public String getIntroduction() {
-        return introduction;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setIntroduction(String introduction) {
-        this.introduction = introduction;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public Bitmap getImage() {

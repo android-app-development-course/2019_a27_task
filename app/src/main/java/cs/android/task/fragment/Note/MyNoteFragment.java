@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.method.DateKeyListener;
 import android.util.Log;
@@ -44,6 +45,7 @@ public class MyNoteFragment extends Fragment {
     private static int port = 50050;
     private ProfileOuterClass.Profile myProfile;
     private Iterator<Message.Msg> myMessage;
+    private MyNoteAdapter adapter;
 
     public MyNoteFragment() {
         // Required empty public constructor
@@ -63,24 +65,21 @@ public class MyNoteFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        view = inflater.inflate(R.layout.fragment_my_note, container, false);
+        SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.swipe);
         noteList = new ArrayList<>();
         Note note = new Note();
         note.setContent("hello");
         note.setDate(new Date());
         note.setCommiter("lms");
         noteList.add(note);
-        view = inflater.inflate(R.layout.fragment_my_note, container, false);
         MyApplication myApplication = new MyApplication();
         host = myApplication.getHost();
 
         myProfile = ((MainActivity)getActivity()).getMyProfile();
 
         freshNote();
-
-
-
-
-        MyNoteAdapter myNoteAdapter = new MyNoteAdapter(MyNoteFragment.this, noteList);
+        adapter = new MyNoteAdapter(MyNoteFragment.this, noteList);
         CollapsingToolbarLayout collapsingToolbarLayout =
                 view.findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#ffffff"));
@@ -89,8 +88,20 @@ public class MyNoteFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         RecyclerView recyclerView = view.findViewById(R.id.note_list);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(myNoteAdapter);
-
+        recyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Note note = new Note();
+                note.setContent("hello sb lms");
+                note.setDate(new Date());
+                note.setCommiter("David");
+                noteList.clear();
+                noteList.add(note);
+                adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         return view;
     }
