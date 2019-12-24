@@ -64,11 +64,7 @@ public class MyNoteFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         noteList = new ArrayList<>();
-        Note note = new Note();
-        note.setContent("hello");
-        note.setDate(new Date());
-        note.setCommiter("lms");
-        noteList.add(note);
+
         view = inflater.inflate(R.layout.fragment_my_note, container, false);
         MyApplication myApplication = new MyApplication();
         host = myApplication.getHost();
@@ -76,7 +72,6 @@ public class MyNoteFragment extends Fragment {
         myProfile = ((MainActivity)getActivity()).getMyProfile();
 
         freshNote();
-
 
 
 
@@ -111,13 +106,15 @@ public class MyNoteFragment extends Fragment {
         }catch (StatusRuntimeException e){
             Log.e("bug???", "freshNote: "+ "bug");
         }finally {
-            Stream.generate(myMessage::next).forEach(msg-> {
+            Log.e("myMess------>", "freshNote: " + myMessage );
+            while(myMessage.hasNext()){
+                Message.Msg msg = myMessage.next();
                 Note note = new Note();
                 note.setContent(msg.getContent());
                 note.setCommiter(msg.getCommitBy());
                 note.setDate(new Date(msg.getDate()));
-               noteList.add(note);
-            });
+                noteList.add(note);
+            };
             channel.shutdown();
         }
 

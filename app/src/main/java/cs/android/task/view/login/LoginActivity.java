@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         MyApplication myApplication = new MyApplication();
         host = myApplication.getHost();
 
-//        Vertify();
+        Vertify();
         new Handler().postDelayed((Runnable) () -> {
             setContentView(R.layout.activity_login);
             signin = findViewById(R.id.signin);
