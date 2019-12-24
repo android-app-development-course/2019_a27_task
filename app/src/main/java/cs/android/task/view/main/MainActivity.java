@@ -59,6 +59,7 @@ import task.ProfileOuterClass;
 import task.ProfileServiceGrpc;
 
 public class MainActivity extends AppCompatActivity {
+
     private String myToken;
     private FriendFragment friendFragment;
     private ProjectFragment projectFragment;
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     private CallbackConnection connection;
     private MyNoteFragment myNoteFragement;
 
+
     public String getMyToken() {
         return myToken;
     }
@@ -78,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
     public ProfileOuterClass.Profile getMyProfile() {
         return myProfile;
     }
+
 
 
     @Override
@@ -96,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
-        String phone = bundle.getString("phone");
+
         setMyToken(bundle.getString("token"));
 
 

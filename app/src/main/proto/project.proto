@@ -8,10 +8,16 @@ option go_package="service";
 //          create / delete project,
 //          add/ delete
 service ProjectService {
-    rpc CreateProject (Project) returns (Result);
     rpc GetProjectInfo (ProjectQuery) returns (Project);
+    // Result.ErrorMsg carry ProjectID
+    rpc CreateProject (Project) returns (Result); 
     rpc DeleteProject (Project) returns (Result);
-    rpc ModifyProject (Project) returns (Result);
+    rpc ModifyProject (Project) returns (Result); 
+
+
+    rpc InviteMember (stream Member) returns (Result);
+    rpc GetMembers (ProjectQuery) returns (stream Member);
+    rpc KickOutMember (Member) returns (Result);
 }
 
 message Project {
@@ -22,6 +28,11 @@ message Project {
     string createDate = 5; // 客户端发送时不需要发送createDate
 }
 
+message Member {
+    string token = 1; // leader's token
+    string phoneNum = 2;
+    int64 projectID = 3;
+}
 
 message ProjectQuery {
     string token = 1;
