@@ -58,7 +58,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         MyApplication myApplication = new MyApplication();
         host = myApplication.getHost();
 
-        Vertify();
+//        Vertify();
         new Handler().postDelayed((Runnable) () -> {
             setContentView(R.layout.activity_login);
             signin = findViewById(R.id.signin);
@@ -77,43 +77,45 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.signin:
-                phone_str = phone.getText().toString();
-                pwd_str = password.getText().toString();
-
-                if(phone_str.length() != 0 && !" ".equals(phone_str) && phone_str.length() != 0 && !" ".equals(phone_str)){
-                    Callable<String> login = () -> Login(phone_str, pwd_str);
-
-                    ExecutorService executorService = Executors.newSingleThreadExecutor();
-                    Future<String> future = executorService.submit(login);
-
-                    try {
-                        //设置超时时间
-                        myToken = future.get(5, TimeUnit.SECONDS);
-
-                        if(!" ".equals(myToken) && myToken.length() != 0){
-                            Intent profile = new Intent(this, MainActivity.class);
-                            Bundle bundle = new Bundle();
-                            bundle.putCharSequence("token", myToken);
-                            bundle.putCharSequence("phone", phone_str);
-                            profile.putExtras(bundle);
-                            Toast.makeText(this,"Sign in Success",Toast.LENGTH_LONG).show();
-                            startActivity(profile);
-                        }
-                        else{
-                            Toast.makeText(this,"Password Error",Toast.LENGTH_LONG).show();
-                        }
-                    } catch (TimeoutException e) {
-                        Toast.makeText(this,"TimeoutException",Toast.LENGTH_LONG).show();
-                    } catch(Exception e){
-                        Log.e("bug----------------->", e + " ");
-                        Toast.makeText(this,"This phone hasn't been registered",Toast.LENGTH_LONG).show();
-                    }finally {
-                        executorService.shutdown();
-                    }
-                }
-                else{
-                    Toast.makeText(this,"Input entire messages",Toast.LENGTH_LONG).show();
-               }
+                Intent profile = new Intent(this, MainActivity.class);
+                startActivity(profile);
+//                phone_str = phone.getText().toString();
+//                pwd_str = password.getText().toString();
+//
+//                if(phone_str.length() != 0 && !" ".equals(phone_str) && phone_str.length() != 0 && !" ".equals(phone_str)){
+//                    Callable<String> login = () -> Login(phone_str, pwd_str);
+//
+//                    ExecutorService executorService = Executors.newSingleThreadExecutor();
+//                    Future<String> future = executorService.submit(login);
+//
+//                    try {
+//                        //设置超时时间
+//                        myToken = future.get(5, TimeUnit.SECONDS);
+//
+//                        if(!" ".equals(myToken) && myToken.length() != 0){
+//                            Intent profile = new Intent(this, MainActivity.class);
+//                            Bundle bundle = new Bundle();
+//                            bundle.putCharSequence("token", myToken);
+//                            bundle.putCharSequence("phone", phone_str);
+//                            profile.putExtras(bundle);
+//                            Toast.makeText(this,"Sign in Success",Toast.LENGTH_LONG).show();
+//                            startActivity(profile);
+//                        }
+//                        else{
+//                            Toast.makeText(this,"Password Error",Toast.LENGTH_LONG).show();
+//                        }
+//                    } catch (TimeoutException e) {
+//                        Toast.makeText(this,"TimeoutException",Toast.LENGTH_LONG).show();
+//                    } catch(Exception e){
+//                        Log.e("bug----------------->", e + " ");
+//                        Toast.makeText(this,"This phone hasn't been registered",Toast.LENGTH_LONG).show();
+//                    }finally {
+//                        executorService.shutdown();
+//                    }
+//                }
+//                else{
+//                    Toast.makeText(this,"Input entire messages",Toast.LENGTH_LONG).show();
+//               }
 
                 break;
             case R.id.goToSignup:
