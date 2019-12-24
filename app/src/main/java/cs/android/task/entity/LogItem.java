@@ -5,57 +5,46 @@ import java.util.Objects;
 
 public class LogItem {
 
-private String content;
-private Date date;
-private String summary;
-private Member commiter;
+    private String content;
+    private Date date;
+    private Member commiter;
 
-public Member getCommiter () {
-    return commiter;
-}
+    public Member getCommiter() {
+        return commiter;
+    }
 
-public void setCommiter (Member commiter) {
-    this.commiter = commiter;
-}
+    public void setCommiter(Member commiter) {
+        this.commiter = commiter;
+    }
 
+    public String getContent() {
+        return content;
+    }
 
-public String getSummary () {
-    return summary;
-}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
-public void setSummary (String summary) {
-    this.summary = summary;
-}
+    public Date getDate() {
+        return date;
+    }
 
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-public String getContent () {
-    return content;
-}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null || getClass() != o.getClass())
+            return false;
+        LogItem logItem = (LogItem) o;
+        return date.equals(logItem.date);
+    }
 
-public void setContent (String content) {
-    this.content = content;
-}
-
-public Date getDate () {
-    return date;
-}
-
-public void setDate (Date date) {
-    this.date = date;
-}
-
-@Override
-public boolean equals (Object o) {
-    if ( this == o )
-        return true;
-    if ( o == null || getClass() != o.getClass() )
-        return false;
-    LogItem logItem = ( LogItem ) o;
-    return date.equals(logItem.date);
-}
-
-@Override
-public int hashCode () {
-    return Objects.hash(date);
-}
+    @Override
+    public int hashCode() {
+        return Objects.hash(date);
+    }
 }

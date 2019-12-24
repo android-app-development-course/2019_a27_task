@@ -4,6 +4,7 @@ package cs.android.task.view.main;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -18,6 +19,7 @@ import android.transition.Explode;
 import android.transition.Fade;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -44,6 +46,7 @@ import cs.android.task.R;
 
 
 import cs.android.task.entity.Friend;
+import cs.android.task.fragment.Note.MyNoteFragment;
 import cs.android.task.fragment.friend.FriendFragment;
 import cs.android.task.fragment.profile.ProfileFragment;
 import cs.android.task.fragment.projects.ProjectFragment;
@@ -65,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
     private static String host;
     private int port = 50050;
     public static final String TOPIC = "topic/test";
+    private MQTT mqtt;
+    private CallbackConnection connection;
+    private MyNoteFragment myNoteFragement;
 
 
     public String getMyToken() {
@@ -122,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void testMqtt() throws URISyntaxException {
-        MQTT mqtt = new MQTT();
+        mqtt = new MQTT();
         mqtt.setHost("47.100.39.201", 61613);
         mqtt.setVersion("3.1");
         mqtt.setUserName("admin");
@@ -130,29 +136,31 @@ public class MainActivity extends AppCompatActivity {
         String TAG = "tag--->>>";
         Log.e(TAG, "test");
 
-        final CallbackConnection connection = mqtt.callbackConnection();
+        connection = mqtt.callbackConnection();
 
         //设置监听
         connection.listener(new ExtendedListener() {
             @Override
             public void onPublish(UTF8Buffer topic, Buffer body, Callback<Callback<Void>> ack) {
                 Log.d(TAG, "onPublish " + topic.toString() + " " + body.toString());
-
-
-                String channelId = "notification_simple";
-                NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                NotificationChannel channel = new NotificationChannel(channelId, "simple", NotificationManager.IMPORTANCE_DEFAULT);
-                assert manager != null;
-                manager.createNotificationChannel(channel);
-
-                Notification notification = new NotificationCompat.Builder(MainActivity.this, channelId)
-                        .setContentTitle("新消息")
-                        .setContentText(body.toString())
-                        .setWhen(System.currentTimeMillis())
-                        .setSmallIcon(R.mipmap.ic_launcher)
-                        .build();
-                manager.notify(1, notification);
-
+                Log.d(TAG, body.toString().split(":")[1]);
+                String phone = "123";//自己的电话号码
+                if (body.toString().split(":")[1].equals(" " + phone)){
+                    Log.d(TAG, "onPublish " + topic.toString() + " " + body.toString());
+                    String channelId = "notification_simple";
+                    NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    NotificationChannel channel = new NotificationChannel(channelId, "simple", NotificationManager.IMPORTANCE_HIGH);
+                    assert manager != null;
+                    manager.createNotificationChannel(channel);
+                    Notification notification = new NotificationCompat.Builder(MainActivity.this, channelId)
+                            .setContentTitle("新消息")
+                            .setContentText(body.toString())
+                            .setWhen(System.currentTimeMillis())
+                            .setSmallIcon(R.mipmap.ic_launcher)
+                            .setDefaults(Notification.DEFAULT_ALL)
+                            .build();
+                    manager.notify(1, notification);
+                }
             }
 
             @Override
@@ -167,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onPublish(UTF8Buffer topic, Buffer body, Runnable ack) {
-                Log.d(TAG, "onPublish " + topic.toString() + " " + body);
+                Log.d(TAG, "onPublish111 " + topic.toString() + " " + body);
                 ack.run();
             }
 
@@ -201,32 +209,24 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-                //发布一个消息
-                byte[] payload = "hello world".getBytes();
-                connection.publish(TOPIC, payload, QoS.AT_LEAST_ONCE, false, new Callback<Void>() {
-                    @Override
-                    public void onSuccess(Void v) {
-                        Log.d(TAG, "publish success");
-                    }
+            }
+        });
+    }
 
-                    @Override
-                    public void onFailure(Throwable value) {
-                        Log.e(TAG, "publish failure", value);
-                        connection.disconnect(null); //断开连接
-                    }
-                });
+    public void sendMessage(String message) {
+        //发布一个消息
+        byte[] payload = message.getBytes();
+        String TAG = "tag-->>";
+        connection.publish(TOPIC, payload, QoS.AT_LEAST_ONCE, false, new Callback<Void>() {
+            @Override
+            public void onSuccess(Void v) {
+                Log.d(TAG, "publish success");
+            }
 
-//                //断开连接
-//                connection.disconnect(new Callback<Void>() {
-//                    public void onSuccess(Void v) {
-//                        Log.d(TAG, "disconnect success");
-//                    }
-//
-//                    public void onFailure(Throwable value) {
-//                        Log.d(TAG, "disconnect failure");
-//                        // disconnects是不会失败的,也就是这里永远不会被调到
-//                    }
-//                });
+            @Override
+            public void onFailure(Throwable value) {
+                Log.e(TAG, "publish failure", value);
+                connection.disconnect(null); //断开连接
             }
         });
     }
@@ -235,31 +235,30 @@ public class MainActivity extends AppCompatActivity {
     private void setupNavBar() {
         BottomNavigationView nav = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         nav.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                item -> {
+                    switch (item.getItemId()) {
+                        case R.id.project:
+                            projectFragment = ProjectFragment.newInstance();
+                            loadFragment(projectFragment);
+                            return true;
 
-                        switch (item.getItemId()) {
-                            // use newInstance(), so that you can pass args.
-                            case R.id.project:
-                                projectFragment = ProjectFragment.newInstance();
-                                loadFragment(projectFragment);
-                                return true;
-
-                            case R.id.friend:
-                                friendFragment = FriendFragment.newInstance();
-                                loadFragment(friendFragment);
-                                return true;
-                            case R.id.my:
-                                loadFragment(new ProfileFragment());
-                                return true;
-                            case R.id.schedule:
-                                scheduleFragment = ScheduleFragment.newInstance();
-                                loadFragment(scheduleFragment);
-                                return true;
-                            default:
-                                return false;
-                        }
+                        case R.id.friend:
+                            friendFragment = FriendFragment.newInstance();
+                            loadFragment(friendFragment);
+                            return true;
+                        case R.id.my:
+                            loadFragment(new ProfileFragment());
+                            return true;
+                        case R.id.myNote:
+                            myNoteFragement = MyNoteFragment.newInstance();
+                            loadFragment(myNoteFragement);
+                            return true;
+                        case R.id.schedule:
+                            scheduleFragment = ScheduleFragment.newInstance();
+                            loadFragment(scheduleFragment);
+                            return true;
+                        default:
+                            return false;
                     }
                 });
     }
@@ -274,6 +273,9 @@ public class MainActivity extends AppCompatActivity {
 
     public ScheduleFragment getScheduleFragment() {
         return scheduleFragment;
+    }
+    public MyNoteFragment getMyNoteFragment() {
+        return myNoteFragement;
     }
 
     public void setMyToken(String myToken) {

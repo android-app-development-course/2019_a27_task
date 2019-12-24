@@ -3,6 +3,7 @@ package cs.android.task.fragment.projects;
 
 import android.animation.Animator;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,6 +73,11 @@ public class ProjectFragment extends Fragment {
         myProfile = ((MainActivity)getActivity()).getMyProfile();
         MyApplication myApplication = new MyApplication();
         host = myApplication.getHost();
+        CollapsingToolbarLayout collapsingToolbarLayout =
+                view.findViewById(R.id.collapsing_toolbar_layout);
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.parseColor("#ffffff"));
+        collapsingToolbarLayout.setExpandedTitleColor(Color.parseColor("#ffffff"));
+        collapsingToolbarLayout.setContentScrimColor(Color.parseColor("#e16b6b"));
         projectList = new ArrayList<>();
         recyclerView = view.findViewById(R.id.projects_list);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());

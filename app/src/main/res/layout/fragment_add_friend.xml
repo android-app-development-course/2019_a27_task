@@ -27,7 +27,8 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#F34D4D"
+                android:layout_marginTop="16dp"
+                android:textColor="#2196F3"
                 android:textSize="25sp"
                 android:text="Add Friend"
                 android:layout_marginLeft="30dp"
