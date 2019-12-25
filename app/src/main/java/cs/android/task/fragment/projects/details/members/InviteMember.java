@@ -99,27 +99,27 @@ public class InviteMember extends Fragment {
                 .setPhoneNum(memberPhone)
                 .setProjectID(myProject.getID())
                 .setToken(myProject.getToken())
-                .set
                 .build();
 
-        Login.Result result = blockingStub.inviteMember(projectQuery)
+        Login.Result result = blockingStub.inviteMember(member);
+        if(result.getSuccess()){
+            ((MainActivity)getActivity()).sendMessage("Invite you");
+            if (null != view) {
+                assert imm != null;
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
 
-        /*
-        inviteMember  的参数
-         */
+            Toast.makeText(getContext(), "Invite Success", Toast.LENGTH_LONG).show();
+            assert this.getFragmentManager() != null;
 
-        ((MainActivity)getActivity()).sendMessage("Invite you");
-        if (null != view) {
-            assert imm != null;
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            this.getFragmentManager().popBackStack();
+        }
+        else{
+            Toast.makeText(getContext(), "Invite Fail", Toast.LENGTH_LONG).show();
         }
 
-        Toast.makeText(getContext(), "Invite Success", Toast.LENGTH_LONG).show();
-        assert this.getFragmentManager() != null;
-        /*
-       添加内容到数据库
-         */
-        this.getFragmentManager().popBackStack();
+
+
     }
 
     private void Cancel() {
