@@ -62,6 +62,7 @@ import task.ProjectOuterClass;
 public class MainActivity extends AppCompatActivity {
 
     private String myToken;
+    private String myPhone;
     private FriendFragment friendFragment;
     private ProjectFragment projectFragment;
     private ScheduleFragment scheduleFragment;
@@ -90,6 +91,9 @@ public class MainActivity extends AppCompatActivity {
         return myProfile;
     }
 
+    public void setMyPhone(String myPhone){
+        this.myPhone = myPhone;
+    }
 
 
     @Override
@@ -110,13 +114,17 @@ public class MainActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
 
         setMyToken(bundle.getString("token"));
-
+        setMyPhone(bundle.getString("phone"));
 
         //获取profile
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext().build();
         ProfileServiceGrpc.ProfileServiceBlockingStub profileBlockingStub = ProfileServiceGrpc.newBlockingStub(channel);
-        myProfile = profileBlockingStub.getProfile(Login.Token.newBuilder().setToken(myToken).build());
+        ProfileOuterClass.ProfileQuery profileQuery = ProfileOuterClass.ProfileQuery.newBuilder()
+                .setToken(myToken)
+                .setPhoneNum(myPhone)
+                .build();
+        myProfile = profileBlockingStub.getProfile(profileQuery);
 
         Log.e("profile------------->", "onCreate: " + myProfile.getEmail() + myProfile.getName() + myProfile.getPhoneNum());
 

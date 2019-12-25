@@ -3,6 +3,7 @@ package cs.android.task.fragment.friend;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -24,6 +25,12 @@ import com.pchmn.materialchips.ChipsInput;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import cs.android.task.MyApplication;
 import cs.android.task.R;
@@ -91,30 +98,38 @@ public class AddFriendFragment extends Fragment {
         ((MaterialButton)view.findViewById(R.id.add_ok)).setOnClickListener(v->{
             phoneStr = phone.getText().toString();
             Log.e("e------------------>", "onCreateView: " + phoneStr );
-            if(phoneStr.length() != 0 && !" ".equals(phoneStr)){
-                if(addFriend()){
-                    InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+            if(phoneStr.length() != 0 && !" ".equals(phoneStr)) {
+                Callable<Boolean> add = this::addFriend;
 
-                    if (null != view) {
-                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                Future<Boolean> future = executorService.submit(add);
+                try {
+                    //设置超时时间
+                    boolean result = future.get(1, TimeUnit.SECONDS);
+
+                    if (result) {
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        if (null != view) {
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
+                        ((MainActivity) getActivity()).getFriendFragment().initFriends();
+                        Toast.makeText(getContext(), "Add Friend Success", Toast.LENGTH_LONG).show();
+                        this.getFragmentManager().popBackStack();
+                    } else {
+                        Toast.makeText(getContext(), "Add friend fail", Toast.LENGTH_LONG).show();
                     }
-
-                    ((MainActivity) getActivity()).getFriendFragment().initFriends();
-                    Toast.makeText(getContext(),"Add Friend Success",Toast.LENGTH_LONG).show();
-                    this.getFragmentManager().popBackStack();
-
+                } catch (TimeoutException e) {
+                    Toast.makeText(getContext(), "TimeoutException", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Log.e("bug----------------->", e + " ");
+                    Toast.makeText(getContext(), "Can't find user", Toast.LENGTH_LONG).show();
+                } finally {
+                    executorService.shutdown();
                 }
-                else{
-                    Toast.makeText(getContext(), "Add friend fail", Toast.LENGTH_LONG).show();
-                }
-
 
             }
-            else{
-                Toast.makeText(getContext(), "Input entire messages", Toast.LENGTH_LONG).show();
-            }
-
         });
+
         ((MaterialButton)view.findViewById(R.id.add_cancel)).setOnClickListener(v->{
             cancel();
         });
