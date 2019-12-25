@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Task</string>
+    <string name="project">项目</string>
+    <string name="my">我的</string>
+    <string name="friend">好友</string>
+    <string name="notification">通知</string>
+    <string name="more">更多</string>
+    <string name="schedule">日程</string>
+    <string name="order_by_type">按文件类型排序</string>
+    <string name="order_by_name">按文件名字排序</string>
+    <string name="order_by_date">按修改日期排序</string>
+    <string name="only_my_file">只看我的文件</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="myNote">我的消息</string>
+</resources>

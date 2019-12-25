@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ProjectCard"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:cardElevation="5dp"
+        app:cardCornerRadius="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/project_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:fontFamily="@font/work_sans_bold"
+                    android:freezesText="true"
+                    android:text="PROJECT NAME"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/TextColor"
+                    android:textSize="20sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:gravity="end"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/card_enter_btn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="ENTER"
+                    android:textColor="#673AB7"
+                    android:textSize="10sp"
+                    app:rippleColor="#FF6B54A1" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/card_done_btn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="DONE"
+                    android:textColor="#673AB7"
+                    android:textSize="10sp"
+                    app:rippleColor="#FF6B54A1" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/card_del_btn"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="true"
+                    android:text="del"
+                    android:textColor="#673AB7"
+                    android:textSize="10sp"
+                    app:rippleColor="#FF6B54A1" />
+            </LinearLayout>
+
+        </LinearLayout>
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+    <LinearLayout
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:id="@+id/created_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/time"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/work_sans_medium"
+                android:gravity="center_vertical"
+                android:text="Created Time"
+                android:textColor="@color/TextColor"
+                android:textSize="13sp" />
+
+
+        <TextView
+                android:id="@+id/leader_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableStart="@drawable/leader_name"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/work_sans_medium"
+                android:gravity="center_vertical"
+                android:text="Leader"
+                android:textColor="@color/TextColor"
+                android:textSize="13sp" />
+    </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

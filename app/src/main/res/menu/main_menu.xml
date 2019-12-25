@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/project"
+        android:icon="@mipmap/project"
+        android:title="@string/project"/>
+
+
+
+    <item
+        android:id="@+id/friend"
+        android:icon="@mipmap/friends"
+        android:title="@string/friend"/>
+    <item
+        android:id="@+id/schedule"
+        android:icon="@mipmap/schedule"
+        android:title="@string/schedule"/>
+    <item
+        android:id="@+id/myNote"
+        android:icon="@mipmap/notification"
+        android:title="消息"/>
+    <item
+
+        android:id="@+id/my"
+        android:icon="@mipmap/my"
+        android:title="@string/my"/>
+
+</menu>

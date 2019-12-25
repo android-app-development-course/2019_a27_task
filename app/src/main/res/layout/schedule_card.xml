@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ProjectCard"
+    android:layout_margin="8dp"
+    app:cardElevation="8dp"
+    app:cardCornerRadius="3dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/schedule_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/work_sans_bold"
+            android:freezesText="true"
+            android:text="SCHEDULE NAME"
+            android:gravity="center_vertical"
+            android:textColor="@color/TextColor"
+            android:textSize="20sp" />
+        <LinearLayout
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/schedule_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/time"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/work_sans_medium"
+                android:gravity="center_vertical"
+                android:text="Date"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13sp" />
+
+
+            <TextView
+                android:id="@+id/schedule_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableStart="@drawable/location"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/work_sans_medium"
+                android:gravity="center_vertical"
+                android:text="Location"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13sp" />
+            <TextView
+                android:id="@+id/schedule_mark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableStart="@drawable/mark"
+                android:drawablePadding="8dp"
+                android:fontFamily="@font/work_sans_medium"
+                android:gravity="center_vertical"
+                android:text="mark"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="13sp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/done_btn"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:enabled="true"
+                android:text="DONE"
+                android:textColor="#673AB7"
+                android:textSize="10sp"
+                app:rippleColor="#FF6B54A1" />
+        </LinearLayout>
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

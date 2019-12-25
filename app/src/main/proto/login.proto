@@ -1,0 +1,27 @@
+syntax="proto3";
+
+package task;
+
+option go_package="service";
+
+service LoginService {
+    rpc Register(LoginInfo) returns (Result) {}
+    rpc Login(LoginInfo) returns (Token) {}
+    rpc Logout(Token) returns (Result) {}
+    rpc CheckToken(Token) returns (Result) {}
+}
+
+message LoginInfo {
+    string phoneNum = 1;
+    string password = 2;
+}
+
+message Result {
+    bool success = 1;
+    string errorMsg = 2;
+}
+
+message Token {
+    string token = 1;
+    bool registered = 2; // 发送此消息时不需要设置这个字段
+}
