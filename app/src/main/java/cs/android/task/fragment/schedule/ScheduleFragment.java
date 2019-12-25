@@ -84,20 +84,20 @@ public class ScheduleFragment extends Fragment {
     }
 
     private void initSchedules() {
-        Schedule schedule_1 =
-                new Schedule(
-                        "Android class",
-                        new Date(2019, 11, 11),
-                        "Building of CS",
-                        "This is a very\n important class");
-        Schedule schedule_2 =
-                new Schedule(
-                        "Software class",
-                        new Date(2019, 11, 11),
-                        "Building of CS",
-                        "This is a very very important class of this term");
-        scheduleList.add(schedule_1);
-        scheduleList.add(schedule_2);
+//        Schedule schedule_1 =
+//                new Schedule(
+//                        "Android class",
+//                        new Date(2019, 11, 11),
+//                        "Building of CS",
+//                        "This is a very\n important class");
+//        Schedule schedule_2 =
+//                new Schedule(
+//                        "Software class",
+//                        new Date(2019, 11, 11),
+//                        "Building of CS",
+//                        "This is a very very important class of this term");
+//        scheduleList.add(schedule_1);
+//        scheduleList.add(schedule_2);
     }
 
     @Override
