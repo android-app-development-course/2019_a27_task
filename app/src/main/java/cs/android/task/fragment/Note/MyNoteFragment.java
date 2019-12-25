@@ -70,17 +70,10 @@ public class MyNoteFragment extends Fragment {
         noteList = new ArrayList<>();
 
 
-        view = inflater.inflate(R.layout.fragment_my_note, container, false);
-
-
         MyApplication myApplication = new MyApplication();
         host = myApplication.getHost();
-
         myProfile = ((MainActivity)getActivity()).getMyProfile();
-
         freshNote();
-
-
 
 
         MyNoteAdapter myNoteAdapter = new MyNoteAdapter(MyNoteFragment.this, noteList);

@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -72,11 +73,14 @@ public class TimeLineFragment extends Fragment {
         myProject = ((MainActivity) getActivity()).getMyProject();
 
         timelineRecycleView = view.findViewById(R.id.timeline_recyclerview);
-        adapter = new TimelineItemAdapter(logList);
+        initTestLog();
+
+        adapter = new TimelineItemAdapter(logList, getContext(), myProfile, myProject);
+
         timelineRecycleView.setLayoutManager(
                 new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         timelineRecycleView.setAdapter(adapter);
-        //initTestLog();
+
         timelineRecycleView.getAdapter().notifyDataSetChanged();
         addTask = view.findViewById(R.id.addTask);
         addTask.setOnClickListener(this::addLog);
@@ -94,8 +98,7 @@ public class TimeLineFragment extends Fragment {
 
     }
 
-    private void initTestLog() {
-
+    public void initTestLog() {
         logList.clear();
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext().build();
@@ -109,6 +112,7 @@ public class TimeLineFragment extends Fragment {
 
         try {
             myLog = stub.pullLogs(projectQuery);
+
         } catch (StatusRuntimeException e) {
             Log.e("bug???", "freshNote: " + "bug");
         } finally {

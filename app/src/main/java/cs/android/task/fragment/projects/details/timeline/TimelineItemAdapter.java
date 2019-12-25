@@ -2,6 +2,7 @@ package cs.android.task.fragment.projects.details.timeline;
 
 import androidx.annotation.NonNull;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import java.util.Locale;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import cs.android.task.MyApplication;
 import cs.android.task.R;
 import cs.android.task.entity.LogItem;
 import io.grpc.ManagedChannel;
@@ -36,6 +38,7 @@ public class TimelineItemAdapter
         extends RecyclerView.Adapter<TimelineItemAdapter.TimelineViewHolder> {
 
     private List<LogItem> logList;
+    private Context context;
     public CheckBox isFinish;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("MM月dd日", Locale.CHINA);
     private static String host;
@@ -48,22 +51,33 @@ public class TimelineItemAdapter
         public TextView content;
         public TextView committer;
         public TimelineView timeline;
-        public CheckBox isFinish;
+        public CheckBox finished;
+
+        public CheckBox getFinished() {
+            return finished;
+        }
 
         public TimelineViewHolder(@NonNull View itemView, int viewType) {
             super(itemView);
+            MyApplication myApplication = new MyApplication();
+            host = myApplication.getHost();
+
             date = itemView.findViewById(R.id.log_date);
             content = itemView.findViewById(R.id.log_content);
             committer = itemView.findViewById(R.id.log_committer);
             timeline = itemView.findViewById(R.id.timeline);
             isFinish = itemView.findViewById(R.id.isFinish);
+            finished = itemView.findViewById(R.id.isFinish);
             timeline.initLine(viewType);
 
         }
     }
 
-    public TimelineItemAdapter(List<LogItem> logList) {
+    public TimelineItemAdapter(List<LogItem> logList, Context context, ProfileOuterClass.Profile myProfile, ProjectOuterClass.Project myProject) {
         this.logList = logList;
+        this.myProfile = myProfile;
+        this.context = context;
+        this.myProject = myProject;
     }
 
     @NonNull
@@ -82,22 +96,23 @@ public class TimelineItemAdapter
         holder.date.setText(dateFormat.format(item.getDate()));
         holder.content.setText(item.getContent());
         holder.committer.setText(item.getCommiter());
-        isFinish.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
-                        .usePlaintext().build();
-                LogServiceGrpc.LogServiceBlockingStub blockingStub = LogServiceGrpc.newBlockingStub(channel);
-                LogItem logItem = logList.get(position);
-                LogOuterClass.LogStatus logStatus = LogOuterClass.LogStatus.newBuilder()
-                        .setToken(myProfile.getToken())
-                        .setProjectID(myProject.getID())
-                        .setDone(!logItem.isDone())
-                        .setIndex(position)
-                        .build();
-                Login.Result result = blockingStub.setStatus(logStatus);
+        holder.finished.setChecked(item.isDone());
 
-            }
+        isFinish.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+                    .usePlaintext().build();
+            LogServiceGrpc.LogServiceBlockingStub blockingStub = LogServiceGrpc.newBlockingStub(channel);
+            LogItem logItem = logList.get(position);
+            Log.e("done?----", "onBindViewHolder: " + logItem.isDone() );
+            LogOuterClass.LogStatus logStatus = LogOuterClass.LogStatus.newBuilder()
+                    .setToken(myProfile.getToken())
+                    .setProjectID(myProject.getID())
+                    .setDone(!logItem.isDone())
+                    .setIndex(position)
+                    .build();
+            Log.e("done?----", "onBindViewHolder: " + logStatus.getDone() );
+            blockingStub.setStatus(logStatus);
+
         });
     }
 

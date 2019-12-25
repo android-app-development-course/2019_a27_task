@@ -39,6 +39,7 @@ public class DetailsFragment extends Fragment {
     private ProfileOuterClass.Profile myProfile;
 
 
+
     public static DetailsFragment newInstance(/*arg*/) {
     /*
     DetailsFragment fragment = new DetailsFragment();
@@ -90,9 +91,8 @@ public View onCreateView(LayoutInflater inflater, ViewGroup container,
      */
 
     adapter.addFragment(LeaderDetailCard.newInstance());
-    adapter.addFragment(MembersDetailCard.newInstance());
-//    adapter.addFragment(FilesDetails.newInstance());
-    adapter.addFragment(TimeLineFragment.newInstance());
+    adapter.addFragment(((MainActivity)getActivity()).getMembersDetailCard());
+    adapter.addFragment(((MainActivity)getActivity()).getTimeLineFragment());
 
     final ZoomOutPagerTransFormer transFormer = new ZoomOutPagerTransFormer();
     viewPager.setPageTransformer(transFormer);

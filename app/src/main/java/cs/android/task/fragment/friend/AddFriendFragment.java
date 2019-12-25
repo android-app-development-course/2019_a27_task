@@ -108,13 +108,14 @@ public class AddFriendFragment extends Fragment {
                     boolean result = future.get(1, TimeUnit.SECONDS);
 
                     if (result) {
+                        ((MainActivity) getActivity()).getFriendFragment().initFriends();
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
                         if (null != view) {
                             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                         }
-                        ((MainActivity) getActivity()).getFriendFragment().initFriends();
                         Toast.makeText(getContext(), "Add Friend Success", Toast.LENGTH_LONG).show();
                         this.getFragmentManager().popBackStack();
+
                     } else {
                         Toast.makeText(getContext(), "Add friend fail", Toast.LENGTH_LONG).show();
                     }

@@ -37,8 +37,9 @@ message Project {
 message Member {
     string token = 1; // leader's token
     string phoneNum = 2; // member's phoneNum
-    string memberName = 3;
+    string Name = 3;
     int64 projectID = 4;
+    string email = 5;
 }
 
 message ProjectQuery {

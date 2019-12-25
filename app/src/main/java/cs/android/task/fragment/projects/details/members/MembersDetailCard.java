@@ -123,7 +123,8 @@ public class MembersDetailCard extends Fragment {
     /*
         set up member list here
      */
-    private void initMemberList() {
+    public void initMemberList() {
+
         memberList.clear();
         ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext().build();
@@ -134,7 +135,6 @@ public class MembersDetailCard extends Fragment {
                 .setID(myProject.getID())
                 .build();
 
-
         try {
             myMember = stub.getMembers(projectQuery);
         } catch (StatusRuntimeException e) {
@@ -144,8 +144,9 @@ public class MembersDetailCard extends Fragment {
             while (myMember.hasNext()) {
                 ProjectOuterClass.Member member = myMember.next();
                 Member newMember = new Member();
-                newMember.setName(member.getMemberName());
-                newMember.setEmail("缺少邮箱属性");
+                Log.e("我名字呢", "initMemberList: " + member );
+                newMember.setName(member.getName());
+                newMember.setEmail(member.getEmail());
                 newMember.setPhoneNum(member.getPhoneNum());
 
                 memberList.add(newMember);

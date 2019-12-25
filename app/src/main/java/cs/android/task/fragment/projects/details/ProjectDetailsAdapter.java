@@ -15,6 +15,7 @@ private List<Fragment> fragmentList = new ArrayList<>();
 
 public ProjectDetailsAdapter (@NonNull FragmentManager fragmentManager,@NonNull Lifecycle lifecycle) {
     super(fragmentManager,lifecycle);
+    fragmentList.clear();
 }
 
   /**

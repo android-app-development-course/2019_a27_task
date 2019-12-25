@@ -50,6 +50,8 @@ import cs.android.task.fragment.Note.MyNoteFragment;
 import cs.android.task.fragment.friend.FriendFragment;
 import cs.android.task.fragment.profile.ProfileFragment;
 import cs.android.task.fragment.projects.ProjectFragment;
+import cs.android.task.fragment.projects.details.members.MembersDetailCard;
+import cs.android.task.fragment.projects.details.timeline.TimeLineFragment;
 import cs.android.task.fragment.schedule.ScheduleFragment;
 import cs.android.task.view.Util;
 import io.grpc.ManagedChannel;
@@ -74,6 +76,16 @@ public class MainActivity extends AppCompatActivity {
     private CallbackConnection connection;
     private MyNoteFragment myNoteFragement;
     private ProjectOuterClass.Project myProject;
+
+    private MembersDetailCard membersDetailCard;
+    private TimeLineFragment timeLineFragment;
+
+    public MembersDetailCard getMembersDetailCard(){
+        return membersDetailCard;
+    }
+    public TimeLineFragment getTimeLineFragment(){
+        return timeLineFragment;
+    }
 
     public ProjectOuterClass.Project getMyProject(){
         return myProject;
@@ -124,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                 .setToken(myToken)
                 .setPhoneNum(myPhone)
                 .build();
+
         myProfile = profileBlockingStub.getProfile(profileQuery);
 
         Log.e("profile------------->", "onCreate: " + myProfile.getEmail() + myProfile.getName() + myProfile.getPhoneNum());
@@ -132,6 +145,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         projectFragment = ProjectFragment.newInstance();
+
+        membersDetailCard = MembersDetailCard.newInstance();
+        timeLineFragment = TimeLineFragment.newInstance();
 
         loadFragment(projectFragment);
         Util.immerseStatusBar(this);
@@ -171,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                     manager.createNotificationChannel(channel);
                     Notification notification = new NotificationCompat.Builder(MainActivity.this, channelId)
                             .setContentTitle("新消息")
-                            .setContentText(body.toString())
+                            .setContentText(body.toString().split(":")[2])
                             .setWhen(System.currentTimeMillis())
                             .setSmallIcon(R.mipmap.ic_launcher)
                             .setDefaults(Notification.DEFAULT_ALL)
@@ -287,6 +303,7 @@ public class MainActivity extends AppCompatActivity {
     public ProjectFragment getProjectFragment() {
         return projectFragment;
     }
+
 
     public ScheduleFragment getScheduleFragment() {
         return scheduleFragment;

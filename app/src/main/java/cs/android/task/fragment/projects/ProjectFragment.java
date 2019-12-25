@@ -34,6 +34,8 @@ import cs.android.task.entity.Project;
 import cs.android.task.fragment.projects.creationDialog.CreateDialog;
 
 import cs.android.task.fragment.projects.details.DetailsFragment;
+import cs.android.task.fragment.projects.details.members.MembersDetailCard;
+import cs.android.task.fragment.projects.details.timeline.TimeLineFragment;
 import cs.android.task.view.main.MainActivity;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
@@ -56,9 +58,11 @@ public class ProjectFragment extends Fragment {
     private ProfileOuterClass.Profile myProfile;
     private Iterator<ProjectOuterClass.Project> myProject;
 
+
     public ProjectFragment() {
         // Required empty public constructor
     }
+
 
     public static ProjectFragment newInstance() {
         ProjectFragment fragment = new ProjectFragment();

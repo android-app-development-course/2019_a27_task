@@ -21,6 +21,13 @@ import org.fusesource.mqtt.client.Callback;
 import org.fusesource.mqtt.client.CallbackConnection;
 import org.fusesource.mqtt.client.QoS;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import cs.android.task.MyApplication;
 import cs.android.task.R;
 import cs.android.task.entity.Member;
@@ -30,6 +37,7 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import task.Login;
 import task.ProfileOuterClass;
+import task.ProfileServiceGrpc;
 import task.ProjectOuterClass;
 import task.ProjectServiceGrpc;
 
@@ -42,6 +50,8 @@ public class InviteMember extends Fragment {
     private static int port = 50050;
     private ProfileOuterClass.Profile myProfile;
     private ProjectOuterClass.Project myProject;
+    private EditText phone;
+    private String memberPhone;
 
     public InviteMember() {
         // Required empty public constructor
@@ -70,7 +80,48 @@ public class InviteMember extends Fragment {
         myProject = ((MainActivity)getActivity()).getMyProject();
 
         ((MaterialButton) view.findViewById(R.id.invite_ok)).setOnClickListener(v -> {
-            Invite();
+            phone = view.findViewById(R.id.invite_member_phone);
+            memberPhone = phone.getText().toString();
+            if(memberPhone.length() != 0 && !" ".equals(memberPhone)) {
+                Callable<Boolean> add = this::Invite;
+
+                ExecutorService executorService = Executors.newSingleThreadExecutor();
+                Future<Boolean> future = executorService.submit(add);
+                try {
+                    //设置超时时间
+                    boolean result = future.get(1, TimeUnit.SECONDS);
+
+                    if (result) {
+                        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+                        ((MainActivity)getActivity()).sendMessage("123:Invite you");
+
+                        //((MainActivity)getActivity()).getProjectFragment().get
+
+                        if (null != view) {
+                            assert imm != null;
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
+
+                        Toast.makeText(getContext(), "Invite Success", Toast.LENGTH_LONG).show();
+                        assert this.getFragmentManager() != null;
+                        this.getFragmentManager().popBackStack();
+                        ((MainActivity)getActivity()).getMembersDetailCard().initMemberList();
+
+                    } else {
+                        Toast.makeText(getContext(), "Invite Fail", Toast.LENGTH_LONG).show();
+                    }
+                } catch (TimeoutException e) {
+                    Toast.makeText(getContext(), "TimeoutException", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Log.e("bug----------------->", e + " ");
+                    Toast.makeText(getContext(), "Can't find user", Toast.LENGTH_LONG).show();
+                } finally {
+                    executorService.shutdown();
+                }
+
+            }
+
+
         });
         ((MaterialButton) view.findViewById(R.id.invite_cancel)).setOnClickListener(v -> {
             Cancel();
@@ -79,45 +130,38 @@ public class InviteMember extends Fragment {
         return view;
     }
 
-    private void Invite() {
-        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
-        FragmentManager fragmentManager = getFragmentManager();
-        MembersDetailCard membersDetailCard =  (MembersDetailCard) fragmentManager.getFragments().get(fragmentManager.getFragments().size() - 2);
-        EditText phone = view.findViewById(R.id.invite_member_phone);
-        String memberPhone = phone.getText().toString();
+    private Boolean Invite() {
 
-        /*
-        member 应该为邀请的手机号的信息
-        根据手机号从数据库里
-         */
-
-        ManagedChannel channel = ManagedChannelBuilder.forAddress(host, port)
+        ManagedChannel channel1 = ManagedChannelBuilder.forAddress(host, port)
                 .usePlaintext().build();
-        ProjectServiceGrpc.ProjectServiceBlockingStub blockingStub = ProjectServiceGrpc.newBlockingStub(channel);
-        ProjectOuterClass.Member member = ProjectOuterClass.Member.newBuilder()
-                .setMemberName("No name")
+        ProfileServiceGrpc.ProfileServiceBlockingStub profileBlockingStub = ProfileServiceGrpc.newBlockingStub(channel1);
+        ProfileOuterClass.ProfileQuery profileQuery = ProfileOuterClass.ProfileQuery.newBuilder()
+                .setToken(myProfile.getToken())
                 .setPhoneNum(memberPhone)
-                .setProjectID(myProject.getID())
-                .setToken(myProject.getToken())
                 .build();
 
+
+
+         channel1 = ManagedChannelBuilder.forAddress(host, port)
+                .usePlaintext().build();
+        ProfileOuterClass.Profile memberProfile = profileBlockingStub.getProfile(profileQuery);
+
+
+        Log.e("邀请的---》", "Invite: " + memberProfile );
+
+        ProjectServiceGrpc.ProjectServiceBlockingStub blockingStub = ProjectServiceGrpc.newBlockingStub(channel1);
+        ProjectOuterClass.Member member = ProjectOuterClass.Member.newBuilder()
+                .setName(memberProfile.getName())
+                .setPhoneNum(memberPhone)
+                .setProjectID(myProject.getID())
+                .setToken(myProfile.getToken())
+                .setEmail(memberProfile.getEmail())
+                .build();
+
+        Log.e("邀请的sd---》", "Invite: " + member.getName() );
         Login.Result result = blockingStub.inviteMember(member);
-        if(result.getSuccess()){
-            ((MainActivity)getActivity()).sendMessage("Invite you");
-            if (null != view) {
-                assert imm != null;
-                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-            }
-
-            Toast.makeText(getContext(), "Invite Success", Toast.LENGTH_LONG).show();
-            assert this.getFragmentManager() != null;
-
-            this.getFragmentManager().popBackStack();
-        }
-        else{
-            Toast.makeText(getContext(), "Invite Fail", Toast.LENGTH_LONG).show();
-        }
-
+        channel1.shutdown();
+        return result.getSuccess();
 
 
     }

@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -29,6 +30,8 @@ import task.Login;
 import task.ProfileOuterClass;
 import task.ProjectOuterClass;
 import task.ProjectServiceGrpc;
+
+import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public class AddLog extends Fragment {
 
@@ -92,13 +95,22 @@ public class AddLog extends Fragment {
 
         Login.Result result = blockingStub.addLog(logInfo);
         if (result.getSuccess()){
-            Toast.makeText(getContext(), "aaaa",Toast.LENGTH_LONG).show();
+
+            Toast.makeText(getContext(), "Create log success",Toast.LENGTH_LONG).show();
         }
         Log.e("result:::----->", "CreateProject: " + result.getErrorMsg() );
         channel.shutdown();
 
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(INPUT_METHOD_SERVICE);
+
+        if (null != view) {
+            assert imm != null;
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
         assert this.getFragmentManager() != null;
+
         this.getFragmentManager().popBackStack();
+        ((MainActivity)getActivity()).getTimeLineFragment().initTestLog();
     }
 
     private void cancel() {
