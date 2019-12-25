@@ -110,7 +110,7 @@ public class AddLog extends Fragment {
         assert this.getFragmentManager() != null;
 
         this.getFragmentManager().popBackStack();
-        ((MainActivity)getActivity()).getTimeLineFragment().initTestLog();
+
     }
 
     private void cancel() {

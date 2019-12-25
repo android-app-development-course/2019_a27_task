@@ -77,15 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private MyNoteFragment myNoteFragement;
     private ProjectOuterClass.Project myProject;
 
-    private MembersDetailCard membersDetailCard;
-    private TimeLineFragment timeLineFragment;
 
-    public MembersDetailCard getMembersDetailCard(){
-        return membersDetailCard;
-    }
-    public TimeLineFragment getTimeLineFragment(){
-        return timeLineFragment;
-    }
 
     public ProjectOuterClass.Project getMyProject(){
         return myProject;
@@ -146,8 +138,7 @@ public class MainActivity extends AppCompatActivity {
 
         projectFragment = ProjectFragment.newInstance();
 
-        membersDetailCard = MembersDetailCard.newInstance();
-        timeLineFragment = TimeLineFragment.newInstance();
+    
 
         loadFragment(projectFragment);
         Util.immerseStatusBar(this);

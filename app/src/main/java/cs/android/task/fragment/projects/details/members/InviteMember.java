@@ -105,7 +105,6 @@ public class InviteMember extends Fragment {
                         Toast.makeText(getContext(), "Invite Success", Toast.LENGTH_LONG).show();
                         assert this.getFragmentManager() != null;
                         this.getFragmentManager().popBackStack();
-                        ((MainActivity)getActivity()).getMembersDetailCard().initMemberList();
 
                     } else {
                         Toast.makeText(getContext(), "Invite Fail", Toast.LENGTH_LONG).show();
