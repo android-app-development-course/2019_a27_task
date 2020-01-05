@@ -14,10 +14,13 @@ import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cs.android.task.R;
 import cs.android.task.entity.Member;
+import cs.android.task.fragment.schedule.AddSchedule;
 
 /** The type Members detail card. */
 public class MembersDetailCard extends Fragment {
@@ -27,6 +30,7 @@ public class MembersDetailCard extends Fragment {
 
   /** The List view. */
   RecyclerView listView;
+  MemberDetailAdapter adapter;
 
   /** The Collapsing toolbar layout. */
   CollapsingToolbarLayout collapsingToolbarLayout;
@@ -70,7 +74,16 @@ public View onCreateView (@NonNull LayoutInflater inflater,@Nullable ViewGroup c
      */
     members = new ArrayList<>();
     setList();
-    listView.setAdapter(new MemberDetailAdapter(members));
+    adapter = new MemberDetailAdapter(members);
+    listView.setAdapter(adapter);
+    view.findViewById(R.id.inviteMember).setOnClickListener(v -> {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        transaction.setCustomAnimations(R.anim.fade_in, R.anim.fade_out);
+        transaction.add(R.id.fragment_layout, InviteMember.newInstance());
+        transaction.addToBackStack(null);
+        transaction.commit();
+    });
     return view;
 }
 
@@ -87,5 +100,12 @@ private void setList() {
         test_members.add(m);
     }
     members.addAll(test_members);
+}
+public MemberDetailAdapter getAdapter(){
+    return adapter;
+}
+
+public List<Member> getMembers(){
+    return members;
 }
 }

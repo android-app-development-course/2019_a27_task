@@ -1,0 +1,18 @@
+syntax="proto3";
+
+package task;
+
+option go_package="service";
+
+import "login.proto";
+
+service MessageService {
+    rpc AskMessage (Token) returns (stream Msg);
+}
+
+
+message Msg {
+    int64 date = 1;
+    string commitBy = 2;
+    string content = 3;
+}

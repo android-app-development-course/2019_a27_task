@@ -1,0 +1,19 @@
+syntax="proto3";
+
+package task;
+
+import "login.proto";
+option go_package="service";
+
+message Profile {
+    string token = 1;   // token can carry error message from server
+	string name = 2;
+	string phoneNum = 3; 
+    string desription = 4;
+	string email = 5;
+    string workplace = 6;
+}
+service ProfileService {
+    rpc SetProfile(Profile) returns (Result) {} // PhoneNum 必须和注册时一样, 不能修改
+    rpc GetProfile(Token) returns (Profile) {} // 错误信息在Profile的Token中
+}

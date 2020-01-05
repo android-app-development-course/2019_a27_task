@@ -30,7 +30,7 @@
             <com.google.android.material.appbar.AppBarLayout
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:backgroundTint="#7E57C2"
+                    android:backgroundTint="#4DB6AC"
                     >
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                         android:layout_width="match_parent"

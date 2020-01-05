@@ -1,5 +1,6 @@
 package cs.android.task.fragment.schedule;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -16,11 +19,12 @@ import cs.android.task.entity.Schedule;
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
     private List<Schedule> mScheduleList;
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
         TextView name;
         TextView date;
         TextView location;
         TextView mark;
+        MaterialButton doneBtn;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -28,6 +32,16 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
             date = itemView.findViewById(R.id.schedule_date);
             location = itemView.findViewById(R.id.schedule_location);
             mark = itemView.findViewById(R.id.schedule_mark);
+            doneBtn = itemView.findViewById(R.id.done_btn);
+            doneBtn.setOnClickListener(this::done);
+        }
+
+        private void done(View view) {
+            ScheduleAdapter.this.mScheduleList.remove(this.getAdapterPosition());
+            ScheduleAdapter.this.notifyItemRemoved(this.getAdapterPosition());
+            /*
+            数据库操作
+             */
         }
 
     }
